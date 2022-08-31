@@ -1,4 +1,4 @@
-import react from 'react';
+import React from 'react';
 import axios from 'axios'
 
 export default class Data extends React.Component {
@@ -7,7 +7,7 @@ export default class Data extends React.Component {
     }
   
     componentDidMount() {
-      axios.get(`https://localhost3000.com`)
+      axios.get(`https://localhost:7177/api/users`)
         .then(res => {
           const datas = res.data;
           this.setState({ datas });
