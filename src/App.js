@@ -2,6 +2,7 @@ import "./App.css";
 import chronicleLogo from "./logo.ico";
 import Data from "./components/api.js";
 import SignUp from "./components/forms.js";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
   return (
