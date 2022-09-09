@@ -1,7 +1,8 @@
 import "./App.css";
 import chronicleLogo from "./logo.ico";
 import Data from "./components/api.js";
-import EssayForm from "./components/forms.js";
+import SignUp from "./components/forms.js";
+import Button from "react-bootstrap/Button";
 
 function App() {
   return (
@@ -10,10 +11,10 @@ function App() {
         <img src={chronicleLogo} className="Chronicle-logo" alt="chronicleLogo" />
         <Data />
         <p>Welcome to Chronicle</p>
+        <div>
+          <SignUp />
+        </div>
       </header>
-      <body>
-        <EssayForm />
-      </body>
     </div>
   );
 }
