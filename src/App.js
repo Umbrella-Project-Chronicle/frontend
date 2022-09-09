@@ -5,13 +5,15 @@ import EssayForm from "./components/forms.js";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App-header">
       <header className="App-header">
         <img src={chronicleLogo} className="Chronicle-logo" alt="chronicleLogo" />
         <Data />
-        <EssayForm />
         <p>Welcome to Chronicle</p>
       </header>
+      <body>
+        <EssayForm />
+      </body>
     </div>
   );
 }
