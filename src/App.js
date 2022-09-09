@@ -3,9 +3,7 @@ import chronicleLogo from "./logo.ico";
 import Data from "./components/api.js";
 import SignUp from "./components/forms.js";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./components/home";
-import About from "./components/about";
-import Contact from "./components/contact";
+import FreeText from "./components/freetext";
 
 function App() {
   return (
@@ -14,20 +12,12 @@ function App() {
         <Router>
           <div className="App">
             <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
+              <div>
                 <Link to="/entry">Chronicle Today</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact Us</Link>
-              </li>
+              </div>
             </ul>
             <Routes>
-              <Route exact path="/" element={<Home />}></Route>
-              <Route exact path="/about" element={<About />}></Route>
-              <Route exact path="/contact" element={<Contact />}></Route>
+              <Route exact path="/entry" element={<FreeText />}></Route>
             </Routes>
           </div>
         </Router>
