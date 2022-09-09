@@ -2,7 +2,6 @@ import "./App.css";
 import chronicleLogo from "./logo.ico";
 import Data from "./components/api.js";
 import SignUp from "./components/forms.js";
-import Button from "react-bootstrap/Button";
 
 function App() {
   return (
