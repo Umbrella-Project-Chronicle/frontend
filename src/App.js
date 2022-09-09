@@ -1,4 +1,4 @@
-import './App.css';
+git import './App.css';
 import chronicleLogo from './logo.ico';
 
 function App() {
