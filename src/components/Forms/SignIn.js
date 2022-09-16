@@ -2,7 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function SignUp() {
+function SignIn() {
   return (
     <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -17,12 +17,10 @@ function SignUp() {
       </Form.Group>
 
       <Button variant="primary" type="submit">
-        Submit
+        Log In
       </Button>
-      <div></div>
-      <a href={"/login"}> Already have an Account?</a>
     </Form>
   );
 }
 
-export default SignUp;
+export default SignIn;

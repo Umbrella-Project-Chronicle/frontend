@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import FreeText from "./Components/freetext";
 import Home from "./Pages/home.js";
 import chronicleLogo from "../src/logo.ico";
+import SignIn from "./Components/Forms/SignIn.js";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />}></Route>
-            <Route path="/entry" element={<FreeText />}></Route>t
+            <Route path="/entry" element={<FreeText />}></Route>
+            <Route path="login" element={<SignIn />}></Route>
           </Routes>
         </Router>
         <Data />
