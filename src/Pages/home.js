@@ -5,7 +5,7 @@ function Home() {
   return (
     <div>
       {" "}
-      <p>Welcome to Chronicle</p>
+      <h1>Welcome to Chronicle</h1>
       <div>
         <SignUp />
       </div>
