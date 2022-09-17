@@ -74,7 +74,11 @@ function SignUp() {
           onChange={onInputChange}
           onBlur={validateInput}
         ></Form.Control>{" "}
-        {error.email && <span className="err">{error.email}</span>}
+        {error.email && (
+          <div style={{ fontSize: "15px" }} className="err">
+            {error.email}
+          </div>
+        )}
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -82,13 +86,16 @@ function SignUp() {
         <Form.Control
           type="password"
           name="password"
-          placeholder="Password"
           value={input.password}
           onChange={onInputChange}
           onBlur={validateInput}
         ></Form.Control>{" "}
       </Form.Group>
-      {error.password && <span className="err">{error.password}</span>}
+      {error.password && (
+        <div style={{ fontSize: "15px" }} className="err">
+          {error.password}
+        </div>
+      )}
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Confirm Password</Form.Label>
@@ -100,13 +107,19 @@ function SignUp() {
           onBlur={validateInput}
         ></Form.Control>{" "}
       </Form.Group>
-      {error.confirmPassword && <div className="err">{error.confirmPassword}</div>}
+      {error.confirmPassword && (
+        <div style={{ fontSize: "15px" }} className="err">
+          {error.confirmPassword}
+        </div>
+      )}
 
       <Button variant="primary" type="submit">
         Submit
       </Button>
       <div></div>
-      <a href={"/login"}> Already have an Account?</a>
+      <a style={{ fontSize: "20px" }} href={"/login"}>
+        Already have an Account?
+      </a>
     </Form>
   );
 }
