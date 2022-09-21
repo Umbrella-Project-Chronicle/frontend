@@ -24,7 +24,7 @@ function App() {
             <Route path="login" element={<SignIn />}></Route>
           </Routes>
         </Router>
-        {/* <Data /> */}
+        <Data />
       </header>
     </div>
   );
