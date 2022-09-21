@@ -11,28 +11,29 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [conPass, setConPass] = useState("");
 
-  // const isPasswordValid = (password, passCon) => {
-  //   return password.length >= 8 && password === passCon;
-  // };
+  const isPasswordValid = (password, conPass) => {
+    return password.length >= 5 && password === conPass;
+  };
 
-  // const isEmailValid = (email) => {
-  //   return emailValidator.validate(email);
-  // };
+  const isEmailValid = (email) => {
+    return emailValidator.validate(email);
+  };
 
-  const createAccount = async ({ email, password, firstName }) => {
-    console.log(email, password, firstName);
-    await fetch("https://localhost:7177/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        userType: 1,
-        name: firstName,
-      }),
-    });
+  const createAccount = async ({ firstName, email, password, conPass }) => {
+    if (isPasswordValid(password, conPass) && isEmailValid(email)) {
+      await fetch("https://localhost:7177/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          userType: 1,
+          name: firstName,
+        }),
+      });
+    }
   };
 
   // const [error, setError] = useState({
@@ -48,9 +49,8 @@ function SignUp() {
         <Form.Control
           type="text"
           name="first-name"
-          onBlur={(event) => setFirstName(event.target.value)}
+          onChange={(event) => setFirstName(event.target.value)}
           value={firstName}
-          // onBlur={isEmailValid()}
         ></Form.Control>{" "}
         {/* {error.email && (
           <div style={{ fontSize: "15px" }} className="err">
@@ -64,9 +64,8 @@ function SignUp() {
         <Form.Control
           type="text"
           name="last-name"
-          onBlur={(event) => setLastName(event.target.value)}
+          onChange={(event) => setLastName(event.target.value)}
           value={lastName}
-          // onBlur={isEmailValid()}
         ></Form.Control>{" "}
         {/* {error.email && (
           <div style={{ fontSize: "15px" }} className="err">
@@ -80,9 +79,9 @@ function SignUp() {
         <Form.Control
           type="email"
           name="email"
-          onBlur={(event) => setEmail(event.target.value)}
+          onChange={(event) => setEmail(event.target.value)}
           value={email}
-          // onBlur={isEmailValid()}
+          onBlur={isEmailValid()}
         ></Form.Control>{" "}
         {/* {error.email && (
           <div style={{ fontSize: "15px" }} className="err">
@@ -96,7 +95,7 @@ function SignUp() {
         <Form.Control
           type="password"
           name="password"
-          onBlur={(event) => setPassword(event.target.value)}
+          onChange={(event) => setPassword(event.target.value)}
           value={password}
         ></Form.Control>{" "}
       </Form.Group>
@@ -111,7 +110,7 @@ function SignUp() {
         <Form.Control
           type="password"
           name="confirmPassword"
-          onBlur={(event) => setConPass(event.target.value)}
+          onChange={(event) => setConPass(event.target.value)}
           value={conPass}
         ></Form.Control>{" "}
       </Form.Group>
@@ -121,7 +120,7 @@ function SignUp() {
         </div>
       )} */}
 
-      <Button onClick={() => createAccount({ email, password, firstName })}>Submit</Button>
+      <Button onClick={() => createAccount({ firstName, email, password, conPass })}>Submit</Button>
       <div></div>
       <a style={{ fontSize: "20px" }} href={"/login"}>
         Already have an Account?
