@@ -10,6 +10,7 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conPass, setConPass] = useState("");
+  const [error, setError] = useState(false);
 
   const isPasswordValid = (password, conPass) => {
     return password.length >= 5 && password === conPass;
@@ -19,8 +20,9 @@ function SignUp() {
     return emailValidator.validate(email);
   };
 
-  const createAccount = async ({ firstName, email, password, conPass }) => {
+  const createAccount = async ({ firstName, lastName, email, password, conPass }) => {
     if (isPasswordValid(password, conPass) && isEmailValid(email)) {
+      console.log(firstName, lastName, email, password, conPass);
       await fetch("https://localhost:7177/api/users", {
         method: "POST",
         headers: {
@@ -30,8 +32,11 @@ function SignUp() {
           email: email,
           password: password,
           userType: 1,
-          name: firstName,
+          firstName: firstName,
+          lastName: lastName,
         }),
+      }).then((response) => {
+        console.log(response);
       });
     }
   };
@@ -120,7 +125,7 @@ function SignUp() {
         </div>
       )} */}
 
-      <Button onClick={() => createAccount({ firstName, email, password, conPass })}>Submit</Button>
+      <Button onClick={() => createAccount({ firstName, lastName, email, password, conPass })}>Submit</Button>
       <div></div>
       <a style={{ fontSize: "20px" }} href={"/login"}>
         Already have an Account?

@@ -1,21 +1,53 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useState } from "react";
 
 function SignIn() {
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+
+  const createSession = async ({ email, password }) => {
+    console.log(email, password);
+    await fetch("https://localhost:7177/api/users/" + this.email + "login" + this.password, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({
+      //   email,
+      //   password,
+      // }),
+    }).then((response) => {
+      console.log(response);
+    });
+  };
+
   return (
     <div>
-      <h1 className="mb-4">Welcome Back, Chronicler</h1>
-
+      <h1 className="mb-4">Welcome Back</h1>
       <Form>
         <Form.Group className="mb-4" controlId="formBasicEmail">
-          {/* <Form.Label>Email address</Form.Label> */}
-          <Form.Control type="email" placeholder="Email" />
+          <Form.Control
+            type="email"
+            placeholder="Email"
+            name="email"
+            onChange={(event) => setEmail(event.target.value)}
+            value={email}
+          />
         </Form.Group>
         <Form.Group className="mb-4" controlId="formBasicPassword">
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            name="password"
+            onChange={(event) => setPassword(event.target.value)}
+            value={password}
+          />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" onClick={() => createSession({ email, password })}>
           Log In
         </Button>
       </Form>
