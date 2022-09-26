@@ -2,6 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [firstName, setFirstName] = useState("");
@@ -9,19 +10,31 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
+  const navigate = useNavigate();
+
+  const goToWelcome = () => {
+    navigate("/welcome");
+  };
+
   const createSession = async ({ email, password }) => {
     console.log(email, password);
-    await fetch("https://localhost:7177/api/users/" + this.email + "login" + this.password, {
-      method: "GET",
+    await fetch("https://localhost:7177/api/users/login", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify({
-      //   email,
-      //   password,
-      // }),
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
     }).then((response) => {
       console.log(response);
+      if (response.status === 200) {
+        goToWelcome();
+        console.log("made it");
+      } else {
+        console.log("unable to login");
+      }
     });
   };
 
@@ -47,7 +60,7 @@ function SignIn() {
             value={password}
           />
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={() => createSession({ email, password })}>
+        <Button variant="primary" onClick={() => createSession({ email, password })}>
           Log In
         </Button>
       </Form>

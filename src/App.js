@@ -5,6 +5,7 @@ import FreeText from "./Components/freetext";
 import Home from "./Pages/home.js";
 import chronicleLogo from "../src/logo.ico";
 import SignIn from "./Components/Forms/SignIn.js";
+import Welcome from "./Components/Forms/Welcome.js";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/entry" element={<FreeText />}></Route>
-            <Route path="login" element={<SignIn />}></Route>
+            <Route path="/login" element={<SignIn />}></Route>
+            <Route path="/welcome" element={<Welcome />}></Route>
           </Routes>
         </Router>
         <Data />
