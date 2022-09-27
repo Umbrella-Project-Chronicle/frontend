@@ -23,10 +23,10 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/entry" element={<FreeText />}></Route>
             <Route path="/login" element={<SignIn />}></Route>
-            <Route path="/welcome/:email" element={<Welcome />}></Route>
+            <Route path="/welcome" element={<Welcome />}></Route>
           </Routes>
         </Router>
-        <Data />
+        {/* <Data /> */}
       </header>
     </div>
   );

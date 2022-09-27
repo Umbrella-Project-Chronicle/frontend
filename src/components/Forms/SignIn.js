@@ -10,10 +10,11 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
+  // used to send user to welcome page
   const navigate = useNavigate();
 
   const goToWelcome = (email) => {
-    navigate("/welcome/" + email);
+    navigate("/welcome/", { state: { email: email } });
   };
 
   const createSession = async ({ email, password }) => {

@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import emailValidator from "email-validator";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -18,6 +19,14 @@ function SignUp() {
 
   const isEmailValid = (email) => {
     return emailValidator.validate(email);
+  };
+
+  // used to send user to welcome page aftering signing up
+
+  const navigate = useNavigate();
+
+  const goToSignIn = (firstName) => {
+    navigate("/welcome", { state: { firstName: firstName } });
   };
 
   const createAccount = async ({ firstName, lastName, email, password, conPass }) => {
@@ -37,6 +46,11 @@ function SignUp() {
         }),
       }).then((response) => {
         console.log(response);
+        if (response.status === 201) {
+          goToSignIn(firstName);
+        } else {
+          setError("unable to create user");
+        }
       });
     }
   };

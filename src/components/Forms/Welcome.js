@@ -1,14 +1,16 @@
 import { React, useState } from "react";
 import Button from "react-bootstrap/Button";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Welcome() {
-  const queryParams = new URLSearchParams(window.location.search);
-  const user = queryParams.get("email");
+  const location = useLocation();
 
-  const userInfo = async (user) => {
-    console.log(user);
-    await fetch("https://localhost:7177/api/" + user, {
+  const email = location.state.email;
+  const name = location.state.firstName;
+
+  const userInfo = async (email) => {
+    console.log("email", email);
+    await fetch("https://localhost:7177/api/users/search/" + email, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -17,9 +19,22 @@ function Welcome() {
       console.log(response);
     });
   };
+
+  const greeting = () => {
+    if (name) {
+      return name;
+    }
+    if (email) {
+      return email;
+    } else {
+      return "User";
+    }
+  };
+
   return (
     <div>
-      <Button onClick={() => userInfo(user)}>Get User</Button>
+      <h1>Hello, {greeting()}!</h1>
+      {/* <Button onClick={() => userInfo(email)}>Get User</Button> */}
     </div>
   );
 }
