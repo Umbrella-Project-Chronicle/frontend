@@ -12,8 +12,8 @@ function SignIn() {
 
   const navigate = useNavigate();
 
-  const goToWelcome = () => {
-    navigate("/welcome");
+  const goToWelcome = (email) => {
+    navigate("/welcome/" + email);
   };
 
   const createSession = async ({ email, password }) => {
@@ -30,7 +30,7 @@ function SignIn() {
     }).then((response) => {
       console.log(response);
       if (response.status === 200) {
-        goToWelcome();
+        goToWelcome(email);
         console.log("made it");
       } else {
         console.log("unable to login");
