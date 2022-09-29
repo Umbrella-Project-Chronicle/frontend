@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 import { useState } from "react";
 import emailValidator from "email-validator";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,7 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conPass, setConPass] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
 
   const isPasswordValid = (password, conPass) => {
     return password.length >= 5 && password === conPass;
@@ -27,6 +28,14 @@ function SignUp() {
 
   const goToSignIn = (firstName) => {
     navigate("/welcome", { state: { firstName: firstName } });
+  };
+
+  // error handling
+
+  const isError = () => {
+    if (error) {
+      return <Alert variant="danger">{error}</Alert>;
+    }
   };
 
   const createAccount = async ({ firstName, lastName, email, password, conPass }) => {
@@ -54,12 +63,6 @@ function SignUp() {
       });
     }
   };
-
-  // const [error, setError] = useState({
-  //   email: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // });
 
   return (
     <Form>
@@ -140,7 +143,9 @@ function SignUp() {
       )} */}
 
       <Button onClick={() => createAccount({ firstName, lastName, email, password, conPass })}>Submit</Button>
-      <div></div>
+
+      <div>{isError()}</div>
+
       <a style={{ fontSize: "20px" }} href={"/login"}>
         Already have an Account?
       </a>
