@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Welcome() {
@@ -9,6 +9,7 @@ function Welcome() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   // const [email, setemailName] = useState("");
+  const [journals, setJournals] = useState("");
 
   const location = useLocation();
 
@@ -20,22 +21,23 @@ function Welcome() {
   }, [""]);
 
   function fetchUser(email) {
-    axios.get(`https://localhost:7177/api/users/search/` + email).then((response) => {
-      console.log(response.data);
-      // setUserInfo(response);
-      setID(response.data.id);
-      setFirstName(response.data.firstName);
-      setLastName(response.data.lastName);
-    });
+    axios
+      .get(`https://localhost:7177/api/users/search/` + email)
+      .then((response) => {
+        console.log(response.data);
+        // setUserInfo(response);
+        setID(response.data.id);
+        setFirstName(response.data.firstName);
+        setLastName(response.data.lastName);
+      })
+      .then(fetchJournals(id));
   }
 
-  // const user = userInfo.data.map((x) => x);
-
-  // function userJournals() {
-  //   axios.get("https://localhost:7177/api/users/search/").then((response) => {
-  //     console.log(response);
-  //   });
-  // }
+  function fetchJournals() {
+    axios.get(`https://localhost:7177/api/journal/user/630d00bf12acfe4c84188a2a`).then((response) => {
+      console.log(response);
+    });
+  }
 
   const greeting = () => {
     if (firstName) {
@@ -53,6 +55,7 @@ function Welcome() {
       <h1>Hello, {greeting()}!</h1>
       <div>
         <Link to="/entry">Journal here</Link>
+        {/* <Button onClick={() => fetchJournals()}>hello</Button> */}
       </div>
     </div>
   );

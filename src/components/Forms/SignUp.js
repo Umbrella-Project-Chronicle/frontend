@@ -26,8 +26,8 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-  const goToSignIn = (firstName) => {
-    navigate("/welcome", { state: { firstName: firstName } });
+  const goToWelcome = (firstName, email) => {
+    navigate("/welcome", { state: { firstName: firstName, email: email } });
   };
 
   // error handling
@@ -56,11 +56,13 @@ function SignUp() {
       }).then((response) => {
         console.log(response);
         if (response.status === 201) {
-          goToSignIn(firstName);
+          goToWelcome(firstName, email);
         } else {
           setError("unable to create user");
         }
       });
+    } else {
+      setError("Password does not match");
     }
   };
 

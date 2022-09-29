@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 function TextControlsExample() {
   const [text, setText] = useState("");
 
-  const submitEntry = async () => {
+  const submitEntry = async (response, userID, firstName) => {
     // console.log(text);
     await fetch("https://localhost:7177/api/journal", {
       method: "POST",
@@ -15,16 +15,16 @@ function TextControlsExample() {
       body: JSON.stringify({
         journalType: 3,
         userID: "630d00bf12acfe4c84188a2a",
-        name: "hello",
+        name: firstName,
         ratings: {
-          overall: 10,
+          overall: 0,
           happiness: 0,
           depression: 0,
           anxiety: 0,
           sadness: 0,
           loneliness: 0,
         },
-        response: "hello what is up im testing this for fun",
+        response: response,
       }),
     }).then((response) => {
       console.log(response);

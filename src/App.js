@@ -5,7 +5,7 @@ import FreeText from "./Components/Forms/FreeText";
 import Home from "./Pages/Home.js";
 import chronicleLogo from "../src/logo.ico";
 import SignIn from "./Components/Forms/SignIn.js";
-import Welcome from "./Pages/Welcome.js";
+import Welcome from "./Components/Forms/Welcome.js";
 
 function App() {
   return (
