@@ -6,7 +6,7 @@ function TextControlsExample() {
   const [text, setText] = useState("");
 
   const submitEntry = async () => {
-    console.log(text);
+    // console.log(text);
     await fetch("https://localhost:7177/api/journal", {
       method: "POST",
       headers: {
@@ -15,6 +15,7 @@ function TextControlsExample() {
       body: JSON.stringify({
         journalType: 3,
         userID: "630d00bf12acfe4c84188a2a",
+        name: "hello",
         ratings: {
           overall: 10,
           happiness: 0,
