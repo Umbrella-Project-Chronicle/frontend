@@ -8,17 +8,17 @@ function Welcome() {
   const email = location.state.email;
   const name = location.state.firstName;
 
-  const userInfo = async (email) => {
-    console.log("email", email);
-    await fetch("https://localhost:7177/api/users/search/" + email, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      console.log(response);
-    });
-  };
+  // const userInfo = async (email) => {
+  //   console.log("email", email);
+  //   await fetch("https://localhost:7177/api/users/search/" + email, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then((response) => {
+  //     console.log(response);
+  //   });
+  // };
 
   const greeting = () => {
     if (name) {

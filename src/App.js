@@ -2,10 +2,10 @@ import "./App.css";
 import Data from "./Components/api.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import FreeText from "./Components/Forms/FreeText";
-import Home from "./Pages/home.js";
+import Home from "./Pages/Home.js";
 import chronicleLogo from "../src/logo.ico";
 import SignIn from "./Components/Forms/SignIn.js";
-import Welcome from "./Components/Forms/Welcome.js";
+import Welcome from "./Pages/Welcome.js";
 
 function App() {
   return (
