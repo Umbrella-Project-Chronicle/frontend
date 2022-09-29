@@ -1,7 +1,7 @@
-import React from "react";
+import { React, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+import Alert from "react-bootstrap/Alert";
 import { useNavigate } from "react-router-dom";
 
 function SignIn() {
@@ -15,6 +15,17 @@ function SignIn() {
 
   const goToWelcome = (email) => {
     navigate("/welcome/", { state: { email: email } });
+  };
+
+  // error handling
+  const isError = () => {
+    if (error) {
+      return (
+        <Alert variant="danger" style={{ fontSize: "18px" }}>
+          {error}
+        </Alert>
+      );
+    }
   };
 
   const createSession = async ({ email, password }) => {
@@ -35,6 +46,7 @@ function SignIn() {
         console.log("made it");
       } else {
         console.log("unable to login");
+        setError("Wrong Email or Password");
       }
     });
   };
@@ -64,6 +76,7 @@ function SignIn() {
         <Button variant="primary" onClick={() => createSession({ email, password })}>
           Log In
         </Button>
+        <div>{isError()}</div>
       </Form>
       <a style={{ fontSize: "20px" }} href={"/"}>
         New to Chronicle?

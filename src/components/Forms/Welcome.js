@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import Button from "react-bootstrap/Button";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 function Welcome() {
   const location = useLocation();
@@ -34,7 +34,9 @@ function Welcome() {
   return (
     <div>
       <h1>Hello, {greeting()}!</h1>
-      {/* <Button onClick={() => userInfo(email)}>Get User</Button> */}
+      <div>
+        <Link to="/entry">Journal here</Link>
+      </div>
     </div>
   );
 }
