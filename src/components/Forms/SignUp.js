@@ -1,10 +1,15 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
-import { useState } from "react";
-import emailValidator from "email-validator";
+import { React, useState } from "react";
+import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, CssBaseline, Alert } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import Image from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/favicon.ico";
+
+import emailValidator from "email-validator";
+// import useNavigate from "react-router-dom";
+
+const theme = createTheme();
 
 function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -14,8 +19,16 @@ function SignUp() {
   const [conPass, setConPass] = useState("");
   const [error, setError] = useState("");
 
-  const isPasswordValid = (password, conPass) => {
-    return password.length >= 5 && password === conPass;
+  const isPasswordSame = (password, conPass) => {
+    return password === conPass;
+  };
+
+  const isPasswordLong = (password) => {
+    return password.length >= 8;
+  };
+
+  const isPasswordValid = () => {
+    return isPasswordSame() && isPasswordLong();
   };
 
   const isEmailValid = (email) => {
@@ -32,126 +45,160 @@ function SignUp() {
 
   // error handling
 
-  const isError = () => {
-    if (error) {
-      return <Alert variant="danger">{error}</Alert>;
-    }
-  };
-
-  const createAccount = async ({ firstName, lastName, email, password, conPass }) => {
-    if (isPasswordValid(password, conPass) && isEmailValid(email)) {
-      console.log(firstName, lastName, email, password, conPass);
-      await fetch("https://localhost:7177/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          userType: 1,
-          firstName: firstName,
-          lastName: lastName,
-        }),
-      }).then((response) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+      userType: 1,
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
+    });
+    axios
+      .post("https://localhost:7177/api/users", {
+        email: data.get("email"),
+        password: data.get("password"),
+        userType: 1,
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+      })
+      .then((response) => {
         console.log(response);
         if (response.status === 201) {
-          goToWelcome(firstName, email);
-        } else {
-          setError("unable to create user");
+          goToWelcome(data.get("firstName"), data.get("email"));
         }
+      })
+      .catch((error) => {
+        setError(error);
       });
-    } else {
-      setError("Password does not match");
-    }
   };
 
   return (
-    <Form>
-      <Form.Group className="mb-3">
-        <Form.Label>First Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="first-name"
-          onChange={(event) => setFirstName(event.target.value)}
-          value={firstName}
-        ></Form.Control>{" "}
-        {/* {error.email && (
-          <div style={{ fontSize: "15px" }} className="err">
-            {error.email}
-          </div>
-        )} */}
-      </Form.Group>
+    <ThemeProvider theme={theme}>
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: `url(${Image})`,
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) => (t.palette.mode === "dark" ? t.palette.grey[50] : t.palette.grey[900]),
+            backgroundSize: "center",
+            backgroundPosition: "center",
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ bgcolor: "white" }}>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar src=""></Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                variant="standard"
+                margin="normal"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                name="firstName"
+                autoComplete="text"
+                autoFocus
+                onChange={(event) => setFirstName(event.target.value)}
+                value={firstName}
+              />
+              <TextField
+                variant="standard"
+                margin="normal"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="text"
+                autoFocus
+                onChange={(event) => setLastName(event.target.value)}
+                value={lastName}
+              />
+              <TextField
+                variant="standard"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={(event) => setEmail(event.target.value)}
+                value={email}
+              />
+              <TextField
+                variant="standard"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={(event) => setPassword(event.target.value)}
+                value={password}
+              />
+              <TextField
+                variant="standard"
+                margin="normal"
+                required
+                fullWidth
+                name="conPass"
+                label="Confirm Password"
+                type="password"
+                id="conPass"
+                autoComplete="current-password"
+                helperText={error}
+                onChange={(event) => setConPass(event.target.value)}
+                value={conPass}
+              />
+              {error && <Alert> {error}</Alert>}
+              {/* <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            /> */}
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                Sign In
+              </Button>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Last Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="last-name"
-          onChange={(event) => setLastName(event.target.value)}
-          value={lastName}
-        ></Form.Control>{" "}
-        {/* {error.email && (
-          <div style={{ fontSize: "15px" }} className="err">
-            {error.email}
-          </div>
-        )} */}
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          type="email"
-          name="email"
-          onChange={(event) => setEmail(event.target.value)}
-          value={email}
-          onBlur={isEmailValid()}
-        ></Form.Control>{" "}
-        {/* {error.email && (
-          <div style={{ fontSize: "15px" }} className="err">
-            {error.email}
-          </div>
-        )} */}
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          name="password"
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
-        ></Form.Control>{" "}
-      </Form.Group>
-      {/* {error.password && (
-        <div style={{ fontSize: "15px" }} className="err">
-          {error.password}
-        </div>
-      )} */}
-
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Confirm Password</Form.Label>
-        <Form.Control
-          type="password"
-          name="confirmPassword"
-          onChange={(event) => setConPass(event.target.value)}
-          value={conPass}
-        ></Form.Control>{" "}
-      </Form.Group>
-      {/* {error.confirmPassword && (
-        <div style={{ fontSize: "15px" }} className="err">
-          {error.confirmPassword}
-        </div>
-      )} */}
-
-      <Button onClick={() => createAccount({ firstName, lastName, email, password, conPass })}>Submit</Button>
-
-      <div>{isError()}</div>
-
-      <a style={{ fontSize: "20px" }} href={"/login"}>
-        Already have an Account?
-      </a>
-    </Form>
+              <Grid container>
+                {/* <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid> */}
+                <Grid item>
+                  <Link href="/login" variant="body2">
+                    {"Have an Account?"}
+                  </Link>
+                </Grid>
+              </Grid>
+              {/* <Copyright sx={{ mt: 5 }} /> */}
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
 }
 

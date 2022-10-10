@@ -5,6 +5,7 @@ import FreeText from "./Components/Forms/FreeText";
 import Home from "./Pages/Home.js";
 import chronicleLogo from "../src/logo.ico";
 import SignIn from "./Components/Forms/SignIn.js";
+import SignUp from "./Components/Forms/SignUp.js";
 import Welcome from "./Components/Forms/Welcome.js";
 import CssBaseline from "@mui/material/CssBaseline";
 import * as React from "react";
@@ -24,7 +25,7 @@ function App() {
         >
           <Router>
             <Routes>
-              <Route path="/" element={<Home />}></Route>
+              <Route path="/" element={<SignUp />}></Route>
               <Route path="/entry" element={<FreeText />}></Route>
               <Route path="/login" element={<SignIn />}></Route>
               <Route path="/welcome" element={<Welcome />}></Route>

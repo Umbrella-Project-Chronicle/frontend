@@ -1,26 +1,17 @@
 import { React, useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
+import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, CssBaseline, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import Image from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/favicon.ico";
+
 const theme = createTheme();
 
 function SignIn() {
-  const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   // used to send user to welcome page
   const navigate = useNavigate();
@@ -40,6 +31,14 @@ function SignIn() {
   //   }
   // };
 
+  // function isError() {
+  //   if (error) {
+  //     return error;
+  //   } else {
+  //     return "hello";
+  //   }
+  // }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -49,39 +48,43 @@ function SignIn() {
     });
     axios
       .post("https://localhost:7177/api/users/login", {
-        email: "eliot@example.com",
-        password: "password",
+        email: data.get("email"),
+        password: data.get("password"),
       })
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          goToWelcome(email);
-          console.log("made it");
-        } else {
-          console.log("unable to login");
-          setError("Wrong Email or Password");
+          goToWelcome(data.get("email"));
         }
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          setError("User not Found");
+        }
+        if (error.response.status === 409) {
+          setError("Incorrect Password");
+        } else setError("there was a problem");
       });
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
-        {/* <CssBaseline /> */}
+        <CssBaseline />
         <Grid
           item
           xs={false}
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${Image})`,
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) => (t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900]),
-            backgroundSize: "cover",
+            backgroundColor: (t) => (t.palette.mode === "dark" ? t.palette.grey[50] : t.palette.grey[900]),
+            backgroundSize: "center",
             backgroundPosition: "center",
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ bgcolor: "white" }}>
           <Box
             sx={{
               my: 8,
@@ -91,14 +94,13 @@ function SignIn() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
+            <Avatar src=""></Avatar>
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
+                variant="standard"
                 margin="normal"
                 required
                 fullWidth
@@ -111,6 +113,7 @@ function SignIn() {
                 value={email}
               />
               <TextField
+                variant="standard"
                 margin="normal"
                 required
                 fullWidth
@@ -119,9 +122,11 @@ function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                helperText={error}
                 onChange={(event) => setPassword(event.target.value)}
                 value={password}
               />
+              {error && <Alert> {error}</Alert>}
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -129,6 +134,7 @@ function SignIn() {
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
+
               <Grid container>
                 {/* <Grid item xs>
                   <Link href="#" variant="body2">
