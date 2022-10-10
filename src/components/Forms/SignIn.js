@@ -58,12 +58,9 @@ function SignIn() {
         }
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          setError("User not Found");
-        }
         if (error.response.status === 409) {
           setError("Incorrect Password");
-        } else setError("there was a problem");
+        } else setError("User Not Found");
       });
   };
 
@@ -92,6 +89,8 @@ function SignIn() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              boxShadow: 4,
+              p: 3,
             }}
           >
             <Avatar src=""></Avatar>
@@ -122,11 +121,10 @@ function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                helperText={error}
                 onChange={(event) => setPassword(event.target.value)}
                 value={password}
               />
-              {error && <Alert> {error}</Alert>}
+              {error && <Alert severity="info"> {error}</Alert>}
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"

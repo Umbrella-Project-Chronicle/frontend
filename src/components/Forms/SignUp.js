@@ -18,21 +18,48 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [conPass, setConPass] = useState("");
   const [error, setError] = useState("");
+  const [passLengthError, setPassLengthError] = useState("");
+  const [passMatchError, setPassMatchError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  const isPasswordSame = (password, conPass) => {
+  const isPasswordMatch = (password, conPass) => {
     return password === conPass;
   };
 
-  const isPasswordLong = (password) => {
+  const isPasswordLength = (password) => {
     return password.length >= 8;
-  };
-
-  const isPasswordValid = () => {
-    return isPasswordSame() && isPasswordLong();
   };
 
   const isEmailValid = (email) => {
     return emailValidator.validate(email);
+  };
+
+  const handlePassChange = (event) => {
+    if (!isPasswordLength(event.target.value)) {
+      setPassLengthError("Password is Not Long Enough");
+    } else {
+      setPassLengthError(null);
+    }
+    setPassword(event.target.value);
+  };
+
+  const handlePassConfirm = (event) => {
+    if (!isPasswordMatch(password, event.target.value)) {
+      setPassMatchError("Passwords Do Not Match");
+    } else {
+      setPassMatchError(null);
+    }
+
+    setConPass(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    if (!isEmailValid(event.target.value)) {
+      setEmailError("Email is Invalid");
+    } else {
+      setEmailError(null);
+    }
+    setEmail(event.target.value);
   };
 
   // used to send user to welcome page aftering signing up
@@ -55,23 +82,25 @@ function SignUp() {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
     });
-    axios
-      .post("https://localhost:7177/api/users", {
-        email: data.get("email"),
-        password: data.get("password"),
-        userType: 1,
-        firstName: data.get("firstName"),
-        lastName: data.get("lastName"),
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.status === 201) {
-          goToWelcome(data.get("firstName"), data.get("email"));
-        }
-      })
-      .catch((error) => {
-        setError(error);
-      });
+    if (isPasswordLength(password) && isPasswordMatch(password, conPass) && isEmailValid(email)) {
+      axios
+        .post("https://localhost:7177/api/users", {
+          email: data.get("email"),
+          password: data.get("password"),
+          userType: 1,
+          firstName: data.get("firstName"),
+          lastName: data.get("lastName"),
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 201) {
+            goToWelcome(data.get("firstName"), data.get("email"));
+          }
+        })
+        .catch((error) => {
+          setError(error);
+        });
+    }
   };
 
   return (
@@ -99,6 +128,8 @@ function SignUp() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              boxShadow: 4,
+              p: 3,
             }}
           >
             <Avatar src=""></Avatar>
@@ -142,9 +173,15 @@ function SignUp() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={handleEmailChange}
                 value={email}
               />
+              {emailError && (
+                <Alert variant="outlined" severity="info">
+                  {" "}
+                  {emailError}
+                </Alert>
+              )}
               <TextField
                 variant="standard"
                 margin="normal"
@@ -155,9 +192,15 @@ function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={handlePassChange}
                 value={password}
               />
+              {passLengthError && (
+                <Alert variant="outlined" severity="info">
+                  {" "}
+                  {passLengthError}
+                </Alert>
+              )}
               <TextField
                 variant="standard"
                 margin="normal"
@@ -168,11 +211,15 @@ function SignUp() {
                 type="password"
                 id="conPass"
                 autoComplete="current-password"
-                helperText={error}
-                onChange={(event) => setConPass(event.target.value)}
+                onChange={handlePassConfirm}
                 value={conPass}
               />
-              {error && <Alert> {error}</Alert>}
+              {passMatchError && (
+                <Alert variant="outlined" severity="info">
+                  {" "}
+                  {passMatchError}
+                </Alert>
+              )}
               {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
