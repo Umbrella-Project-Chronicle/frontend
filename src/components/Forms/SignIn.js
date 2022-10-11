@@ -21,24 +21,6 @@ function SignIn() {
   };
 
   // error handling
-  // const isError = () => {
-  //   if (error) {
-  //     return (
-  //       <Alert variant="danger" style={{ fontSize: "18px" }}>
-  //         {error}
-  //       </Alert>
-  //     );
-  //   }
-  // };
-
-  // function isError() {
-  //   if (error) {
-  //     return error;
-  //   } else {
-  //     return "hello";
-  //   }
-  // }
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -93,9 +75,9 @@ function SignIn() {
               p: 3,
             }}
           >
-            <Avatar src=""></Avatar>
+            <Avatar src="" sx={{ m: 3 }}></Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Chronicle Sign In
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField

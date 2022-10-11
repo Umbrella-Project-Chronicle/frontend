@@ -132,9 +132,9 @@ function SignUp() {
               p: 3,
             }}
           >
-            <Avatar src=""></Avatar>
+            <Avatar src="" sx={{ m: 3 }}></Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign Up
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
