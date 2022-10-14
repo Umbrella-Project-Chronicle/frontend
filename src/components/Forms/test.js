@@ -6,9 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -16,9 +14,22 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import SendIcon from "@mui/icons-material/Send";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import InfoIcon from "@mui/icons-material/Info";
+import HelpIcon from "@mui/icons-material/Help";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Input from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import ImageList from "@material-ui/core/ImageList";
+import { CardActionArea, CardMedia } from "@material-ui/core";
+import { ImageListItem } from "@mui/material";
+import Container from "@mui/material/Container";
 
 const drawerWidth = 240;
 
@@ -53,32 +64,24 @@ function ResponsiveDrawer(props) {
           </ListItemIcon>
           <ListItemText primary="Stats" />
         </ListItemButton>
-        {/* {["Journals", "Wraps", "Stats", "New"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))} */}
       </List>
       <Divider />
       <List>
         <ListItemButton>
           <ListItemIcon>
-            <MailIcon />
+            <InsertEmoticonIcon />
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItemButton>
         <ListItemButton>
           <ListItemIcon>
-            <SendIcon />
+            <InfoIcon />
           </ListItemIcon>
           <ListItemText primary="About" />
         </ListItemButton>
         <ListItemButton>
           <ListItemIcon>
-            <SendIcon />
+            <HelpIcon />
           </ListItemIcon>
           <ListItemText primary="Help" />
         </ListItemButton>
@@ -87,6 +90,25 @@ function ResponsiveDrawer(props) {
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+        width: "25ch",
+      },
+    },
+    gridList: {
+      width: "100%",
+      height: "auto",
+    },
+    card: {
+      maxWidth: "auto",
+      height: "100%",
+    },
+  }));
+
+  const classes = useStyles();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -109,7 +131,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+            TEst TEst
           </Typography>
         </Toolbar>
       </AppBar>
@@ -141,29 +163,102 @@ function ResponsiveDrawer(props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
-        <Toolbar />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-          velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu
-          scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt
-          lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed
-          ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam
-          dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus
-          sed viverra tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod
-          lacinia at quis risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in.
-          In hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean euismod
-          elementum nisi quis eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere
-          sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Box>
+      <Container>
+        <ImageList
+          rowHeight={"auto"}
+          gap={12}
+          sx={{ mb: 8, gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))!important" }}
+        >
+          <Card>
+            <ImageListItem sx={{ height: "100% !important" }}>
+              <CardActionArea>
+                <CardContent>
+                  <Typography gutterBottom variant="body2" component="h2">
+                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
+                    events, it becomes necessary for one people to dissolve the political bands which have connected
+                    them with another, and to assume among the powers of the earth, the separate and equal station to
+                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
+                    mankind requires that they should declare the causes which impel them to the separation. We hold
+                    these truths to be self-evident, that all men are created equal, that they are endowed by their
+                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
+                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
+                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
+                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
+                    Government, laying its foundation on such principles and organizing its powers in such form, as to
+                    them shall seem most likely to effect their Saf
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </ImageListItem>
+          </Card>
+          <Card>
+            <ImageListItem sx={{ height: "100% !important" }}>
+              <CardActionArea>
+                <CardContent>
+                  <Typography gutterBottom variant="body2" component="h2">
+                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
+                    events, it becomes necessary for one people to dissolve the political bands which have connected
+                    them with another, and to assume among the powers of the earth, the separate and equal station to
+                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
+                    mankind requires that they should declare the causes which impel them to the separation. We hold
+                    these truths to be self-evident, that all men are created equal, that they are endowed by their
+                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
+                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
+                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
+                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
+                    Government, laying its foundation on such principles and organizing its powers in such form, as to
+                    them shall seem most likely to effect their Saf
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </ImageListItem>
+          </Card>
+          <Card>
+            <ImageListItem sx={{ height: "100% !important" }}>
+              <CardActionArea>
+                <CardContent>
+                  <Typography gutterBottom variant="body2" component="h2">
+                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
+                    events, it becomes necessary for one people to dissolve the political bands which have connected
+                    them with another, and to assume among the powers of the earth, the separate and equal station to
+                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
+                    mankind requires that they should declare the causes which impel them to the separation. We hold
+                    these truths to be self-evident, that all men are created equal, that they are endowed by their
+                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
+                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
+                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
+                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
+                    Government, laying its foundation on such principles and organizing its powers in such form, as to
+                    them shall seem most likely to effect their Saf
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </ImageListItem>
+          </Card>
+          <Card>
+            <ImageListItem sx={{ height: "100% !important" }}>
+              <CardActionArea>
+                <CardContent>
+                  <Typography gutterBottom variant="body2" component="h2">
+                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
+                    events, it becomes necessary for one people to dissolve the political bands which have connected
+                    them with another, and to assume among the powers of the earth, the separate and equal station to
+                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
+                    mankind requires that they should declare the causes which impel them to the separation. We hold
+                    these truths to be self-evident, that all men are created equal, that they are endowed by their
+                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
+                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
+                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
+                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
+                    Government, laying its foundation on such principles and organizing its powers in such form, as to
+                    them shall seem most likely to effect their Saf
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </ImageListItem>
+          </Card>
+        </ImageList>
+      </Container>
     </Box>
   );
 }
