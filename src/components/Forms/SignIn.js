@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, CssBaseline, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -12,12 +12,13 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [user, setUser] = useState({ id: "", email: "", token: "", firstName: "", lastName: "" });
 
   // used to send user to welcome page
   const navigate = useNavigate();
 
-  const goToWelcome = (email) => {
-    navigate("/welcome/", { state: { email: email } });
+  const goToWelcome = (user) => {
+    navigate("/welcome/");
   };
 
   // error handling
@@ -36,7 +37,8 @@ function SignIn() {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          goToWelcome(data.get("email"));
+          localStorage.setItem("userToken", JSON.stringify(response));
+          goToWelcome();
         }
       })
       .catch((error) => {

@@ -30,10 +30,12 @@ import ImageList from "@material-ui/core/ImageList";
 import { CardActionArea, CardMedia } from "@material-ui/core";
 import { ImageListItem } from "@mui/material";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 
-const drawerWidth = 240;
+function LandingPage(props) {
+  const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -41,9 +43,41 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  // const useStyles = makeStyles((theme) => ({
+  //   root: {
+  //     "& > *": {
+  //       margin: theme.spacing(1),
+  //       width: "25ch",
+  //     },
+  //   },
+  //   gridList: {
+  //     width: "100%",
+  //     height: "auto",
+  //   },
+  //   card: {
+  //     maxWidth: "auto",
+  //     height: "100%",
+  //   },
+  // }));
+
+  // const classes = useStyles();
+
+  const classes = {
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: 20,
+      textAlign: "center",
+      color: "black",
+      fontFamily: "Roboto",
+    },
+  };
+
   const drawer = (
     <div>
-      <Toolbar />
       <Divider />
       <List>
         <ListItemButton>
@@ -89,186 +123,111 @@ function ResponsiveDrawer(props) {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
-
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      "& > *": {
-        margin: theme.spacing(1),
-        width: "25ch",
-      },
-    },
-    gridList: {
-      width: "100%",
-      height: "auto",
-    },
-    card: {
-      maxWidth: "auto",
-      height: "100%",
-    },
-  }));
-
-  const classes = useStyles();
-
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+    <div>
+      <Box sx={{ display: "flex", marginRight: 24 }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          sx={{
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
+            color: "black",
+          }}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h2" noWrap component="div">
+              Chronicle
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            TEst TEst
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+
+        <div style={classes.root}>
+          <Grid container spacing={3} sx={{ m: 12 }}>
+            {/*Create items with different breakpoints */}
+            {/*For example,This item will be 12 units wide on extra small screens */}
+
+            <Grid item xs={12} sm={6}>
+              <Paper style={classes.paper}>
+                {" "}
+                The unanimous Declaration of the thirteen united States of America, When in the Course of human events,
+                it becomes necessary for one people to dissolve the political bands which have connected them with
+                another, and to assume among the powers of the earth, the separate and equal station to which the Laws
+                of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that
+                they should declare the causes which impel them to the separation. We hold these truths to be
+                self-evident, that all men are created equal, that they are endowed by their Creator with certain
+                unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure
+                these rights, Governments are instituted among Men, deriving their just powers from the consent of the
+                governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of
+                the People to alter or to abolish it, and to institute new Government, laying its foundation on such
+                principles and organizing its powers in such form, as to them shall seem most likely to effect their Saf
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Paper style={classes.paper}>
+                {" "}
+                The unanimous Declaration of the thirteen united States of America, When in the Course of human events,
+                it becomes necessary for one people to dissolve the political bands which have connected them with
+                another, and to assume among the powers of the earth, the separate and equal station to which the Laws
+                of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that
+                they should declare the causes which impel them to the separation. We hold these truths to be
+                self-evident, that all men are created equal, that they are endowed by their Creator with certain
+                unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure
+                these rights, Governments are instituted among Men, deriving their just powers from the consent of the
+                governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of
+                the People to alter or to abolish it, and to institute new Government, laying its foundation on such
+                principles and organizing its powers in such form, as to them shall seem most likely to effect their Saf
+              </Paper>
+            </Grid>
+          </Grid>
+        </div>
       </Box>
-      <Container>
-        <ImageList
-          rowHeight={"auto"}
-          gap={12}
-          sx={{ mb: 8, gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))!important" }}
-        >
-          <Card>
-            <ImageListItem sx={{ height: "100% !important" }}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography gutterBottom variant="body2" component="h2">
-                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
-                    events, it becomes necessary for one people to dissolve the political bands which have connected
-                    them with another, and to assume among the powers of the earth, the separate and equal station to
-                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
-                    mankind requires that they should declare the causes which impel them to the separation. We hold
-                    these truths to be self-evident, that all men are created equal, that they are endowed by their
-                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
-                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
-                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
-                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
-                    Government, laying its foundation on such principles and organizing its powers in such form, as to
-                    them shall seem most likely to effect their Saf
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </ImageListItem>
-          </Card>
-          <Card>
-            <ImageListItem sx={{ height: "100% !important" }}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography gutterBottom variant="body2" component="h2">
-                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
-                    events, it becomes necessary for one people to dissolve the political bands which have connected
-                    them with another, and to assume among the powers of the earth, the separate and equal station to
-                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
-                    mankind requires that they should declare the causes which impel them to the separation. We hold
-                    these truths to be self-evident, that all men are created equal, that they are endowed by their
-                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
-                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
-                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
-                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
-                    Government, laying its foundation on such principles and organizing its powers in such form, as to
-                    them shall seem most likely to effect their Saf
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </ImageListItem>
-          </Card>
-          <Card>
-            <ImageListItem sx={{ height: "100% !important" }}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography gutterBottom variant="body2" component="h2">
-                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
-                    events, it becomes necessary for one people to dissolve the political bands which have connected
-                    them with another, and to assume among the powers of the earth, the separate and equal station to
-                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
-                    mankind requires that they should declare the causes which impel them to the separation. We hold
-                    these truths to be self-evident, that all men are created equal, that they are endowed by their
-                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
-                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
-                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
-                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
-                    Government, laying its foundation on such principles and organizing its powers in such form, as to
-                    them shall seem most likely to effect their Saf
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </ImageListItem>
-          </Card>
-          <Card>
-            <ImageListItem sx={{ height: "100% !important" }}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography gutterBottom variant="body2" component="h2">
-                    The unanimous Declaration of the thirteen united States of America, When in the Course of human
-                    events, it becomes necessary for one people to dissolve the political bands which have connected
-                    them with another, and to assume among the powers of the earth, the separate and equal station to
-                    which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of
-                    mankind requires that they should declare the causes which impel them to the separation. We hold
-                    these truths to be self-evident, that all men are created equal, that they are endowed by their
-                    Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of
-                    Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just
-                    powers from the consent of the governed, --That whenever any Form of Government becomes destructive
-                    of these ends, it is the Right of the People to alter or to abolish it, and to institute new
-                    Government, laying its foundation on such principles and organizing its powers in such form, as to
-                    them shall seem most likely to effect their Saf
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </ImageListItem>
-          </Card>
-        </ImageList>
-      </Container>
-    </Box>
+    </div>
   );
+
+  // ResponsiveDrawer.propTypes = {
+  //   /**
+  //    * Injected by the documentation to work in an iframe.
+  //    * You won't need it on your project.
+  //    */
+  //   window: PropTypes.func,
+  // };
 }
 
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
-export default ResponsiveDrawer;
+export default LandingPage;
