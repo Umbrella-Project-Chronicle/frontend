@@ -32,6 +32,8 @@ import { ImageListItem } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import GetToken from "./CachedToken.js";
+import GetCachedUser from "./CachedUser.js";
 
 function LandingPage(props) {
   const drawerWidth = 240;

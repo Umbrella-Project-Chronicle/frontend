@@ -5,10 +5,10 @@ import FreeText from "./Components/Forms/FreeText";
 import chronicleLogo from "../src/logo.ico";
 import SignIn from "./Components/Forms/SignIn.js";
 import SignUp from "./Components/Forms/SignUp.js";
-import GetToken from "./Components/Forms/Welcome.js";
+
 import CssBaseline from "@mui/material/CssBaseline";
 import * as React from "react";
-import LandingPage from "./Components/Forms/test.js";
+import LandingPage from "./Components/Forms/LandingPage.js";
 
 function App() {
   return (
@@ -27,9 +27,8 @@ function App() {
             <Route path="/" element={<SignUp />}></Route>
             <Route path="/entry" element={<FreeText />}></Route>
             <Route path="/login" element={<SignIn />}></Route>
-            <Route path="/welcome" element={<GetToken />}></Route>
             <Route path="/entry" element={<FreeText />}></Route>
-            <Route path="/test" element={<LandingPage />}></Route>
+            <Route path="/welcome" element={<LandingPage />}></Route>
           </Routes>
         </Router>
       </body>
