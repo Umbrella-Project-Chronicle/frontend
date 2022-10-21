@@ -3,25 +3,27 @@ import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, CssBasel
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+// import SetNewUser from "./SetUser";
 
 import Image from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/favicon.ico";
 
 const theme = createTheme();
 
-function SignIn() {
+function SignIn(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [user, setUser] = useState({ id: "", email: "", token: "", firstName: "", lastName: "" });
+  // const [user, setUser] = useState({ id: "", email: "", token: "", firstName: "", lastName: "" });
 
   // used to send user to welcome page
   const navigate = useNavigate();
 
-  const goToWelcome = (user) => {
-    navigate("/welcome/");
+  const goToWelcome = (email) => {
+    console.log("goToWelcome");
+    navigate("/welcome", { state: { email: email } });
   };
 
-  // error handling
+  // api call to sign in
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -35,14 +37,18 @@ function SignIn() {
         password: data.get("password"),
       })
       .then((response) => {
-        console.log(response);
+        console.log("status", response.status);
+        console.log("response", response);
+
         if (response.status === 200) {
-          localStorage.setItem("userToken", JSON.stringify(response));
-          goToWelcome();
+          console.log("status 200");
+          localStorage.setItem("userToken", JSON.stringify(response.data.token));
+          console.log("email", data.get("email"));
+          goToWelcome(data.get("email"));
         }
       })
       .catch((error) => {
-        if (error.response.status === 409) {
+        if (error.status === 409) {
           setError("Incorrect Password");
         } else setError("User Not Found");
       });

@@ -1,43 +1,47 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import InfoIcon from "@mui/icons-material/Info";
-import HelpIcon from "@mui/icons-material/Help";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Input from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import ImageList from "@material-ui/core/ImageList";
-import { CardActionArea, CardMedia } from "@material-ui/core";
-import { ImageListItem } from "@mui/material";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Button,
+  Grid,
+  Paper,
+  CircularProgress,
+} from "@mui/material";
+import {
+  MailIcon,
+  MenuIcon,
+  QueryStatsIcon,
+  SignalCellularAltIcon,
+  InfoIcon,
+  HelpIcon,
+  InsertEmoticonIcon,
+} from "@mui/icons-material";
 import GetToken from "./CachedToken.js";
 import GetCachedUser from "./CachedUser.js";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import SetNewUser from "./SetUser.js";
+import { useState, useEffect } from "react";
 
 function LandingPage(props) {
-  const drawerWidth = 240;
+  const [journals, setJournals] = useState([]);
 
+  // grab email from successful login
+  const location = useLocation();
+  const email = location.state.email;
+
+  // for mobile  development
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -45,7 +49,28 @@ function LandingPage(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const drawerWidth = 240;
+
   const container = window !== undefined ? () => window().document.body : undefined;
+
+  // set user after login to
+  SetNewUser(email);
+  console.log("get Cached user", GetCachedUser());
+
+  // const [user, setUser] = useState({ id: "", email: "", firstName: "", lastName: "" });
+
+  let user = GetCachedUser();
+  const token = GetToken();
+
+  const greeting = () => {
+    if (user) {
+      return ", " + user.firstName;
+    } else {
+      return <CircularProgress />;
+    }
+  };
+
+  const navigate = useNavigate();
 
   // const useStyles = makeStyles((theme) => ({
   //   root: {
@@ -78,6 +103,75 @@ function LandingPage(props) {
     },
   };
 
+  const SignOut = () => {
+    localStorage.removeItem("userProfile");
+    localStorage.removeItem("userToken");
+    navigate("/login");
+  };
+
+  const GetUserJournals = () => {
+    // console.log("GetUserJournals called", "token:", token, "user.id:", user.id);
+    axios
+      .get("https://localhost:7177/api/journal/user/" + user.id, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        UserId: user.id,
+      })
+      .then((res) => {
+        console.log(res);
+        setJournals(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const postJournal = (text) => {
+    // console.log("called postJournal", "tokemn", token, "userID", user.id, "firstName", user.firstName, "text", text);
+    axios
+      .post("https://localhost:7177/api/journal", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: {
+          JournalType: 3,
+          UserID: "632b973d18736cc8f6805c58",
+          Name: user.firstName,
+          Ratings: {
+            Overall: 0,
+            Happiness: 0,
+            Depression: 0,
+            Anxiety: 0,
+            Sadness: 0,
+            Loneliness: 0,
+          },
+        },
+        Response: text,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (user) {
+      GetUserJournals();
+      console.log("journals", journals);
+    }
+  }, []);
+
+  const areThereJournals = () => {
+    if (journals === []) {
+      return journals;
+    } else {
+      return "no journals :(";
+    }
+  };
   const drawer = (
     <div>
       <Divider />
@@ -103,7 +197,11 @@ function LandingPage(props) {
       </List>
       <Divider />
       <List>
-        <ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            navigate("/user");
+          }}
+        >
           <ListItemIcon>
             <InsertEmoticonIcon />
           </ListItemIcon>
@@ -148,8 +246,19 @@ function LandingPage(props) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h2" noWrap component="div">
-              Chronicle
+              Hello{greeting()}
             </Typography>
+            <Button
+              sx={{ color: "red" }}
+              onClick={() => {
+                SignOut();
+              }}
+            >
+              Log Out
+            </Button>
+            <Button sx={{ color: "black" }} onClick={() => postJournal("hello it worked")}>
+              postJournal
+            </Button>
           </Toolbar>
         </AppBar>
         <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
@@ -186,20 +295,7 @@ function LandingPage(props) {
             {/*For example,This item will be 12 units wide on extra small screens */}
 
             <Grid item xs={12} sm={6}>
-              <Paper style={classes.paper}>
-                {" "}
-                The unanimous Declaration of the thirteen united States of America, When in the Course of human events,
-                it becomes necessary for one people to dissolve the political bands which have connected them with
-                another, and to assume among the powers of the earth, the separate and equal station to which the Laws
-                of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that
-                they should declare the causes which impel them to the separation. We hold these truths to be
-                self-evident, that all men are created equal, that they are endowed by their Creator with certain
-                unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure
-                these rights, Governments are instituted among Men, deriving their just powers from the consent of the
-                governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of
-                the People to alter or to abolish it, and to institute new Government, laying its foundation on such
-                principles and organizing its powers in such form, as to them shall seem most likely to effect their Saf
-              </Paper>
+              <Paper style={classes.paper}>{areThereJournals()}</Paper>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Paper style={classes.paper}>
