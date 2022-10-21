@@ -18,24 +18,26 @@ import {
   Paper,
   CircularProgress,
 } from "@mui/material";
-import {
-  MailIcon,
-  MenuIcon,
-  QueryStatsIcon,
-  SignalCellularAltIcon,
-  InfoIcon,
-  HelpIcon,
-  InsertEmoticonIcon,
-} from "@mui/icons-material";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import InfoIcon from "@mui/icons-material/Info";
+import HelpIcon from "@mui/icons-material/Help";
 import GetToken from "./CachedToken.js";
 import GetCachedUser from "./CachedUser.js";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SetNewUser from "./SetUser.js";
 import { useState, useEffect } from "react";
+// import SignOut from "./SignOut";
+import GetUser from "./GetUser";
+import { Component } from "react";
 
 function LandingPage(props) {
   const [journals, setJournals] = useState([]);
+  const [gotUser, setGotUser] = useState(false);
 
   // grab email from successful login
   const location = useLocation();
@@ -59,14 +61,14 @@ function LandingPage(props) {
 
   // const [user, setUser] = useState({ id: "", email: "", firstName: "", lastName: "" });
 
-  let user = GetCachedUser();
+  const user = GetCachedUser();
   const token = GetToken();
 
   const greeting = () => {
     if (user) {
-      return ", " + user.firstName;
+      return user.firstName;
     } else {
-      return <CircularProgress />;
+      return "User";
     }
   };
 
@@ -159,6 +161,7 @@ function LandingPage(props) {
   };
 
   useEffect(() => {
+    greeting();
     if (user) {
       GetUserJournals();
       console.log("journals", journals);
@@ -169,7 +172,7 @@ function LandingPage(props) {
     if (journals === []) {
       return journals;
     } else {
-      return "no journals :(";
+      return <CircularProgress color="inherit" />;
     }
   };
   const drawer = (
@@ -246,7 +249,7 @@ function LandingPage(props) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h2" noWrap component="div">
-              Hello{greeting()}
+              Hello, {greeting()}
             </Typography>
             <Button
               sx={{ color: "red" }}
