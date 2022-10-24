@@ -34,6 +34,8 @@ import { useState, useEffect } from "react";
 // import SignOut from "./SignOut";
 import GetUser from "./GetUser";
 import { Component } from "react";
+import Ratings from "./Ratings";
+import LandingCards from "./LandingCards";
 
 function LandingPage(props) {
   const [journals, setJournals] = useState([]);
@@ -134,13 +136,14 @@ function LandingPage(props) {
     axios
       .post("https://localhost:7177/api/journal", {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          // "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjY2MzU4NDAsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxNzciLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MTc3In0.ipdrbS3jRudy9qG1muDgZ-IRTE0mxPkIuptiCL9SfUI",
         },
         body: {
           JournalType: 3,
-          UserID: "632b973d18736cc8f6805c58",
-          Name: user.firstName,
+          UserID: "6328e3454a4d669792fffd90",
+          Name: "Elliot",
           Ratings: {
             Overall: 0,
             Happiness: 0,
@@ -168,13 +171,6 @@ function LandingPage(props) {
     }
   }, []);
 
-  const areThereJournals = () => {
-    if (journals === []) {
-      return journals;
-    } else {
-      return <CircularProgress color="inherit" />;
-    }
-  };
   const drawer = (
     <div>
       <Divider />
@@ -259,7 +255,7 @@ function LandingPage(props) {
             >
               Log Out
             </Button>
-            <Button sx={{ color: "black" }} onClick={() => postJournal("hello it worked")}>
+            <Button sx={{ color: "black", textAlign: "center" }} onClick={() => postJournal("hello it worked")}>
               postJournal
             </Button>
           </Toolbar>
@@ -291,33 +287,7 @@ function LandingPage(props) {
             {drawer}
           </Drawer>
         </Box>
-
-        <div style={classes.root}>
-          <Grid container spacing={3} sx={{ m: 12 }}>
-            {/*Create items with different breakpoints */}
-            {/*For example,This item will be 12 units wide on extra small screens */}
-
-            <Grid item xs={12} sm={6}>
-              <Paper style={classes.paper}>{areThereJournals()}</Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper style={classes.paper}>
-                {" "}
-                The unanimous Declaration of the thirteen united States of America, When in the Course of human events,
-                it becomes necessary for one people to dissolve the political bands which have connected them with
-                another, and to assume among the powers of the earth, the separate and equal station to which the Laws
-                of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that
-                they should declare the causes which impel them to the separation. We hold these truths to be
-                self-evident, that all men are created equal, that they are endowed by their Creator with certain
-                unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure
-                these rights, Governments are instituted among Men, deriving their just powers from the consent of the
-                governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of
-                the People to alter or to abolish it, and to institute new Government, laying its foundation on such
-                principles and organizing its powers in such form, as to them shall seem most likely to effect their Saf
-              </Paper>
-            </Grid>
-          </Grid>
-        </div>
+        {LandingCards()}
       </Box>
     </div>
   );
