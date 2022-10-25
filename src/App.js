@@ -33,6 +33,7 @@ function App() {
           backgroundImage: `url(${chronicleLogo})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
+          backgroundAttachment: "fixed",
         }}
       >
         <Router>

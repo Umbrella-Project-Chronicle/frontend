@@ -15,10 +15,10 @@ function LandingCards(journals) {
   };
 
   const areThereJournals = () => {
-    if (journals) {
-      return journals;
-    } else {
+    if (journals === []) {
       return <CircularProgress color="inherit" />;
+    } else {
+      return journals;
     }
   };
 
