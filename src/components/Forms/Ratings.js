@@ -3,7 +3,7 @@ import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 
-function Ratings() {
+function Ratings({ emotion }) {
   const [value, setValue] = useState(2);
   const [hover, setHover] = useState(-1);
 

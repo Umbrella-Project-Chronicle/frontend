@@ -1,5 +1,7 @@
 import * as React from "react";
-
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   AppBar,
   Box,
@@ -26,25 +28,17 @@ import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import InfoIcon from "@mui/icons-material/Info";
 import HelpIcon from "@mui/icons-material/Help";
-import GetToken from "./CachedToken.js";
-import GetCachedUser from "./CachedUser.js";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import SetNewUser from "./SetUser.js";
-import { useState, useEffect } from "react";
+// import GetToken from "./CachedToken.js";
+// import GetCachedUser from "./CachedUser.js";
+// import SetNewUser from "./SetUser.js";
 // import SignOut from "./SignOut";
-import GetUser from "./GetUser";
-import { Component } from "react";
-import Ratings from "./Ratings";
-import LandingCards from "./LandingCards";
-import GetUserJournals from "./GetJournals";
-import { CloseOutlined } from "@mui/icons-material";
-import { makeStyles } from "@material-ui/core/styles";
+// import GetUser from "./GetUser";
+// import GetUserJournals from "./GetJournals";
+// import { makeStyles } from "@material-ui/core/styles";
 import { wrapCards, statCards, profileCards, aboutCards, helpCards } from "./Cards";
 
 function LandingPage(props) {
   const [journals, setJournals] = useState([]);
-  const [gotUser, setGotUser] = useState(false);
   const [user, setUser] = useState([]);
   const [journalPage, setJournalPage] = useState(true);
   const [wrapPage, setWrapPage] = useState(false);
@@ -52,22 +46,22 @@ function LandingPage(props) {
   const [profilePage, setProfilePage] = useState(false);
   const [aboutPage, setAboutPage] = useState(false);
   const [helpPage, setHelpPage] = useState(false);
-
   // const [token, setToken] = useState("");
 
   // grab email from successful login
   const location = useLocation();
   const email = location.state.email;
 
+  // used to navigate users to new pages
   const navigate = useNavigate();
 
   useEffect(() => {
+    // for some reason this doesnt setToken in time for api calls
     // setToken(JSON.parse(localStorage.getItem("userToken")));
     GetUserProfile();
   }, []);
 
-  //set token
-
+  // error handling to make sure user exits nefore rendering first name
   const greeting = () => {
     if (user) {
       return user.firstName;
@@ -76,17 +70,17 @@ function LandingPage(props) {
     }
   };
 
+  // clears user storage and navigates to login
   const SignOut = () => {
-    localStorage.removeItem("userProfile");
-    localStorage.removeItem("userToken");
+    localStorage.clear();
     navigate("/login");
   };
 
   //api call to get user
   const GetUserProfile = async () => {
+    // needs to be set in each api call in order to assure the variable is set
     const token = JSON.parse(localStorage.getItem("userToken"));
     try {
-      console.log("getuserprofile", email, "token", token);
       const res = await axios.get("https://localhost:7177/api/users/search/" + email, {
         headers: {
           Authorization: "Bearer " + token,
@@ -98,7 +92,8 @@ function LandingPage(props) {
         firstName: res.data.firstName,
         lastName: res.data.lastName,
       });
-      console.log("user profile fetched from api", res);
+      // console.log("user profile fetched from api", res);
+      // gets user jounrals only if user is successfully fetched from api
       GetUserJournals(res.data.id);
     } catch (error) {
       console.log("ERROR: failed fetching user profile from api", error);
@@ -106,7 +101,6 @@ function LandingPage(props) {
   };
   // api call to get journals
   const GetUserJournals = async (userID) => {
-    console.log("userid for GetUserJournals", userID);
     const token = JSON.parse(localStorage.getItem("userToken"));
     try {
       const res = await axios.get(
@@ -120,7 +114,7 @@ function LandingPage(props) {
           UserId: userID,
         }
       );
-      console.log("Journals fetched from api", res);
+      // console.log("Journals fetched from api", res);
       setJournals(res.data);
     } catch (err) {
       console.log("ERROR: failed fetching journals from api", err);
@@ -128,7 +122,6 @@ function LandingPage(props) {
   };
 
   //api call to create new journals
-
   const postJournal = (text) => {
     // console.log("called postJournal", "tokemn", token, "userID", user.id, "firstName", user.firstName, "text", text);
     const token = JSON.parse(localStorage.getItem("userToken"));
@@ -214,6 +207,7 @@ function LandingPage(props) {
     },
   };
 
+  //parses through journals and displays them in cards on render. styling needs done
   const journalCards = (
     <div>
       {journals ? (
@@ -231,6 +225,7 @@ function LandingPage(props) {
     </div>
   );
 
+  //drawer that conditionally render components onClick
   const drawer = (
     <div>
       <Divider />
@@ -364,14 +359,6 @@ function LandingPage(props) {
               }}
             >
               Log Out
-            </Button>
-            <Button
-              sx={{ color: "black" }}
-              onClick={() => {
-                GetUserJournals();
-              }}
-            >
-              GetUserJournals
             </Button>
           </Toolbar>
         </AppBar>

@@ -19,7 +19,6 @@ function SignIn(props) {
   const navigate = useNavigate();
 
   const goToWelcome = (email) => {
-    console.log("goToWelcome");
     navigate("/welcome", { state: { email: email } });
   };
 
@@ -39,11 +38,10 @@ function SignIn(props) {
       .then((response) => {
         console.log("status", response.status);
         console.log("response", response);
-
         if (response.status === 200) {
-          console.log("status 200");
+          const now = new Date().getTime();
           localStorage.setItem("userToken", JSON.stringify(response.data.token));
-          console.log("email", data.get("email"));
+          localStorage.setItem("setUpTime", now);
           goToWelcome(data.get("email"));
         }
       })
