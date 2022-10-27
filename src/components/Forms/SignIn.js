@@ -19,7 +19,7 @@ function SignIn(props) {
   const navigate = useNavigate();
 
   const goToWelcome = (email) => {
-    navigate("/welcome", { state: { email: email } });
+    navigate("/journals", { state: { email: email } });
   };
 
   // api call to sign in
@@ -42,6 +42,7 @@ function SignIn(props) {
           const now = new Date().getTime();
           localStorage.setItem("userToken", JSON.stringify(response.data.token));
           localStorage.setItem("setUpTime", now);
+          localStorage.setItem("email", data.get("email"));
           goToWelcome(data.get("email"));
         }
       })

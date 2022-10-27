@@ -1,6 +1,10 @@
 import { Grid, CardHeader, Paper, Typography } from "@mui/material";
 import Ratings from "./Ratings.js";
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
+
+// import { GetUser } from "./GetUser";
 
 const classes = {
   root: {
@@ -18,41 +22,76 @@ const classes = {
 
 const emotions = ["Overall", "Happiness", "Depression", "Anxiety", "Sadness", "Loneliness"];
 
-export const wrapCards = (
-  <div>
-    <Grid item xs={12}>
-      <CardHeader title="Wraps" />
-      <Paper style={classes.paper}>
-        <Typography variant="h4">Wraps go here</Typography>
-      </Paper>
-    </Grid>
-  </div>
-);
-
-export const statCards = (
-  <div>
-    {emotions.map((emotion) => (
-      <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
-        <CardHeader title={emotion} />
-        <Paper key={emotion.id} style={classes.paper}>
-          <Ratings emotion={emotion} />
+export const WrapCards = () => {
+  return (
+    <div>
+      <Grid item xs={12}>
+        <CardHeader title="Wraps" />
+        <Paper style={classes.paper}>
+          <Typography variant="h4">Wraps go here</Typography>
         </Paper>
       </Grid>
-    ))}
-  </div>
-);
+    </div>
+  );
+};
 
-export const profileCards = (
-  <div>
-    <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
-      <CardHeader title="profiles" />
-      <Paper style={classes.paper}>
-        <Typography variant="h4">profiles go here</Typography>
-      </Paper>
-    </Grid>
-  </div>
-);
-export const aboutCards = (
+export const StatsCards = () => {
+  return (
+    <div>
+      {emotions.map((emotion) => (
+        <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
+          <CardHeader title={emotion} />
+          <Paper key={emotion.id} style={classes.paper}>
+            <Ratings emotion={emotion} />
+          </Paper>
+        </Grid>
+      ))}
+    </div>
+  );
+};
+
+export const ProfileCards = () => {
+  const [user, setUser] = useState({});
+  const GetUser = async () => {
+    console.log("getuser ran");
+    // needs to be set in each api call in order to assure the variable is set
+    const token = JSON.parse(localStorage.getItem("userToken"));
+    try {
+      const res = await axios.get("https://localhost:7177/api/users/search/" + localStorage.getItem("email"), {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("getuser", res.data);
+      setUser(res.data);
+      // return res.data;
+
+      // console.log("user profile fetched from api", res);
+      // gets user jounrals only if user is successfully fetched from api
+    } catch (error) {
+      console.log("ERROR: failed fetching user profile from api", error);
+    }
+  };
+
+  useEffect(() => {
+    GetUser();
+  }, []);
+
+  return (
+    <div>
+      <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
+        <CardHeader title="profiles" />
+        <Paper style={classes.paper}>
+          <Typography variant="h4">{user.firstName}</Typography>
+          <Typography variant="h4">{user.lastName}</Typography>
+          <Typography variant="h4">{user.email}</Typography>
+        </Paper>
+      </Grid>
+    </div>
+  );
+};
+
+export const AboutCards = () => {
   <div>
     <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
       <CardHeader title="abouts" />
@@ -60,15 +99,18 @@ export const aboutCards = (
         <Typography variant="h4">abouts go here</Typography>
       </Paper>
     </Grid>
-  </div>
-);
-export const helpCards = (
-  <div>
-    <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
-      <CardHeader title="helps" />
-      <Paper style={classes.paper}>
-        <Typography variant="h4">helps go here</Typography>
-      </Paper>
-    </Grid>
-  </div>
-);
+  </div>;
+};
+
+export const HelpCards = () => {
+  return (
+    <div>
+      <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
+        <CardHeader title="helps" />
+        <Paper style={classes.paper}>
+          <Typography variant="h4">helps go here</Typography>
+        </Paper>
+      </Grid>
+    </div>
+  );
+};

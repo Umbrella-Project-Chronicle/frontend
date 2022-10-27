@@ -66,8 +66,8 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-  const goToWelcome = (firstName, email) => {
-    navigate("/welcome", { state: { firstName: firstName, email: email } });
+  const goToWelcome = (email) => {
+    navigate("/journals");
   };
 
   // error handling
@@ -78,7 +78,6 @@ function SignUp() {
     console.log({
       email: data.get("email"),
       password: data.get("password"),
-      userType: 1,
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
     });
@@ -94,7 +93,11 @@ function SignUp() {
         .then((response) => {
           console.log(response);
           if (response.status === 201) {
-            goToWelcome(data.get("firstName"), data.get("email"));
+            const now = new Date().getTime();
+            localStorage.setItem("userToken", JSON.stringify(response.data.token));
+            localStorage.setItem("setUpTime", now);
+            localStorage.setItem("email", data.get("email"));
+            goToWelcome(data.get("email"));
           }
         })
         .catch((error) => {

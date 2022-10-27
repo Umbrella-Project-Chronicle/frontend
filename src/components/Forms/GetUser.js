@@ -1,27 +1,20 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
-import GetToken from "./CachedToken.js";
 
-function GetUser(email) {
-  const [user, setUser] = useState({ id: "", email: "", firstName: "", lastName: "" });
-  const token = GetToken();
-
-  axios
-    .get("https://localhost:7177/api/users/search/" + email, {
+export const GetUser = async () => {
+  console.log("getuser ran");
+  // needs to be set in each api call in order to assure the variable is set
+  const token = JSON.parse(localStorage.getItem("userToken"));
+  try {
+    const res = await axios.get("https://localhost:7177/api/users/search/" + localStorage.getItem("email"), {
       headers: {
         Authorization: "Bearer " + token,
       },
-    })
-    .then((response) => {
-      console.log("Got user from api", response);
-      setUser({
-        id: response.data.id,
-        email: response.data.email,
-        firstName: response.data.firstName,
-        lastName: response.data.lastName,
-      });
-      return user;
     });
-}
-
-export default GetUser;
+    console.log("getuser", res.data);
+    return res.data;
+    // console.log("user profile fetched from api", res);
+    // gets user jounrals only if user is successfully fetched from api
+  } catch (error) {
+    console.log("ERROR: failed fetching user profile from api", error);
+  }
+};

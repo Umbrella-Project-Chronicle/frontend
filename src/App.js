@@ -6,10 +6,19 @@ import SignIn from "./Components/Forms/SignIn.js";
 import SignUp from "./Components/Forms/SignUp.js";
 import CssBaseline from "@mui/material/CssBaseline";
 import * as React from "react";
-import LandingPage from "./Components/Forms/LandingPage.js";
+import LandingPage from "./Components/Forms/JournalCards.js";
 import { useState, useEffect } from "react";
 import GetToken from "./Components/Forms/CachedToken";
 import SignOut from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/SignOut.js";
+import ResponsiveAppBar from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/AppBar.js";
+import {
+  StatsCards,
+  WrapCards,
+  ProfileCards,
+  AboutCards,
+  HelpCards,
+} from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Cards.js";
+import JournalCards from "./Components/Forms/JournalCards.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,29 +44,89 @@ function App() {
   }, 60 * 1000);
 
   return (
-    <div>
+    <>
+      {/* <header>{isLoggedIn && <ResponsiveAppBar />}</header> */}
       <CssBaseline />
       <body
-        className="App-header"
+        className="App-body"
         style={{
           backgroundImage: `url(${chronicleLogo})`,
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
+          backgroundPosition: "50% 100%",
           backgroundAttachment: "fixed",
         }}
       >
         <Router>
           <Routes>
             <Route path="/" element={<SignUp />}></Route>
-            <Route path="/entry" element={<FreeText />}></Route>
+
             <Route path="/login" element={<SignIn />}></Route>
-            <Route path="/entry" element={<FreeText />}></Route>
-            <Route path="/welcome" element={<LandingPage />}></Route>
+
+            <Route
+              path="/wraps"
+              element={
+                <>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <WrapCards />
+                </>
+              }
+            ></Route>
+            <Route
+              path="/stats"
+              element={
+                <>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <StatsCards />
+                </>
+              }
+            ></Route>
+            <Route
+              path="profile"
+              element={
+                <>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <ProfileCards />
+                </>
+              }
+            ></Route>
+            <Route
+              path="/about"
+              element={
+                <>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <AboutCards />
+                </>
+              }
+            ></Route>
+            <Route
+              path="/help"
+              element={
+                <>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <HelpCards />
+                </>
+              }
+            ></Route>
+
+            <Route
+              path="/journals"
+              element={
+                <>
+                  <ResponsiveAppBar />
+                  <JournalCards />
+                </>
+              }
+            ></Route>
             <Route path="/user" element={<LandingPage />}></Route>
           </Routes>
         </Router>
       </body>
-    </div>
+    </>
   );
 }
 
