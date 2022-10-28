@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+
 import { styled } from "@mui/material/styles";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
@@ -61,8 +60,9 @@ function ResponsiveAppBar(props) {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (x) => {
     setAnchorElNav(null);
+    navigate(x);
   };
 
   const handleCloseUserMenu = (x) => {
@@ -122,28 +122,31 @@ function ResponsiveAppBar(props) {
                       horizontal: "left",
                     }}
                     open={Boolean(anchorElNav)}
-                    onClose={handleCloseNavMenu}
+                    onClose={() => {
+                      handleCloseNavMenu("");
+                    }}
                     sx={{
                       display: { xs: "block", md: "none" },
                     }}
                   >
                     <MenuItem
                       onClick={() => {
-                        navigate("/journals");
+                        handleCloseNavMenu("/journals");
                       }}
                     >
-                      <Typography textAlign="center">Journals</Typography>
+                      <Typography textAlign="center">Past Journals</Typography>
                     </MenuItem>
+
                     <MenuItem
                       onClick={() => {
-                        navigate("/wraps");
+                        handleCloseNavMenu("/wraps");
                       }}
                     >
                       <Typography textAlign="center">Wraps</Typography>
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        navigate("/stats");
+                        handleCloseNavMenu("/stats");
                       }}
                     >
                       <Typography textAlign="center">stats</Typography>
@@ -172,15 +175,16 @@ function ResponsiveAppBar(props) {
                 <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                   <Button
                     onClick={() => {
-                      navigate("/journals");
+                      handleCloseNavMenu("/journals");
                     }}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >
-                    Journal
+                    Past Journals
                   </Button>
+
                   <Button
                     onClick={() => {
-                      navigate("/wraps");
+                      handleCloseNavMenu("/wraps");
                     }}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >
@@ -188,13 +192,24 @@ function ResponsiveAppBar(props) {
                   </Button>
                   <Button
                     onClick={() => {
-                      navigate("/stats");
+                      handleCloseNavMenu("/stats");
                     }}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >
                     stats
                   </Button>
                 </Box>
+
+                <Button
+                  onClick={() => {
+                    handleCloseNavMenu("/newjournals");
+                  }}
+                  sx={{ align: "right", my: 2, mr: 2, mb: 3, color: "white", display: "block" }}
+                >
+                  <Typography variant="h3" name="New Journal">
+                    +
+                  </Typography>
+                </Button>
 
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="Open settings">

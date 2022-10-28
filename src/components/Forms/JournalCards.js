@@ -114,7 +114,7 @@ function JournalCards(props) {
   //parses through journals and displays them in cards on render. styling needs done
 
   return (
-    <div>
+    <div style={{ marginTop: "100px" }}>
       {journals.length > 1 ? (
         journals.map((journal) => (
           <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>

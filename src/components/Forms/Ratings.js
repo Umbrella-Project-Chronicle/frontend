@@ -29,6 +29,7 @@ function Ratings({ emotion }) {
         width: 200,
         display: "flex",
         alignItems: "center",
+        MarginTop: "100px",
       }}
     >
       <Rating

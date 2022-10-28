@@ -24,7 +24,7 @@ const emotions = ["Overall", "Happiness", "Depression", "Anxiety", "Sadness", "L
 
 export const WrapCards = () => {
   return (
-    <div>
+    <div style={{ marginTop: "100px" }}>
       <Grid item xs={12}>
         <CardHeader title="Wraps" />
         <Paper style={classes.paper}>
@@ -37,7 +37,7 @@ export const WrapCards = () => {
 
 export const StatsCards = () => {
   return (
-    <div>
+    <div style={{ marginTop: "100px" }}>
       {emotions.map((emotion) => (
         <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
           <CardHeader title={emotion} />
@@ -78,7 +78,7 @@ export const ProfileCards = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ marginTop: "100px" }}>
       <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
         <CardHeader title="profiles" />
         <Paper style={classes.paper}>
@@ -92,7 +92,7 @@ export const ProfileCards = () => {
 };
 
 export const AboutCards = () => {
-  <div>
+  <div style={{ marginTop: "100px" }}>
     <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
       <CardHeader title="abouts" />
       <Paper style={classes.paper}>
@@ -104,7 +104,7 @@ export const AboutCards = () => {
 
 export const HelpCards = () => {
   return (
-    <div>
+    <div style={{ marginTop: "100px" }}>
       <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
         <CardHeader title="helps" />
         <Paper style={classes.paper}>
