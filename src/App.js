@@ -19,6 +19,8 @@ import {
   HelpCards,
 } from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Cards.js";
 import JournalCards from "./Components/Forms/JournalCards.js";
+import { PostJournal } from "./Components/Forms/NewJournal";
+import Ratings from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Ratings.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -119,6 +121,24 @@ function App() {
                 <>
                   <ResponsiveAppBar />
                   <JournalCards />
+                </>
+              }
+            ></Route>
+            <Route
+              path="/newjournals"
+              element={
+                <>
+                  <ResponsiveAppBar />
+                  <PostJournal />
+                </>
+              }
+            ></Route>
+            <Route
+              path="/newjournals/full"
+              element={
+                <>
+                  <ResponsiveAppBar />
+                  <Ratings />
                 </>
               }
             ></Route>

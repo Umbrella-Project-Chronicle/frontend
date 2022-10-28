@@ -63,39 +63,7 @@ function JournalCards(props) {
   };
 
   //api call to create new journals
-  const postJournal = (text) => {
-    // console.log("called postJournal", "tokemn", token, "userID", user.id, "firstName", user.firstName, "text", text);
-    const token = JSON.parse(localStorage.getItem("userToken"));
-    axios
-      .post(
-        "https://localhost:7177/api/journal",
-        {
-          JournalType: 3,
-          UserId: user.id,
-          Ratings: {
-            Overall: 1,
-            Happiness: 1,
-            Depression: 1,
-            Anxiety: 1,
-            Sadness: 1,
-            Loneliness: 1,
-          },
-          Response: text,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
-      .then((res) => {
-        console.log("journal post", res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+
 
   const classes = {
     root: {

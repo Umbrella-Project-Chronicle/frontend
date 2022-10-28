@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
+import { TextField, Grid, CardHeader, Paper } from "@mui/material";
 
-function Ratings({ emotion }) {
+function Ratings() {
   const [value, setValue] = useState(2);
   const [hover, setHover] = useState(-1);
+
+  const emotions = ["Overall", "Happiness", "Depression", "Anxiety", "Sadness", "Loneliness"];
 
   const labels = {
     0.5: "the worst",
@@ -23,7 +26,10 @@ function Ratings({ emotion }) {
     return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
   };
 
-  return (
+  const freeTextInput = () => {
+    return <TextField placeholder="MultiLine with rows: 2 and rowsMax: 4" multiline rows={2} maxRows={4} />;
+  };
+  const RatingsComponent = () => {
     <Box
       sx={{
         width: 200,
@@ -46,7 +52,33 @@ function Ratings({ emotion }) {
         emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
       />
       {value !== null && <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>}
-    </Box>
+    </Box>;
+  };
+  const classes = {
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: 20,
+      textAlign: "center",
+      color: "black",
+      fontFamily: "Roboto",
+      height: "100%",
+      width: "100%",
+    },
+  };
+
+  return (
+    <div style={{ marginTop: "100px" }}>
+      {emotions.map((emotion) => (
+        <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
+          <CardHeader key={emotion.id} title={emotion} />
+          <Paper key={emotion.id} style={classes.paper}>
+            <Ratings emotion={emotion} />
+          </Paper>
+        </Grid>
+      ))}
+    </div>
   );
 }
 
