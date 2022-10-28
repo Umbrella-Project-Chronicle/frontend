@@ -21,6 +21,7 @@ import {
 import JournalCards from "./Components/Forms/JournalCards.js";
 import { PostJournal } from "./Components/Forms/NewJournal";
 import Ratings from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Ratings.js";
+import { Brief } from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Brief.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -74,7 +75,7 @@ function App() {
                 </>
               }
             ></Route>
-            <Route
+            {/* <Route
               path="/stats"
               element={
                 <>
@@ -83,7 +84,7 @@ function App() {
                   <StatsCards />
                 </>
               }
-            ></Route>
+            ></Route> */}
             <Route
               path="profile"
               element={
@@ -142,7 +143,16 @@ function App() {
                 </>
               }
             ></Route>
-            <Route path="/user" element={<LandingPage />}></Route>
+            <Route
+              path="/newjournals/brief"
+              element={
+                <>
+                  <ResponsiveAppBar />
+                  <Brief />
+                </>
+              }
+            ></Route>
+            {/* <Route path="/user" element={<LandingPage />}></Route> */}
           </Routes>
         </Router>
       </body>

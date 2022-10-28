@@ -35,6 +35,7 @@ function JournalCards(props) {
           Authorization: "Bearer " + token,
         },
       });
+      localStorage.setItem("id", res.data.id);
       GetUserJournals(res.data.id);
     } catch (error) {
       console.log("ERROR: failed fetching user profile from api", error);
@@ -63,7 +64,6 @@ function JournalCards(props) {
   };
 
   //api call to create new journals
-
 
   const classes = {
     root: {

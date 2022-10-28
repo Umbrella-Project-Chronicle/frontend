@@ -144,13 +144,13 @@ function ResponsiveAppBar(props) {
                     >
                       <Typography textAlign="center">Wraps</Typography>
                     </MenuItem>
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={() => {
                         handleCloseNavMenu("/stats");
                       }}
                     >
                       <Typography textAlign="center">stats</Typography>
-                    </MenuItem>
+                    </MenuItem> */}
                   </Menu>
                 </Box>
                 {/* <img src={Logo} alt="logo" style={{ maxWidth: 60, maxHeight: 60 }} /> */}
@@ -190,14 +190,14 @@ function ResponsiveAppBar(props) {
                   >
                     Wrap
                   </Button>
-                  <Button
+                  {/* <Button
                     onClick={() => {
                       handleCloseNavMenu("/stats");
                     }}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >
                     stats
-                  </Button>
+                  </Button> */}
                 </Box>
 
                 <Button

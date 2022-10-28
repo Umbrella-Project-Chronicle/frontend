@@ -26,10 +26,7 @@ function Ratings() {
     return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
   };
 
-  const freeTextInput = () => {
-    return <TextField placeholder="MultiLine with rows: 2 and rowsMax: 4" multiline rows={2} maxRows={4} />;
-  };
-  const RatingsComponent = () => {
+  const Ratings = () => {
     <Box
       sx={{
         width: 200,
@@ -71,11 +68,12 @@ function Ratings() {
   return (
     <div style={{ marginTop: "100px" }}>
       {emotions.map((emotion) => (
-        <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
-          <CardHeader key={emotion.id} title={emotion} />
-          <Paper key={emotion.id} style={classes.paper}>
+        <Grid key={emotion.id} item xs={12} sm={6} md={3} sx={{ m: 4 }}>
+          <CardHeader title={emotion} />
+          <Paper style={classes.paper}>
             <Ratings emotion={emotion} />
           </Paper>
+          <TextField placeholder="MultiLine with rows: 2 and rowsMax: 4" multiline rows={2} maxRows={4} />
         </Grid>
       ))}
     </div>

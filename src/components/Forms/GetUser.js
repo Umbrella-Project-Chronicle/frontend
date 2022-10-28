@@ -10,8 +10,11 @@ export const GetUser = async () => {
         Authorization: "Bearer " + token,
       },
     });
-    console.log("getuser", res.data);
-    return res.data;
+    if (res === 200) {
+      localStorage.setItem("id", res.data.id);
+      console.log("getuser", res.data);
+      return res.data;
+    }
     // console.log("user profile fetched from api", res);
     // gets user jounrals only if user is successfully fetched from api
   } catch (error) {
