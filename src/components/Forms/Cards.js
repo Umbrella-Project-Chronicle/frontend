@@ -78,16 +78,15 @@ export const ProfileCards = () => {
   }, []);
 
   return (
-    <div style={{ marginTop: "100px" }}>
-      <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
+    <Grid container justify="center">
+      <Grid item xs={12} sm={8} md={6} component={Paper} direction="row" evelvation={6} square>
         <CardHeader title="profiles" />
         <Paper style={classes.paper}>
           <Typography variant="h4">{user.firstName}</Typography>
           <Typography variant="h4">{user.lastName}</Typography>
-          <Typography variant="h4">{user.email}</Typography>
         </Paper>
       </Grid>
-    </div>
+    </Grid>
   );
 };
 

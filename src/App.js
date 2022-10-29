@@ -22,6 +22,8 @@ import JournalCards from "./Components/Forms/JournalCards.js";
 import { PostJournal } from "./Components/Forms/NewJournal";
 import Ratings from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Ratings.js";
 import { Brief } from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Brief.js";
+import { Grid } from "@mui/material";
+import { makeStyles } from "@material-ui/core/styles";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,36 +48,46 @@ function App() {
     }
   }, 60 * 1000);
 
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+  }));
+
+  const classes = useStyles();
+
   return (
-    <>
-      {/* <header>{isLoggedIn && <ResponsiveAppBar />}</header> */}
+    <Grid
+      container
+      className={classes.root}
+      spacing={2}
+      sx={{
+        backgroundImage: `url(${chronicleLogo})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 100%",
+        backgroundAttachment: "fixed",
+        backgroundColor: "#282c34",
+      }}
+    >
       <CssBaseline />
-      <body
-        className="App-body"
-        style={{
-          backgroundImage: `url(${chronicleLogo})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "50% 100%",
-          backgroundAttachment: "fixed",
-        }}
-      >
-        <Router>
-          <Routes>
-            <Route path="/" element={<SignUp />}></Route>
 
-            <Route path="/login" element={<SignIn />}></Route>
+      <Router>
+        <Routes>
+          <Route path="/" element={<SignUp />}></Route>
 
-            <Route
-              path="/wraps"
-              element={
-                <>
-                  {" "}
-                  <ResponsiveAppBar />
-                  <WrapCards />
-                </>
-              }
-            ></Route>
-            {/* <Route
+          <Route path="/login" element={<SignIn />}></Route>
+
+          <Route
+            path="/wraps"
+            element={
+              <>
+                {" "}
+                <ResponsiveAppBar />
+                <WrapCards />
+              </>
+            }
+          ></Route>
+          {/* <Route
               path="/stats"
               element={
                 <>
@@ -85,78 +97,78 @@ function App() {
                 </>
               }
             ></Route> */}
-            <Route
-              path="profile"
-              element={
-                <>
-                  {" "}
-                  <ResponsiveAppBar />
-                  <ProfileCards />
-                </>
-              }
-            ></Route>
-            <Route
-              path="/about"
-              element={
-                <>
-                  {" "}
-                  <ResponsiveAppBar />
-                  <AboutCards />
-                </>
-              }
-            ></Route>
-            <Route
-              path="/help"
-              element={
-                <>
-                  {" "}
-                  <ResponsiveAppBar />
-                  <HelpCards />
-                </>
-              }
-            ></Route>
+          <Route
+            path="profile"
+            element={
+              <>
+                {" "}
+                <ResponsiveAppBar />
+                <ProfileCards />
+              </>
+            }
+          ></Route>
+          <Route
+            path="/about"
+            element={
+              <>
+                {" "}
+                <ResponsiveAppBar />
+                <AboutCards />
+              </>
+            }
+          ></Route>
+          <Route
+            path="/help"
+            element={
+              <>
+                {" "}
+                <ResponsiveAppBar />
+                <HelpCards />
+              </>
+            }
+          ></Route>
 
-            <Route
-              path="/journals"
-              element={
-                <>
-                  <ResponsiveAppBar />
-                  <JournalCards />
-                </>
-              }
-            ></Route>
-            <Route
-              path="/newjournals"
-              element={
-                <>
-                  <ResponsiveAppBar />
-                  <PostJournal />
-                </>
-              }
-            ></Route>
-            <Route
-              path="/newjournals/full"
-              element={
-                <>
-                  <ResponsiveAppBar />
-                  <Ratings />
-                </>
-              }
-            ></Route>
-            <Route
-              path="/newjournals/brief"
-              element={
-                <>
-                  <ResponsiveAppBar />
-                  <Brief />
-                </>
-              }
-            ></Route>
-            {/* <Route path="/user" element={<LandingPage />}></Route> */}
-          </Routes>
-        </Router>
-      </body>
-    </>
+          <Route
+            path="/journals"
+            element={
+              <>
+                <ResponsiveAppBar />
+                <JournalCards />
+              </>
+            }
+          ></Route>
+          <Route
+            path="/newjournals"
+            element={
+              <>
+                <ResponsiveAppBar />
+                <PostJournal />
+              </>
+            }
+          ></Route>
+          <Route
+            path="/newjournals/full"
+            element={
+              <>
+                <ResponsiveAppBar />
+                <Ratings />
+              </>
+            }
+          ></Route>
+          <Route
+            path="/newjournals/brief"
+            element={
+              <>
+                <ResponsiveAppBar />
+                <Brief />
+              </>
+            }
+          ></Route>
+          {/* <Route path="/user" element={<LandingPage />}></Route> */}
+        </Routes>
+      </Router>
+      {/* </body> */}
+    </Grid>
   );
 }
 
