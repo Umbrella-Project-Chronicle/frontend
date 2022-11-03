@@ -34,6 +34,18 @@
   color: white;
 }
 
+html,
+main {
+  background: url(/Users/eliotpitman/Desktop/umbrella-project/frontend/src/logo.ico) no-repeat center center fixed;
+  /* -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover; */
+  /* background-size: cover; */
+  background-color: #282c34;
+  background-position: "center";
+  background-size: "400px 450px";
+}
+
 .App-link {
   color: #61dafb;
 }
