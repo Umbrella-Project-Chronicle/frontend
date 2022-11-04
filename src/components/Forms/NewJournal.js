@@ -5,42 +5,6 @@ import { Card, Box, CardContent, Typography, CardHeader, Divider, Link, List, Li
 export const PostJournal = (text) => {
   // console.log("called postJournal", "tokemn", token, "userID", user.id, "firstName", user.firstName, "text", text);
   const token = JSON.parse(localStorage.getItem("userToken"));
-  const [firstJournal, setFirstJournal] = useState(false);
-  const [secondJournal, setSecondJournal] = useState(false);
-  const [thirdJournal, setThirdJournal] = useState(false);
-  const [initial, setInitial] = useState(true);
-
-  const postJournal = () => {
-    axios
-      .post(
-        "https://localhost:7177/api/journal",
-        {
-          JournalType: 3,
-          // UserId: user.id,
-          Ratings: {
-            Overall: 1,
-            Happiness: 1,
-            Depression: 1,
-            Anxiety: 1,
-            Sadness: 1,
-            Loneliness: 1,
-          },
-          Response: text,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
-      .then((res) => {
-        console.log("journal post", res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   return (
     <Grid item>

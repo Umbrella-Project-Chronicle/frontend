@@ -1,5 +1,4 @@
 import { Grid, CardHeader, Paper, Typography } from "@mui/material";
-import Ratings from "./Ratings.js";
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
@@ -29,23 +28,6 @@ export const WrapCards = () => {
           <Typography variant="h4">Wraps go here</Typography>
         </Paper>
       </Grid>
-    </div>
-  );
-};
-
-export const StatsCards = () => {
-  const emotions = ["Overall", "Happiness", "Depression", "Anxiety", "Sadness", "Loneliness"];
-
-  return (
-    <div style={{ marginTop: "100px" }}>
-      {emotions.map((emotion) => (
-        <Grid key={emotion.id} item xs={12} sm={6} md={3} sx={{ m: 4 }}>
-          <CardHeader title={emotion} />
-          <Paper style={classes.paper}>
-            <Ratings emotion={emotion} />
-          </Paper>
-        </Grid>
-      ))}
     </div>
   );
 };

@@ -1,15 +1,10 @@
 import { React, useState } from "react";
-import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, CssBaseline, Alert } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, Alert } from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import Image from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/favicon.ico";
-
 import emailValidator from "email-validator";
-// import useNavigate from "react-router-dom";
-
-const theme = createTheme();
 
 function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -115,7 +110,7 @@ function SignUp() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          // boxShadow: 4,
+          boxShadow: 4,
           p: 3,
         }}
       >

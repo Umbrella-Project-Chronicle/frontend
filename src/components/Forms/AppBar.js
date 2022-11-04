@@ -17,7 +17,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
 
 import { useNavigate } from "react-router-dom";
-import Logo from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/logo.ico";
+import Logo from "../../logo.ico";
 
 function HideOnScroll(props) {
   const { children, window } = props;

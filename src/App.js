@@ -1,20 +1,16 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import FreeText from "./Components/Forms/FreeText";
-import chronicleLogo from "../src/logo.ico";
 import SignIn from "./Components/Forms/SignIn.js";
 import SignUp from "./Components/Forms/SignUp.js";
 import CssBaseline from "@mui/material/CssBaseline";
 import * as React from "react";
-import LandingPage from "./Components/Forms/JournalCards.js";
 import { useState, useEffect } from "react";
 import GetToken from "./Components/Forms/CachedToken";
 import SignOut from "./Components/Forms/SignOut.js";
 import ResponsiveAppBar from "./Components/Forms/AppBar.js";
-import { StatsCards, WrapCards, ProfileCards, AboutCards, HelpCards } from "./Components/Forms/Cards.js";
+import { WrapCards, ProfileCards, AboutCards, HelpCards } from "./Components/Forms/Cards.js";
 import JournalCards from "./Components/Forms/JournalCards.js";
 import { PostJournal } from "./Components/Forms/NewJournal";
-import Ratings from "./Components/Forms/Ratings.js";
 import { Grid } from "@mui/material";
 import { Full } from "./Components/Forms/Full.js";
 import { Standard } from "./Components/Forms/Standard.js";
@@ -24,7 +20,6 @@ import { Brief } from "./Components/Forms/Brief.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [warning, setWarning] = useState(false);
   const classes = useStyles();
 
   setInterval(() => {

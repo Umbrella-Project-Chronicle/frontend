@@ -1,5 +1,4 @@
 import axios from "axios";
-import React, { useState } from "react";
 import GetToken from "./CachedToken";
 
 function GetJournals(UserId) {

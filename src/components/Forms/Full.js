@@ -3,7 +3,7 @@ import axios from "axios";
 import { TextField, Box, Button, Grid, Typography, Divider } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
-import useStyles from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/styles.js";
+import useStyles from "../../styles.js";
 
 export const Full = () => {
   const [text, setText] = useState("");

@@ -6,7 +6,7 @@ import { Typography, Grid, Paper, CircularProgress, CardHeader } from "@mui/mate
 
 function JournalCards(props) {
   const [journals, setJournals] = useState([]);
-  const [user, setUser] = useState([]);
+  // const [user, setUser] = useState([]);
 
   const email = localStorage.getItem("email");
 
