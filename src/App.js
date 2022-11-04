@@ -9,24 +9,18 @@ import * as React from "react";
 import LandingPage from "./Components/Forms/JournalCards.js";
 import { useState, useEffect } from "react";
 import GetToken from "./Components/Forms/CachedToken";
-import SignOut from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/SignOut.js";
-import ResponsiveAppBar from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/AppBar.js";
-import {
-  StatsCards,
-  WrapCards,
-  ProfileCards,
-  AboutCards,
-  HelpCards,
-} from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Cards.js";
+import SignOut from "./Components/Forms/SignOut.js";
+import ResponsiveAppBar from "./Components/Forms/AppBar.js";
+import { StatsCards, WrapCards, ProfileCards, AboutCards, HelpCards } from "./Components/Forms/Cards.js";
 import JournalCards from "./Components/Forms/JournalCards.js";
 import { PostJournal } from "./Components/Forms/NewJournal";
-import Ratings from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Ratings.js";
-
+import Ratings from "./Components/Forms/Ratings.js";
 import { Grid } from "@mui/material";
-
-import { Full } from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/Components/Forms/Full.js";
+import { Full } from "./Components/Forms/Full.js";
+import { Standard } from "./Components/Forms/Standard.js";
 import { Container } from "@material-ui/core";
 import useStyles from "./styles";
+import { Brief } from "./Components/Forms/Brief.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,7 +52,7 @@ function App() {
 
       <main className={classes.container}>
         <div>
-          <Container container>
+          <Container>
             <Router>
               <Routes>
                 <Route path="/" element={<SignUp />}></Route>
@@ -134,10 +128,20 @@ function App() {
                   }
                 ></Route>
                 <Route
+                  path="/newjournals/standard"
+                  element={
+                    <>
+                      <ResponsiveAppBar />
+                      <Standard />
+                    </>
+                  }
+                ></Route>
+                <Route
                   path="/newjournals/brief"
                   element={
                     <>
                       <ResponsiveAppBar />
+                      <Brief />
                     </>
                   }
                 ></Route>

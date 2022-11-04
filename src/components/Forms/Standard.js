@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { TextField, Box, Button, Grid, Typography, Divider } from "@mui/material";
+import { Box, Button, Grid, Typography, Divider } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
 import useStyles from "/Users/eliotpitman/Desktop/umbrella-project/frontend/src/styles.js";
 
-export const Full = () => {
-  const [text, setText] = useState("");
+export const Standard = () => {
   const [success, setSuccess] = useState(false);
   const [overall, setOverall] = useState(5);
   const [happiness, setHappiness] = useState(5);
@@ -23,7 +22,7 @@ export const Full = () => {
       .post(
         "https://localhost:7177/api/journal",
         {
-          JournalType: 3,
+          JournalType: 2,
           UserId: userID,
           Ratings: {
             Overall: overall,
@@ -33,7 +32,7 @@ export const Full = () => {
             Sadness: sadness,
             Loneliness: lonliness,
           },
-          Response: text,
+          Response: "",
         },
         {
           headers: {
@@ -59,8 +58,8 @@ export const Full = () => {
     <Grid item>
       {success && <Alert severity="success">Submitted Journal!</Alert>}
       <Box>
-        <Typography sx={{ fontWeight: "bold", fontSize: 40, letterSpacing: 6 }} className={classes.alignItems}>
-          Full Journal
+        <Typography sx={{ fontWeight: "bold", fontSize: 30, letterSpacing: 6 }} className={classes.alignItems}>
+          Standard Journal
         </Typography>
       </Box>
       <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
@@ -154,22 +153,6 @@ export const Full = () => {
           max={10}
           onChange={(event) => setLonliness(event.target.value)}
           value={lonliness}
-        />
-      </Box>
-      <Box
-        sx={{
-          boxShadow: 4,
-          p: 3,
-          backgroundColor: "gray",
-        }}
-      >
-        <TextField
-          // autoComplete
-          placeholder="Journal Here"
-          multiline
-          fullWidth
-          onChange={(event) => setText(event.target.value)}
-          value={text}
         />
       </Box>
 

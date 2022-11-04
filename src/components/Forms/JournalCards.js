@@ -17,16 +17,17 @@ function JournalCards(props) {
   }, []);
 
   // error handling to make sure user exits nefore rendering first name
-  const greeting = () => {
-    if (user) {
-      return user.firstName;
-    } else {
-      return "User";
-    }
-  };
+  // const greeting = () => {
+  //   if (user) {
+  //     return user.firstName;
+  //   } else {
+  //     return "User";
+  //   }
+  // };
 
   //api call to get user
   const GetUserProfile = async () => {
+    console.log("getuserprofile");
     // needs to be set in each api call in order to assure the variable is set
     const token = JSON.parse(localStorage.getItem("userToken"));
     try {
@@ -63,8 +64,6 @@ function JournalCards(props) {
     }
   };
 
-  //api call to create new journals
-
   const classes = {
     root: {
       flexGrow: 1,
@@ -82,18 +81,24 @@ function JournalCards(props) {
   //parses through journals and displays them in cards on render. styling needs done
 
   return (
-    <div style={{ marginTop: "100px" }}>
-      {journals.length > 1 ? (
-        journals.map((journal) => (
-          <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
-            <CardHeader key={journal.date} title={journal.date} />
-            <Paper key={journal.id} style={classes.paper}>
-              <Typography variant="h4">{journal.response}</Typography>
-            </Paper>
-          </Grid>
-        ))
+    <Grid item sx={{ width: 300 }}>
+      {journals.length >= 1 ? (
+        journals.map((journal) =>
+          /^\s*$/.test(journal.response) ? (
+            <></>
+          ) : (
+            <Grid>
+              <CardHeader key={journal.date} title={Date(Date.UTC(journal.date))} />
+              <Paper key={journal.id} style={classes.paper}>
+                <Typography sx={{ fontSize: 20 }} noWrap variant="h4">
+                  {journal.response}
+                </Typography>
+              </Paper>
+            </Grid>
+          )
+        )
       ) : (
-        <Grid item xs={12} sm={6} md={3} sx={{ m: 4 }}>
+        <Grid>
           <CardHeader />
           <Paper style={classes.paper}>
             <Typography variant="h5">We don't see any jounrnals</Typography>
@@ -103,7 +108,7 @@ function JournalCards(props) {
           </Paper>
         </Grid>
       )}
-    </div>
+    </Grid>
   );
 }
 

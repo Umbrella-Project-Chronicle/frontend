@@ -107,148 +107,130 @@ function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: `url(${Image})`,
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) => (t.palette.mode === "dark" ? t.palette.grey[50] : t.palette.grey[900]),
-            backgroundSize: "center",
-            backgroundPosition: "center",
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ bgcolor: "white" }}>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              boxShadow: 4,
-              p: 3,
-            }}
-          >
-            <Avatar src="" sx={{ m: 3 }}></Avatar>
-            <Typography component="h1" variant="h5">
-              Sign Up
-            </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <TextField
-                variant="standard"
-                margin="normal"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                name="firstName"
-                autoComplete="text"
-                autoFocus
-                onChange={(event) => setFirstName(event.target.value)}
-                value={firstName}
-              />
-              <TextField
-                variant="standard"
-                margin="normal"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="text"
-                autoFocus
-                onChange={(event) => setLastName(event.target.value)}
-                value={lastName}
-              />
-              <TextField
-                variant="standard"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                onChange={handleEmailChange}
-                value={email}
-              />
-              {emailError && (
-                <Alert variant="outlined" severity="info">
-                  {" "}
-                  {emailError}
-                </Alert>
-              )}
-              <TextField
-                variant="standard"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={handlePassChange}
-                value={password}
-              />
-              {passLengthError && (
-                <Alert variant="outlined" severity="info">
-                  {" "}
-                  {passLengthError}
-                </Alert>
-              )}
-              <TextField
-                variant="standard"
-                margin="normal"
-                required
-                fullWidth
-                name="conPass"
-                label="Confirm Password"
-                type="password"
-                id="conPass"
-                autoComplete="current-password"
-                onChange={handlePassConfirm}
-                value={conPass}
-              />
-              {passMatchError && (
-                <Alert variant="outlined" severity="info">
-                  {" "}
-                  {passMatchError}
-                </Alert>
-              )}
-              {/* <FormControlLabel
+    <>
+      <Box
+        sx={{
+          my: 8,
+          mx: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          // boxShadow: 4,
+          p: 3,
+        }}
+      >
+        <Avatar src="" sx={{ m: 3 }}></Avatar>
+        <Typography component="h1" variant="h5">
+          Sign Up
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            variant="standard"
+            margin="normal"
+            required
+            fullWidth
+            id="firstName"
+            label="First Name"
+            name="firstName"
+            autoComplete="text"
+            autoFocus
+            onChange={(event) => setFirstName(event.target.value)}
+            value={firstName}
+          />
+          <TextField
+            variant="standard"
+            margin="normal"
+            required
+            fullWidth
+            id="lastName"
+            label="Last Name"
+            name="lastName"
+            autoComplete="text"
+            autoFocus
+            onChange={(event) => setLastName(event.target.value)}
+            value={lastName}
+          />
+          <TextField
+            variant="standard"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onChange={handleEmailChange}
+            value={email}
+          />
+          {emailError && (
+            <Alert variant="outlined" severity="info">
+              {" "}
+              {emailError}
+            </Alert>
+          )}
+          <TextField
+            variant="standard"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={handlePassChange}
+            value={password}
+          />
+          {passLengthError && (
+            <Alert variant="outlined" severity="info">
+              {" "}
+              {passLengthError}
+            </Alert>
+          )}
+          <TextField
+            variant="standard"
+            margin="normal"
+            required
+            fullWidth
+            name="conPass"
+            label="Confirm Password"
+            type="password"
+            id="conPass"
+            autoComplete="current-password"
+            onChange={handlePassConfirm}
+            value={conPass}
+          />
+          {passMatchError && (
+            <Alert variant="outlined" severity="info">
+              {" "}
+              {passMatchError}
+            </Alert>
+          )}
+          {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Sign In
-              </Button>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Sign In
+          </Button>
 
-              <Grid container>
-                {/* <Grid item xs>
+          <Grid container>
+            {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid> */}
-                <Grid item>
-                  <Link href="/login" variant="body2">
-                    {"Have an Account?"}
-                  </Link>
-                </Grid>
-              </Grid>
-              {/* <Copyright sx={{ mt: 5 }} /> */}
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-    </ThemeProvider>
+            <Grid item>
+              <Link href="/login" variant="body2">
+                {"Have an Account?"}
+              </Link>
+            </Grid>
+          </Grid>
+          {/* <Copyright sx={{ mt: 5 }} /> */}
+        </Box>
+      </Box>
+    </>
   );
 }
 
