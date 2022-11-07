@@ -17,6 +17,7 @@ import { Standard } from "./Components/Forms/Standard.js";
 import { Container } from "@material-ui/core";
 import useStyles from "./styles";
 import { Brief } from "./Components/Forms/Brief.js";
+import { GetWrap } from "./Components/Forms/Wraps.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,7 +61,7 @@ function App() {
                     <>
                       {" "}
                       <ResponsiveAppBar />
-                      <WrapCards />
+                      <GetWrap />
                     </>
                   }
                 ></Route>

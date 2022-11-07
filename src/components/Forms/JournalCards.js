@@ -59,6 +59,7 @@ function JournalCards(props) {
       );
       // console.log("Journals fetched from api", res);
       setJournals(res.data);
+      console.log(res.data);
     } catch (err) {
       console.log("ERROR: failed fetching journals from api", err);
     }
@@ -92,6 +93,7 @@ function JournalCards(props) {
               <Paper key={journal.id} style={classes.paper}>
                 <Typography sx={{ fontSize: 20 }} noWrap variant="h4">
                   {journal.response}
+                  {journal.date}
                 </Typography>
               </Paper>
             </Grid>
