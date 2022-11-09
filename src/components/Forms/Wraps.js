@@ -4,6 +4,7 @@ import { Grid, Card, CardHeader, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { DateRange } from "react-date-range";
+const { DateTime } = require("luxon");
 
 export function GetWrap() {
   const THREE_MONTHS_AGO = new Date();
@@ -67,7 +68,11 @@ export function GetWrap() {
         {journals ? (
           journals.map((journal, i) => (
             <>
-              <CardHeader title={journal.date} />
+              <CardHeader
+                key={journal.date}
+                title={DateTime.fromISO(journal.date).toLocaleString(DateTime.DATETIME_MED)}
+              />
+
               <Card direction="column" justify="center" sx={{ p: 2, m: 3, maxWidth: 300 }}>
                 <ul key={i}>
                   <Typography>Date: {journal.date}</Typography>

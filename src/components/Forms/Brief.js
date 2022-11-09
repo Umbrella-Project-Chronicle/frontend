@@ -21,13 +21,7 @@ export const Brief = () => {
           UserId: userID,
           Ratings: {
             Overall: overall,
-            Happiness: 5,
-            Depression: 5,
-            Anxiety: 5,
-            Sadness: 5,
-            Loneliness: 5,
           },
-          Response: "",
         },
         {
           headers: {
