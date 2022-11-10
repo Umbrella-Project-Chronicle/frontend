@@ -17,7 +17,8 @@ import { Standard } from "./Components/Forms/Standard.js";
 import { Container } from "@material-ui/core";
 import useStyles from "./styles";
 import { Brief } from "./Components/Forms/Brief.js";
-import { GetWrap } from "./Components/Forms/Wraps.js";
+import { GetWraps } from "./Components/Forms/GetWraps.js";
+import { GetJournals } from "./Components/Forms/GetJournals";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -61,7 +62,7 @@ function App() {
                     <>
                       {" "}
                       <ResponsiveAppBar />
-                      <GetWrap />
+                      <GetWraps />
                     </>
                   }
                 ></Route>
@@ -101,7 +102,7 @@ function App() {
                   element={
                     <>
                       <ResponsiveAppBar />
-                      <JournalCards />
+                      <GetJournals />
                     </>
                   }
                 ></Route>
