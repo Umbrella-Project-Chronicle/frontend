@@ -13,7 +13,7 @@ export const Full = () => {
   const [depression, setDepression] = useState(5);
   const [anxiety, setAnxiety] = useState(5);
   const [sadness, setSadness] = useState(5);
-  const [lonliness, setLonliness] = useState(5);
+  const [loneliness, setLoneliness] = useState(5);
   const token = JSON.parse(localStorage.getItem("userToken"));
   const userID = localStorage.getItem("id");
   const classes = useStyles();
@@ -31,7 +31,7 @@ export const Full = () => {
             Depression: depression,
             Anxiety: anxiety,
             Sadness: sadness,
-            Loneliness: lonliness,
+            Loneliness: loneliness,
           },
           Response: text,
         },
@@ -152,8 +152,8 @@ export const Full = () => {
           marks
           min={1}
           max={10}
-          onChange={(event) => setLonliness(event.target.value)}
-          value={lonliness}
+          onChange={(event) => setLoneliness(event.target.value)}
+          value={loneliness}
         />
       </Box>
       <Box

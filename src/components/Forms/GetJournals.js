@@ -8,11 +8,15 @@ import { DateRange } from "react-date-range";
 const { DateTime } = require("luxon");
 
 export function GetJournals() {
+  const token = JSON.parse(localStorage.getItem("userToken"));
+  const email = localStorage.getItem("email");
+
   const THREE_MONTHS_AGO = new Date();
   THREE_MONTHS_AGO.setMonth(THREE_MONTHS_AGO.getMonth() - 3);
   const [journals, setJournals] = useState(null);
   const [viewCalender, setViewCalender] = useState(false);
-  const userID = localStorage.getItem("id");
+  const [viewCalenderButton, setViewCalenderButton] = useState(false);
+
   const [state, setState] = useState([
     {
       startDate: THREE_MONTHS_AGO,
@@ -20,8 +24,26 @@ export function GetJournals() {
       key: "selection",
     },
   ]);
+  const [trigger, setTrigger] = useState(false);
 
-  const GetWraps = async () => {
+  const GetUserProfile = async () => {
+    console.log("getuserprofile");
+    // needs to be set in each api call in order to assure the variable is se
+    try {
+      const res = await axios.get("https://localhost:7177/api/users/search/" + email, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      localStorage.setItem("id", res.data.id);
+      setTrigger(!trigger);
+    } catch (error) {
+      console.log("ERROR: failed fetching user profile from api", error);
+    }
+  };
+
+  const GetMonthofJournals = async () => {
+    const userID = localStorage.getItem("id");
     try {
       let res = await axios.post("https://localhost:7177/api/recap", {
         startDate: state[0].startDate.toISOString(),
@@ -30,32 +52,46 @@ export function GetJournals() {
       });
       setJournals(res.data);
       console.log(res);
+      if (res.data.length > 0) {
+        setViewCalenderButton(true);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    GetWraps();
-  }, [state]);
+    GetUserProfile();
+  }, []);
+
+  useEffect(() => {
+    GetMonthofJournals();
+  }, [trigger]);
 
   return (
     <>
-      {viewCalender ? (
+      {viewCalenderButton ? (
         <>
-          <DateRange
-            editableDateInputs={true}
-            onChange={(item) => setState([item.selection])}
-            moveRangeOnFirstSelection={false}
-            ranges={state}
-          />
-          <button onClick={() => setViewCalender(false)}>Close</button>
+          {viewCalender ? (
+            <>
+              <DateRange
+                editableDateInputs={true}
+                onChange={(item) => setState([item.selection])}
+                moveRangeOnFirstSelection={false}
+                ranges={state}
+              />
+              <button onClick={() => setViewCalender(false)}>Close</button>
+            </>
+          ) : (
+            <button onClick={() => setViewCalender(true)}>View Calender</button>
+          )}
         </>
       ) : (
-        <button onClick={() => setViewCalender(true)}>View Calender</button>
+        <></>
       )}
 
       <Grid item>
+        {journals && journals.length === 0 ? <div>Looks like you haven't journalled yet</div> : <></>}
         {journals ? (
           journals.map((journal, i) => (
             <>

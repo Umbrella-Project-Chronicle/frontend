@@ -40,6 +40,7 @@ function SignIn(props) {
           localStorage.setItem("setUpTime", now);
           localStorage.setItem("email", data.get("email"));
           goToWelcome(data.get("email"));
+          console.log(response);
         }
       })
       .catch((error) => {

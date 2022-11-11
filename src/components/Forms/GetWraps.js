@@ -9,6 +9,15 @@ export const GetWraps = () => {
   ONE_MONTH_AGO.setMonth(ONE_MONTH_AGO.getMonth() - 1);
   const userID = localStorage.getItem("id");
   const [journals, setJournals] = useState(null);
+  const [trigger, setTrigger] = useState(false);
+  const [averages, setAverages] = useState({
+    overall: null,
+    anxiety: null,
+    depression: null,
+    happiness: null,
+    loneliness: null,
+    sadness: null,
+  });
 
   const GetJournals = async () => {
     console.log("hello");
@@ -19,7 +28,9 @@ export const GetWraps = () => {
         userID: userID,
       });
       setJournals(res.data);
+      setTrigger(!trigger);
       console.log(res);
+      console.log(trigger);
     } catch (error) {
       console.log(error);
     }
@@ -29,17 +40,69 @@ export const GetWraps = () => {
     GetJournals();
   }, []);
 
+  useEffect(() => {
+    GetAverages();
+  }, [trigger]);
+
+  const GetAverages = () => {
+    if (journals) {
+      let overallAverage = 0;
+      let anxietyAverage = 0;
+      let depressionAverage = 0;
+      let happinessAverage = 0;
+      let lonelinessAverage = 0;
+      let sadnessAverage = 0;
+
+      journals.map((journal, i) => {
+        overallAverage += journal.ratings.overall;
+        anxietyAverage += journal.ratings.anxiety;
+        depressionAverage += journal.ratings.depression;
+        happinessAverage += journal.ratings.happiness;
+        lonelinessAverage += journal.ratings.loneliness;
+        sadnessAverage += journal.ratings.sadness;
+      });
+      let overall = (overallAverage / journals.length).toFixed(1);
+      let anxiety = (anxietyAverage / journals.length).toFixed(1);
+      let depression = (depressionAverage / journals.length).toFixed(1);
+      let happiness = (happinessAverage / journals.length).toFixed(1);
+      let loneliness = (lonelinessAverage / journals.length).toFixed(1);
+      let sadness = (sadnessAverage / journals.length).toFixed(1);
+      setAverages({
+        overall: overall,
+        anxiety: anxiety,
+        depression: depression,
+        happiness: happiness,
+        loneliness: loneliness,
+        sadness: sadness,
+      });
+      // console.log(averages);
+    } else {
+      return "no data";
+    }
+  };
+
   return (
     <>
       <div>
-        {journals ? (
-          journals.map((journal, i) => (
-            <>
-              <ul>
-                <li>{journal.date}</li>
-              </ul>
-            </>
-          ))
+        <button
+          onClick={() => {
+            setTrigger(!trigger);
+            console.log(trigger);
+          }}
+        >
+          Refresh Averages
+        </button>
+        {averages ? (
+          <>
+            <ul>
+              <li>Overall: {averages.overall}</li>
+              <li>Anxiety: {averages.anxiety}</li>
+              <li>Depression: {averages.depression}</li>
+              <li>Happiness: {averages.happiness}</li>
+              <li>Lonliness: {averages.loneliness}</li>
+              <li>Sadness: {averages.sadness}</li>
+            </ul>
+          </>
         ) : (
           <></>
         )}
