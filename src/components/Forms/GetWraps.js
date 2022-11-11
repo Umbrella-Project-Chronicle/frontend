@@ -18,6 +18,14 @@ export const GetWraps = () => {
     loneliness: null,
     sadness: null,
   });
+  const [ratingsArray, setRatingsArray] = useState({
+    overall: null,
+    anxiety: null,
+    depression: null,
+    happiness: null,
+    loneliness: null,
+    sadness: null,
+  });
 
   const GetJournals = async () => {
     console.log("hello");
@@ -44,29 +52,36 @@ export const GetWraps = () => {
     GetAverages();
   }, [trigger]);
 
+  function Sum(array) {
+    var sum = array.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return sum;
+  }
+
   const GetAverages = () => {
     if (journals) {
-      let overallAverage = 0;
-      let anxietyAverage = 0;
-      let depressionAverage = 0;
-      let happinessAverage = 0;
-      let lonelinessAverage = 0;
-      let sadnessAverage = 0;
+      let overallAverage = [];
+      let anxietyAverage = [];
+      let depressionAverage = [];
+      let happinessAverage = [];
+      let lonelinessAverage = [];
+      let sadnessAverage = [];
 
       journals.map((journal, i) => {
-        overallAverage += journal.ratings.overall;
-        anxietyAverage += journal.ratings.anxiety;
-        depressionAverage += journal.ratings.depression;
-        happinessAverage += journal.ratings.happiness;
-        lonelinessAverage += journal.ratings.loneliness;
-        sadnessAverage += journal.ratings.sadness;
+        overallAverage.push(journal.ratings.overall);
+        anxietyAverage.push(journal.ratings.anxiety);
+        depressionAverage.push(journal.ratings.depression);
+        happinessAverage.push(journal.ratings.happiness);
+        lonelinessAverage.push(journal.ratings.loneliness);
+        sadnessAverage.push(journal.ratings.sadness);
       });
-      let overall = (overallAverage / journals.length).toFixed(1);
-      let anxiety = (anxietyAverage / journals.length).toFixed(1);
-      let depression = (depressionAverage / journals.length).toFixed(1);
-      let happiness = (happinessAverage / journals.length).toFixed(1);
-      let loneliness = (lonelinessAverage / journals.length).toFixed(1);
-      let sadness = (sadnessAverage / journals.length).toFixed(1);
+      let overall = (Sum(overallAverage) / journals.length).toFixed(1);
+      let anxiety = (Sum(anxietyAverage) / journals.length).toFixed(1);
+      let depression = (Sum(depressionAverage) / journals.length).toFixed(1);
+      let happiness = (Sum(happinessAverage) / journals.length).toFixed(1);
+      let loneliness = (Sum(lonelinessAverage) / journals.length).toFixed(1);
+      let sadness = (Sum(sadnessAverage) / journals.length).toFixed(1);
       setAverages({
         overall: overall,
         anxiety: anxiety,
@@ -75,12 +90,21 @@ export const GetWraps = () => {
         loneliness: loneliness,
         sadness: sadness,
       });
+      setRatingsArray({
+        overall: overallAverage,
+        anxiety: anxietyAverage,
+        depression: depressionAverage,
+        happiness: happinessAverage,
+        loneliness: lonelinessAverage,
+        sadness: sadnessAverage,
+      });
+
       // console.log(averages);
     } else {
       return "no data";
     }
   };
-
+  console.log("ratings array", ratingsArray);
   return (
     <>
       <div>
