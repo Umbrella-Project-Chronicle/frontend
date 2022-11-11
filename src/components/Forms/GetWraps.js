@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DateRange } from "react-date-range";
 import { DateTime } from "luxon";
+import { LineChart, Line, Legend } from "recharts";
 
 export const GetWraps = () => {
   const { DateTime } = require("luxon");
@@ -18,14 +19,7 @@ export const GetWraps = () => {
     loneliness: null,
     sadness: null,
   });
-  const [ratingsArray, setRatingsArray] = useState({
-    overall: null,
-    anxiety: null,
-    depression: null,
-    happiness: null,
-    loneliness: null,
-    sadness: null,
-  });
+  const [ratingsArray, setRatingsArray] = useState(null);
 
   const GetJournals = async () => {
     console.log("hello");
@@ -67,6 +61,7 @@ export const GetWraps = () => {
       let happinessAverage = [];
       let lonelinessAverage = [];
       let sadnessAverage = [];
+      let data = [];
 
       journals.map((journal, i) => {
         overallAverage.push(journal.ratings.overall);
@@ -75,6 +70,7 @@ export const GetWraps = () => {
         happinessAverage.push(journal.ratings.happiness);
         lonelinessAverage.push(journal.ratings.loneliness);
         sadnessAverage.push(journal.ratings.sadness);
+        data.push(journal.ratings);
       });
       let overall = (Sum(overallAverage) / journals.length).toFixed(1);
       let anxiety = (Sum(anxietyAverage) / journals.length).toFixed(1);
@@ -90,14 +86,7 @@ export const GetWraps = () => {
         loneliness: loneliness,
         sadness: sadness,
       });
-      setRatingsArray({
-        overall: overallAverage,
-        anxiety: anxietyAverage,
-        depression: depressionAverage,
-        happiness: happinessAverage,
-        loneliness: lonelinessAverage,
-        sadness: sadnessAverage,
-      });
+      setRatingsArray(data);
 
       // console.log(averages);
     } else {
@@ -126,6 +115,16 @@ export const GetWraps = () => {
               <li>Lonliness: {averages.loneliness}</li>
               <li>Sadness: {averages.sadness}</li>
             </ul>
+
+            <LineChart width={300} height={100} data={ratingsArray}>
+              <Line isAnimationActive={false} type="monotone" dataKey="overall" stroke="white" strokeWidth={2} />
+              <Line type="monotone" dataKey="anxiety" stroke="#ab0202" strokeWidth={2} />
+              <Line type="monotone" dataKey="loneliness" stroke="#038007" strokeWidth={2} />
+              <Line type="monotone" dataKey="depression" stroke="#026969" strokeWidth={2} />
+              <Line type="monotone" dataKey="happiness" stroke="#f5c402" strokeWidth={2} />
+              <Line type="monotone" dataKey="sadness" stroke="#020ff5" strokeWidth={2} />
+              <Legend verticalAlign="bottom" height={36} />
+            </LineChart>
           </>
         ) : (
           <></>
