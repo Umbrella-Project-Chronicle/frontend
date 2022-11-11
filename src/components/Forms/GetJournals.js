@@ -52,6 +52,7 @@ export function GetJournals() {
       });
       setJournals(res.data);
       console.log(res);
+
       if (res.data.length > 0) {
         setViewCalenderButton(true);
       }
@@ -67,6 +68,10 @@ export function GetJournals() {
   useEffect(() => {
     GetMonthofJournals();
   }, [trigger]);
+
+  useEffect(() => {
+    GetMonthofJournals();
+  }, [state]);
 
   return (
     <>

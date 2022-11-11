@@ -111,6 +111,7 @@ function SignUp() {
           flexDirection: "column",
           alignItems: "center",
           boxShadow: 4,
+          bgcolor: "#282c34",
           p: 3,
         }}
       >

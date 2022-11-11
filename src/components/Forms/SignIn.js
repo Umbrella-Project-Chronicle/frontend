@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { Button, TextField, Link, Paper, Box, Grid, Typography, Alert } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
+import useStyles from "../../styles.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import SetNewUser from "./SetUser";
@@ -9,6 +9,7 @@ function SignIn(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const styles = useStyles();
   // const [user, setUser] = useState({ id: "", email: "", token: "", firstName: "", lastName: "" });
 
   // used to send user to welcome page
@@ -60,6 +61,7 @@ function SignIn(props) {
           flexDirection: "column",
           alignItems: "center",
           boxShadow: 4,
+          bgcolor: "#282c34",
           p: 3,
         }}
       >
