@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DateRange } from "react-date-range";
 import { DateTime } from "luxon";
-import { LineChart, Line, Legend } from "recharts";
+import { LineChart, Line, Legend, XAxis, YAxis } from "recharts";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -11,8 +11,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import { Card, Box, Grid } from "@mui/material";
+import { Card, Box, Grid, CircularProgress } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import circularProgressClasses from "@mui/material";
 
 export const GetWraps = () => {
   const { DateTime } = require("luxon");
@@ -29,7 +30,6 @@ export const GetWraps = () => {
     loneliness: null,
     sadness: null,
   });
-  const [ratingsArray, setRatingsArray] = useState(null);
 
   const GetJournals = async () => {
     try {
@@ -39,7 +39,6 @@ export const GetWraps = () => {
         userID: userID,
       });
       setJournals(res.data);
-      setTrigger(!trigger);
       console.log(res);
       console.log(trigger);
     } catch (error) {
@@ -54,6 +53,7 @@ export const GetWraps = () => {
         endDate: DateTime.now(),
         userID: userID,
       });
+      console.log("api averages", res);
       setAverages({
         overall: res.data.emotionAverages.Overall,
         anxiety: res.data.emotionAverages.Sadness,
@@ -68,33 +68,15 @@ export const GetWraps = () => {
     }
   };
 
+  console.log("journals", journals);
+
   useEffect(() => {
     GetJournals();
-    ApiGetAverages();
   }, []);
 
   useEffect(() => {
-    getRatingsArray();
-  }, [trigger]);
-
-  function Sum(array) {
-    var sum = array.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    return sum;
-  }
-
-  const getRatingsArray = () => {
-    if (journals) {
-      const data = [];
-      journals.map((journal, i) => {
-        data.push(journal.ratings);
-      });
-      setRatingsArray(data);
-    } else {
-      return "no data";
-    }
-  };
+    ApiGetAverages();
+  }, [journals]);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -118,17 +100,6 @@ export const GetWraps = () => {
 
   return (
     <Grid>
-      <Grid item>
-        <RefreshIcon />
-        <button
-          onClick={() => {
-            setTrigger(!trigger);
-            console.log(trigger);
-          }}
-        >
-          Refresh
-        </button>
-      </Grid>
       {averages ? (
         <Grid>
           <Grid item style={{ margin: 10 }}>
@@ -142,49 +113,61 @@ export const GetWraps = () => {
                   <StyledTableRow>
                     <StyledTableCell>Overall</StyledTableCell>
                     <StyledTableCell>
-                      {averages.overall
-                        ? averages.overall.toFixed(2)
-                        : "no data"}
+                      {averages.overall ? (
+                        averages.overall.toFixed(2)
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Sadness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.overall
-                        ? averages.overall.toFixed(2)
-                        : "no data"}
+                      {averages.sadness ? (
+                        averages.sadness.toFixed(2)
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Depression</StyledTableCell>
                     <StyledTableCell>
-                      {averages.overall
-                        ? averages.overall.toFixed(2)
-                        : "no data"}
+                      {averages.depression ? (
+                        averages.depression.toFixed(2)
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Happiness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.overall
-                        ? averages.overall.toFixed(2)
-                        : "no data"}
+                      {averages.happiness ? (
+                        averages.happiness.toFixed(2)
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell>Lonliness</StyledTableCell>
+                    <StyledTableCell>Loneliness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.overall
-                        ? averages.overall.toFixed(2)
-                        : "no data"}
+                      {averages.loneliness ? (
+                        averages.loneliness.toFixed(2)
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Sadness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.overall
-                        ? averages.overall.toFixed(2)
-                        : "no data"}
+                      {averages.sadness ? (
+                        averages.sadness.toFixed(2)
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
@@ -192,46 +175,89 @@ export const GetWraps = () => {
             </TableContainer>
           </Grid>
           <Grid item style={{ margin: 10 }}>
-            <Box style={{ backgroundColor: "grey" }}>
-              <LineChart width={350} height={200} data={ratingsArray}>
+            <Box>
+              <LineChart width={350} height={200} data={journals}>
                 <Line
+                  name="overall"
                   isAnimationActive={false}
                   type="monotone"
-                  dataKey="overall"
+                  dataKey="ratings.overall"
                   stroke="white"
                   strokeWidth={2}
                 />
                 <Line
+                  name="anxiety"
                   type="monotone"
-                  dataKey="anxiety"
+                  dataKey="ratings.anxiety"
                   stroke="#ab0202"
                   strokeWidth={2}
                 />
                 <Line
+                  name="loneliness"
                   type="monotone"
-                  dataKey="loneliness"
+                  dataKey="ratings.loneliness"
                   stroke="#038007"
                   strokeWidth={2}
                 />
                 <Line
+                  name="depression"
                   type="monotone"
-                  dataKey="depression"
+                  dataKey="ratings.depression"
                   stroke="#026969"
                   strokeWidth={2}
                 />
                 <Line
+                  name="happiness"
                   type="monotone"
-                  dataKey="happiness"
+                  dataKey="ratings.happiness"
                   stroke="#f5c402"
                   strokeWidth={2}
                 />
                 <Line
+                  name="sadness"
                   type="monotone"
-                  dataKey="sadness"
+                  dataKey="ratings.sadness"
                   stroke="#020ff5"
                   strokeWidth={2}
                 />
-                <Legend verticalAlign="bottom" height={36} />
+
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  payload={[
+                    {
+                      value: "overall",
+                      type: "line",
+                      color: "white",
+                    },
+                    {
+                      value: "anxiety",
+                      type: "line",
+                      color: "#ab0202",
+                    },
+                    {
+                      value: "loneliness",
+                      type: "line",
+                      color: "#038007",
+                    },
+                    {
+                      value: "depression",
+                      type: "line",
+                      color: "#026969",
+                    },
+                    {
+                      value: "happiness",
+                      type: "line",
+                      color: "#f5c402",
+                    },
+                    {
+                      value: "sadness",
+                      type: "line",
+                      color: "#020ff5",
+                    },
+                  ]}
+                />
+                <XAxis dataKey="date" />
               </LineChart>
             </Box>
           </Grid>
