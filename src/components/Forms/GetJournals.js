@@ -45,7 +45,7 @@ export function GetJournals() {
   const GetMonthofJournals = async () => {
     const userID = localStorage.getItem("id");
     try {
-      let res = await axios.post("https://localhost:7177/api/recap", {
+      let res = await axios.post("https://localhost:7177/api/recap/journals", {
         startDate: state[0].startDate.toISOString(),
         endDate: state[0].endDate.toISOString(),
         userID: userID,

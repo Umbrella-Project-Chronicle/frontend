@@ -3,6 +3,16 @@ import axios from "axios";
 import { DateRange } from "react-date-range";
 import { DateTime } from "luxon";
 import { LineChart, Line, Legend } from "recharts";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import { Card, Box, Grid } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 export const GetWraps = () => {
   const { DateTime } = require("luxon");
@@ -22,9 +32,8 @@ export const GetWraps = () => {
   const [ratingsArray, setRatingsArray] = useState(null);
 
   const GetJournals = async () => {
-    console.log("hello");
     try {
-      let res = await axios.post("https://localhost:7177/api/recap", {
+      let res = await axios.post("https://localhost:7177/api/recap/journals", {
         startDate: ONE_MONTH_AGO,
         endDate: DateTime.now(),
         userID: userID,
@@ -38,12 +47,34 @@ export const GetWraps = () => {
     }
   };
 
+  const ApiGetAverages = async () => {
+    try {
+      let res = await axios.post("https://localhost:7177/api/recap", {
+        startDate: ONE_MONTH_AGO,
+        endDate: DateTime.now(),
+        userID: userID,
+      });
+      setAverages({
+        overall: res.data.emotionAverages.Overall,
+        anxiety: res.data.emotionAverages.Sadness,
+        depression: res.data.emotionAverages.Depression,
+        happiness: res.data.emotionAverages.Happiness,
+        loneliness: res.data.emotionAverages.Loneliness,
+        sadness: res.data.emotionAverages.Sadness,
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     GetJournals();
+    ApiGetAverages();
   }, []);
 
   useEffect(() => {
-    GetAverages();
+    getRatingsArray();
   }, [trigger]);
 
   function Sum(array) {
@@ -53,83 +84,161 @@ export const GetWraps = () => {
     return sum;
   }
 
-  const GetAverages = () => {
+  const getRatingsArray = () => {
     if (journals) {
-      let overallAverage = [];
-      let anxietyAverage = [];
-      let depressionAverage = [];
-      let happinessAverage = [];
-      let lonelinessAverage = [];
-      let sadnessAverage = [];
-      let data = [];
-
+      const data = [];
       journals.map((journal, i) => {
-        overallAverage.push(journal.ratings.overall);
-        anxietyAverage.push(journal.ratings.anxiety);
-        depressionAverage.push(journal.ratings.depression);
-        happinessAverage.push(journal.ratings.happiness);
-        lonelinessAverage.push(journal.ratings.loneliness);
-        sadnessAverage.push(journal.ratings.sadness);
         data.push(journal.ratings);
       });
-      let overall = (Sum(overallAverage) / journals.length).toFixed(1);
-      let anxiety = (Sum(anxietyAverage) / journals.length).toFixed(1);
-      let depression = (Sum(depressionAverage) / journals.length).toFixed(1);
-      let happiness = (Sum(happinessAverage) / journals.length).toFixed(1);
-      let loneliness = (Sum(lonelinessAverage) / journals.length).toFixed(1);
-      let sadness = (Sum(sadnessAverage) / journals.length).toFixed(1);
-      setAverages({
-        overall: overall,
-        anxiety: anxiety,
-        depression: depression,
-        happiness: happiness,
-        loneliness: loneliness,
-        sadness: sadness,
-      });
       setRatingsArray(data);
-
-      // console.log(averages);
     } else {
       return "no data";
     }
   };
-  console.log("ratings array", ratingsArray);
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
   return (
-    <>
-      <div>
+    <Grid>
+      <Grid item>
+        <RefreshIcon />
         <button
           onClick={() => {
             setTrigger(!trigger);
             console.log(trigger);
           }}
         >
-          Refresh Averages
+          Refresh
         </button>
-        {averages ? (
-          <>
-            <ul>
-              <li>Overall: {averages.overall}</li>
-              <li>Anxiety: {averages.anxiety}</li>
-              <li>Depression: {averages.depression}</li>
-              <li>Happiness: {averages.happiness}</li>
-              <li>Lonliness: {averages.loneliness}</li>
-              <li>Sadness: {averages.sadness}</li>
-            </ul>
-
-            <LineChart width={300} height={100} data={ratingsArray}>
-              <Line isAnimationActive={false} type="monotone" dataKey="overall" stroke="white" strokeWidth={2} />
-              <Line type="monotone" dataKey="anxiety" stroke="#ab0202" strokeWidth={2} />
-              <Line type="monotone" dataKey="loneliness" stroke="#038007" strokeWidth={2} />
-              <Line type="monotone" dataKey="depression" stroke="#026969" strokeWidth={2} />
-              <Line type="monotone" dataKey="happiness" stroke="#f5c402" strokeWidth={2} />
-              <Line type="monotone" dataKey="sadness" stroke="#020ff5" strokeWidth={2} />
-              <Legend verticalAlign="bottom" height={36} />
-            </LineChart>
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
-    </>
+      </Grid>
+      {averages ? (
+        <Grid>
+          <Grid item style={{ margin: 10 }}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <StyledTableCell>Emotion</StyledTableCell>
+                  <StyledTableCell>Average for the Month</StyledTableCell>
+                </TableHead>
+                <TableBody>
+                  <StyledTableRow>
+                    <StyledTableCell>Overall</StyledTableCell>
+                    <StyledTableCell>
+                      {averages.overall
+                        ? averages.overall.toFixed(2)
+                        : "no data"}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>Sadness</StyledTableCell>
+                    <StyledTableCell>
+                      {averages.overall
+                        ? averages.overall.toFixed(2)
+                        : "no data"}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>Depression</StyledTableCell>
+                    <StyledTableCell>
+                      {averages.overall
+                        ? averages.overall.toFixed(2)
+                        : "no data"}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>Happiness</StyledTableCell>
+                    <StyledTableCell>
+                      {averages.overall
+                        ? averages.overall.toFixed(2)
+                        : "no data"}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>Lonliness</StyledTableCell>
+                    <StyledTableCell>
+                      {averages.overall
+                        ? averages.overall.toFixed(2)
+                        : "no data"}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>Sadness</StyledTableCell>
+                    <StyledTableCell>
+                      {averages.overall
+                        ? averages.overall.toFixed(2)
+                        : "no data"}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+          <Grid item style={{ margin: 10 }}>
+            <Box style={{ backgroundColor: "grey" }}>
+              <LineChart width={350} height={200} data={ratingsArray}>
+                <Line
+                  isAnimationActive={false}
+                  type="monotone"
+                  dataKey="overall"
+                  stroke="white"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="anxiety"
+                  stroke="#ab0202"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="loneliness"
+                  stroke="#038007"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="depression"
+                  stroke="#026969"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="happiness"
+                  stroke="#f5c402"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="sadness"
+                  stroke="#020ff5"
+                  strokeWidth={2}
+                />
+                <Legend verticalAlign="bottom" height={36} />
+              </LineChart>
+            </Box>
+          </Grid>
+        </Grid>
+      ) : (
+        <></>
+      )}
+    </Grid>
   );
 };
