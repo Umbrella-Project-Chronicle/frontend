@@ -2,7 +2,7 @@ import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
 import { DateRange } from "react-date-range";
 import { DateTime } from "luxon";
-import { LineChart, Line, Legend, XAxis, YAxis } from "recharts";
+import { LineChart, Line, Legend, XAxis, YAxis, Tooltip } from "recharts";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -11,7 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import { Card, Box, Grid, CircularProgress } from "@mui/material";
+import { Card, Box, Grid, CircularProgress, Toolbar } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import circularProgressClasses from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -29,6 +29,7 @@ export const GetWraps = () => {
   const [trigger, setTrigger] = useState(false);
   const [month, setMonth] = useState(DateTime.now().toFormat("MMMM"));
   const [year, setYear] = useState(DateTime.now().toFormat("yyyy"));
+  const [backgroundColorTrigger, setBackgroundColorTrigger] = useState(false);
   const [averages, setAverages] = useState({
     overall: null,
     anxiety: null,
@@ -213,8 +214,16 @@ export const GetWraps = () => {
 
   console.log(journals);
 
+  // const backgroundcolor = () => {
+  //   if (backgroundColorTrigger) {
+  //     return "rgba(192,192,192,0.3)";
+  //   } else {
+  //     return " ";
+  //   }
+  // };
+
   return (
-    <Grid>
+    <Grid display="flex" justifyContent="center" alignItems="center">
       {averages ? (
         <Grid>
           <Grid item style={{ margin: 10 }}>
@@ -291,9 +300,28 @@ export const GetWraps = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item style={{ margin: 10 }}>
+          <Grid
+            item
+            style={{
+              margin: 10,
+              // backgroundColor: backgroundcolor(),
+            }}
+          >
             <Box>
-              <LineChart width={350} height={200} data={journals}>
+              <LineChart
+                width={350}
+                height={200}
+                data={journals}
+                onClick={() => {
+                  console.log("do later");
+                }}
+                // onMouseEnter={() => {
+                //   setBackgroundColorTrigger(!backgroundColorTrigger)
+                // }}
+                // onMouseLeave={() => {
+                //   setBackgroundColorTrigger(!backgroundColorTrigger)
+                // }}
+              >
                 <Line
                   name="overall"
                   isAnimationActive={false}
@@ -375,6 +403,11 @@ export const GetWraps = () => {
                   ]}
                 />
                 <XAxis dataKey="date" />
+
+                <Tooltip
+                  isAnimationActive={true}
+                  position={{ x: 75, y: 250 }}
+                />
               </LineChart>
             </Box>
           </Grid>
