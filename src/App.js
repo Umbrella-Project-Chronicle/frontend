@@ -8,7 +8,12 @@ import { useState, useEffect } from "react";
 import GetToken from "./Components/Forms/CachedToken";
 import SignOut from "./Components/Forms/SignOut.js";
 import ResponsiveAppBar from "./Components/Forms/AppBar.js";
-import { WrapCards, ProfileCards, AboutCards, HelpCards } from "./Components/Forms/Cards.js";
+import {
+  WrapCards,
+  ProfileCards,
+  AboutCards,
+  HelpCards,
+} from "./Components/Forms/Cards.js";
 import JournalCards from "./Components/Forms/JournalCards.js";
 import { PostJournal } from "./Components/Forms/NewJournal";
 import { Grid } from "@mui/material";

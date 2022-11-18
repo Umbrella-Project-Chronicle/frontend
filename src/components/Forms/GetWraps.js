@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
 import { DateRange } from "react-date-range";
 import { DateTime } from "luxon";
@@ -14,6 +14,11 @@ import { styled } from "@mui/material/styles";
 import { Card, Box, Grid, CircularProgress } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import circularProgressClasses from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { borderColor } from "@mui/system";
 
 export const GetWraps = () => {
   const { DateTime } = require("luxon");
@@ -22,6 +27,8 @@ export const GetWraps = () => {
   const userID = localStorage.getItem("id");
   const [journals, setJournals] = useState(null);
   const [trigger, setTrigger] = useState(false);
+  const [month, setMonth] = useState(DateTime.now().toFormat("MMMM"));
+  const [year, setYear] = useState(DateTime.now().toFormat("yyyy"));
   const [averages, setAverages] = useState({
     overall: null,
     anxiety: null,
@@ -30,12 +37,117 @@ export const GetWraps = () => {
     loneliness: null,
     sadness: null,
   });
+  const isLeapYear = () => {
+    if (DateTime.local(year).isInLeapYear) {
+      return `${year}-02-29T00:00:00.00Z`;
+    } else {
+      return `${year}-02-28T23:59:59.00Z`;
+    }
+  };
+
+  const months = {
+    January: {
+      begin: `${year}-01-01T00:00:00.00Z`,
+      end: `${year}-01-31T23:59:59.00Z`,
+    },
+    February: {
+      begin: `${year}-02-01T00:00:00.00Z`,
+      end: isLeapYear(),
+    },
+    March: {
+      begin: `${year}-03-01T00:00:00.00Z`,
+      end: `${year}-03-30T23:59:59.00Z`,
+    },
+    April: {
+      begin: `${year}-04-01T00:00:00.00Z`,
+      end: `${year}-04-30T23:59:59.00Z`,
+    },
+    May: {
+      begin: `${year}-05-01T00:00:00.00Z`,
+      end: `${year}-05-31T23:59:59.00Z`,
+    },
+    June: {
+      begin: `${year}-06-01T00:00:00.00Z`,
+      end: `${year}-06-30T23:59:59.00Z`,
+    },
+    July: {
+      begin: `${year}-07-01T00:00:00.00Z`,
+      end: `${year}-07-31T23:59:59.00Z`,
+    },
+    August: {
+      begin: `${year}-08-01T00:00:00.00Z`,
+      end: `${year}-08-31T23:59:59.00Z`,
+    },
+    September: {
+      begin: `${year}-09-01T00:00:00.00Z`,
+      end: `${year}-09-30T23:59:59.00Z`,
+    },
+    October: {
+      begin: `${year}-10-01T00:00:00.00Z`,
+      end: `${year}-10-31T23:59:59.00Z`,
+    },
+    November: {
+      begin: `${year}-11-01T00:00:00.00Z`,
+      end: `${year}-11-30T23:59:59.00Z`,
+    },
+    December: {
+      begin: `${year}-12-01T00:00:00.00Z`,
+      end: `${year}-12-31T23:59:59.00Z`,
+    },
+  };
+
+  const selectMonth = () => {
+    const handleChange = (event) => {
+      setMonth(event.target.value);
+    };
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    return (
+      <Grid>
+        <FormControl
+          sx={{ minWidth: 80, borderColor: "white" }}
+          variant="standard"
+        >
+          <InputLabel>Month</InputLabel>
+          <Select
+            value={month}
+            onChange={handleChange}
+            autoWidth
+            label="Month"
+            style={{ color: "white", fontSize: 20 }}
+          >
+            {months.map((month, i) => (
+              <MenuItem key={i} value={month}>
+                {month}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+    );
+  };
 
   const GetJournals = async () => {
+    const startDate = months[`${month}`].begin;
+    const endDate = months[`${month}`].end;
     try {
       let res = await axios.post("https://localhost:7177/api/recap/journals", {
-        startDate: ONE_MONTH_AGO,
-        endDate: DateTime.now(),
+        startDate: startDate,
+        endDate: endDate,
         userID: userID,
       });
       setJournals(res.data);
@@ -47,10 +159,12 @@ export const GetWraps = () => {
   };
 
   const ApiGetAverages = async () => {
+    const startDate = months[`${month}`].begin;
+    const endDate = months[`${month}`].end;
     try {
       let res = await axios.post("https://localhost:7177/api/recap", {
-        startDate: ONE_MONTH_AGO,
-        endDate: DateTime.now(),
+        startDate: startDate,
+        endDate: endDate,
         userID: userID,
       });
       console.log("api averages", res);
@@ -68,15 +182,14 @@ export const GetWraps = () => {
     }
   };
 
-  console.log("journals", journals);
-
-  useEffect(() => {
+  const apiCalls = () => {
     GetJournals();
-  }, []);
+    ApiGetAverages();
+  };
 
   useEffect(() => {
-    ApiGetAverages();
-  }, [journals]);
+    apiCalls();
+  }, [month]);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -98,6 +211,8 @@ export const GetWraps = () => {
     },
   }));
 
+  console.log(journals);
+
   return (
     <Grid>
       {averages ? (
@@ -106,8 +221,10 @@ export const GetWraps = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <StyledTableCell>Emotion</StyledTableCell>
-                  <StyledTableCell>Average for the Month</StyledTableCell>
+                  <StyledTableCell style={{ fontSize: 20 }}>
+                    Emotion
+                  </StyledTableCell>
+                  <StyledTableCell>{selectMonth()}</StyledTableCell>
                 </TableHead>
                 <TableBody>
                   <StyledTableRow>
