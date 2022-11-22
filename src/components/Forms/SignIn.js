@@ -1,5 +1,14 @@
 import { React, useState, useEffect } from "react";
-import { Button, TextField, Link, Paper, Box, Grid, Typography, Alert } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  Alert,
+} from "@mui/material";
 import useStyles from "../../styles.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -37,7 +46,10 @@ function SignIn(props) {
         console.log("response", response);
         if (response.status === 200) {
           const now = new Date().getTime();
-          localStorage.setItem("userToken", JSON.stringify(response.data.token));
+          localStorage.setItem(
+            "userToken",
+            JSON.stringify(response.data.token)
+          );
           localStorage.setItem("setUpTime", now);
           localStorage.setItem("email", data.get("email"));
           goToWelcome(data.get("email"));
@@ -52,7 +64,7 @@ function SignIn(props) {
   };
 
   return (
-    <>
+    <Grid>
       <Box
         sx={{
           my: 8,
@@ -61,15 +73,18 @@ function SignIn(props) {
           flexDirection: "column",
           alignItems: "center",
           boxShadow: 4,
-          bgcolor: "#282c34",
+          bgcolor: "rgba(240, 240, 240,0.5)",
           p: 3,
+          borderRadius: 1,
+          justifyContent: "center",
+          maxWidth: "450px",
         }}
       >
-        <Typography component="h1" variant="h5" sx={{ color: "white", fontSize: 40, mb: 2 }}>
+        <Typography component="h1" variant="h5" sx={{ fontSize: 40, mb: 2 }}>
           Chronicle
         </Typography>
 
-        <Typography component="h1" variant="h5" sx={{ color: "white" }}>
+        <Typography component="h1" variant="h5">
           Sign In
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -101,7 +116,12 @@ function SignIn(props) {
           />
           {error && <Alert severity="info"> {error}</Alert>}
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             Sign In
           </Button>
 
@@ -114,7 +134,7 @@ function SignIn(props) {
           </Grid>
         </Box>
       </Box>
-    </>
+    </Grid>
   );
 }
 

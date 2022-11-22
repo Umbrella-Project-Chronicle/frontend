@@ -16,12 +16,12 @@ import {
 } from "./Components/Forms/Cards.js";
 import JournalCards from "./Components/Forms/JournalCards.js";
 import { PostJournal } from "./Components/Forms/NewJournal";
-import { Grid } from "@mui/material";
-import { Full } from "./Components/Forms/Full.js";
-import { Standard } from "./Components/Forms/Standard.js";
+import { Grid, Box } from "@mui/material";
+import { Full } from "./Components/Forms/NewJournals/Full.js";
+import { Standard } from "./Components/Forms/NewJournals/Standard.js";
 import { Container } from "@material-ui/core";
 import useStyles from "./styles";
-import { Brief } from "./Components/Forms/Brief.js";
+import { Brief } from "./Components/Forms/NewJournals/Brief.js";
 import { GetWraps } from "./Components/Forms/GetWraps.js";
 import { GetJournals } from "./Components/Forms/GetJournals";
 
@@ -49,110 +49,120 @@ function App() {
   }, 60 * 1000);
 
   return (
-    <>
+    <Grid>
       <CssBaseline />
 
       <main className={classes.container}>
-        <div>
-          <Container>
-            <Router>
-              <Routes>
-                <Route path="/" element={<SignUp />}></Route>
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Grid>
+                  <SignUp />
+                </Grid>
+              }
+            ></Route>
 
-                <Route path="/login" element={<SignIn />}></Route>
+            <Route
+              path="/login"
+              element={
+                <Grid>
+                  <SignIn />
+                </Grid>
+              }
+            ></Route>
 
-                <Route
-                  path="/wraps"
-                  element={
-                    <>
-                      {" "}
-                      <ResponsiveAppBar />
-                      <GetWraps />
-                    </>
-                  }
-                ></Route>
-                <Route
-                  path="profile"
-                  element={
-                    <>
-                      {" "}
-                      <ResponsiveAppBar />
-                      <ProfileCards />
-                    </>
-                  }
-                ></Route>
-                <Route
-                  path="/about"
-                  element={
-                    <>
-                      {" "}
-                      <ResponsiveAppBar />
-                      <AboutCards />
-                    </>
-                  }
-                ></Route>
-                <Route
-                  path="/help"
-                  element={
-                    <>
-                      {" "}
-                      <ResponsiveAppBar />
-                      <HelpCards />
-                    </>
-                  }
-                ></Route>
+            <Route
+              path="/wraps"
+              element={
+                <Grid alignItems="center">
+                  {" "}
+                  <ResponsiveAppBar />
+                  <GetWraps />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="profile"
+              element={
+                <Grid>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <ProfileCards />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="/about"
+              element={
+                <Grid>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <AboutCards />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="/help"
+              element={
+                <Grid>
+                  {" "}
+                  <ResponsiveAppBar />
+                  <HelpCards />
+                </Grid>
+              }
+            ></Route>
 
-                <Route
-                  path="/journals"
-                  element={
-                    <>
-                      <ResponsiveAppBar />
-                      <GetJournals />
-                    </>
-                  }
-                ></Route>
-                <Route
-                  path="/newjournals"
-                  element={
-                    <>
-                      <ResponsiveAppBar />
-                      <PostJournal />
-                    </>
-                  }
-                ></Route>
-                <Route
-                  path="/newjournals/full"
-                  element={
-                    <>
-                      <ResponsiveAppBar />
-                      <Full />
-                    </>
-                  }
-                ></Route>
-                <Route
-                  path="/newjournals/standard"
-                  element={
-                    <>
-                      <ResponsiveAppBar />
-                      <Standard />
-                    </>
-                  }
-                ></Route>
-                <Route
-                  path="/newjournals/brief"
-                  element={
-                    <>
-                      <ResponsiveAppBar />
-                      <Brief />
-                    </>
-                  }
-                ></Route>
-              </Routes>
-            </Router>
-          </Container>
-        </div>
+            <Route
+              path="/journals"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <GetJournals />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="/newjournals"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <PostJournal />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="/newjournals/full"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <Full />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="/newjournals/standard"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <Standard />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="/newjournals/brief"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <Brief />
+                </Grid>
+              }
+            ></Route>
+          </Routes>
+        </Router>
       </main>
-    </>
+    </Grid>
   );
 }
 

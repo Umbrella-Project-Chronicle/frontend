@@ -1,5 +1,15 @@
 import { React, useState } from "react";
-import { Avatar, Button, TextField, Link, Paper, Box, Grid, Typography, Alert } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  TextField,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  Alert,
+} from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -76,7 +86,11 @@ function SignUp() {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
     });
-    if (isPasswordLength(password) && isPasswordMatch(password, conPass) && isEmailValid(email)) {
+    if (
+      isPasswordLength(password) &&
+      isPasswordMatch(password, conPass) &&
+      isEmailValid(email)
+    ) {
       axios
         .post("https://localhost:7177/api/users", {
           email: data.get("email"),
@@ -89,7 +103,10 @@ function SignUp() {
           console.log(response);
           if (response.status === 201) {
             const now = new Date().getTime();
-            localStorage.setItem("userToken", JSON.stringify(response.data.token));
+            localStorage.setItem(
+              "userToken",
+              JSON.stringify(response.data.token)
+            );
             localStorage.setItem("setUpTime", now);
             localStorage.setItem("email", data.get("email"));
             goToWelcome(data.get("email"));
@@ -102,7 +119,7 @@ function SignUp() {
   };
 
   return (
-    <>
+    <Grid maxWidth={450}>
       <Box
         sx={{
           my: 8,
@@ -111,11 +128,15 @@ function SignUp() {
           flexDirection: "column",
           alignItems: "center",
           boxShadow: 4,
-          bgcolor: "#282c34",
+          bgcolor: "rgba(240, 240, 240,0.5)",
           p: 3,
+          borderRadius: 1,
         }}
       >
-        <Avatar src="" sx={{ m: 3 }}></Avatar>
+        {/* <Avatar src="" sx={{ m: 3 }}></Avatar> */}
+        <Typography component="h1" variant="h5" sx={{ fontSize: 40, mb: 2 }}>
+          Chronicle
+        </Typography>
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
@@ -207,7 +228,12 @@ function SignUp() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             Sign In
           </Button>
 
@@ -226,7 +252,7 @@ function SignUp() {
           {/* <Copyright sx={{ mt: 5 }} /> */}
         </Box>
       </Box>
-    </>
+    </Grid>
   );
 }
 

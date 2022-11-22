@@ -19,6 +19,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { borderColor } from "@mui/system";
+import { useMediaQuery } from "react-responsive";
 
 export const GetWraps = () => {
   const { DateTime } = require("luxon");
@@ -214,6 +215,39 @@ export const GetWraps = () => {
 
   console.log(journals);
 
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isMobile = useMediaQuery({
+    query: "(max-width: 600px)",
+  });
+
+  const mapSize = () => {
+    const desktopSize = {
+      height: 800,
+      width: 1200,
+    };
+    const mediumSize = {
+      height: 400,
+      width: 600,
+    };
+    const mobileSize = {
+      height: 300,
+      width: 300,
+      tooltip: {
+        x: 40,
+        y: 375,
+      },
+    };
+    if (isDesktop) {
+      return desktopSize;
+    } else if (isMobile) {
+      return mobileSize;
+    } else {
+      return mediumSize;
+    }
+  };
+
   // const backgroundcolor = () => {
   //   if (backgroundColorTrigger) {
   //     return "rgba(192,192,192,0.3)";
@@ -223,10 +257,10 @@ export const GetWraps = () => {
   // };
 
   return (
-    <Grid display="flex" justifyContent="center" alignItems="center">
+    <Grid sx={{ m: 4 }}>
       {averages ? (
-        <Grid>
-          <Grid item style={{ margin: 10 }}>
+        <Grid spacing={2}>
+          <Grid xs={10} sm={6} md={6} sx={{ p: 5 }} maxWidth="450px">
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -300,116 +334,106 @@ export const GetWraps = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid
-            item
-            style={{
-              margin: 10,
-              // backgroundColor: backgroundcolor(),
-            }}
-          >
-            <Box>
-              <LineChart
-                width={350}
-                height={200}
-                data={journals}
-                onClick={() => {
-                  console.log("do later");
-                }}
-                // onMouseEnter={() => {
-                //   setBackgroundColorTrigger(!backgroundColorTrigger)
-                // }}
-                // onMouseLeave={() => {
-                //   setBackgroundColorTrigger(!backgroundColorTrigger)
-                // }}
-              >
-                <Line
-                  name="overall"
-                  isAnimationActive={false}
-                  type="monotone"
-                  dataKey="ratings.overall"
-                  stroke="white"
-                  strokeWidth={2}
-                />
-                <Line
-                  name="anxiety"
-                  type="monotone"
-                  dataKey="ratings.anxiety"
-                  stroke="#ab0202"
-                  strokeWidth={2}
-                />
-                <Line
-                  name="loneliness"
-                  type="monotone"
-                  dataKey="ratings.loneliness"
-                  stroke="#038007"
-                  strokeWidth={2}
-                />
-                <Line
-                  name="depression"
-                  type="monotone"
-                  dataKey="ratings.depression"
-                  stroke="#026969"
-                  strokeWidth={2}
-                />
-                <Line
-                  name="happiness"
-                  type="monotone"
-                  dataKey="ratings.happiness"
-                  stroke="#f5c402"
-                  strokeWidth={2}
-                />
-                <Line
-                  name="sadness"
-                  type="monotone"
-                  dataKey="ratings.sadness"
-                  stroke="#020ff5"
-                  strokeWidth={2}
-                />
 
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  payload={[
-                    {
-                      value: "overall",
-                      type: "line",
-                      color: "white",
-                    },
-                    {
-                      value: "anxiety",
-                      type: "line",
-                      color: "#ab0202",
-                    },
-                    {
-                      value: "loneliness",
-                      type: "line",
-                      color: "#038007",
-                    },
-                    {
-                      value: "depression",
-                      type: "line",
-                      color: "#026969",
-                    },
-                    {
-                      value: "happiness",
-                      type: "line",
-                      color: "#f5c402",
-                    },
-                    {
-                      value: "sadness",
-                      type: "line",
-                      color: "#020ff5",
-                    },
-                  ]}
-                />
-                <XAxis dataKey="date" />
+          <Grid>
+            <LineChart
+              height={mapSize().height}
+              width={mapSize().width}
+              data={journals}
+              onClick={() => {
+                console.log("do later");
+              }}
+              // onMouseEnter={() => {
+              //   setBackgroundColorTrigger(!backgroundColorTrigger)
+              // }}
+              // onMouseLeave={() => {
+              //   setBackgroundColorTrigger(!backgroundColorTrigger)
+              // }}
+            >
+              <Line
+                name="overall"
+                isAnimationActive={false}
+                type="monotone"
+                dataKey="ratings.overall"
+                stroke="white"
+                strokeWidth={2}
+              />
+              <Line
+                name="anxiety"
+                type="monotone"
+                dataKey="ratings.anxiety"
+                stroke="#ab0202"
+                strokeWidth={2}
+              />
+              <Line
+                name="loneliness"
+                type="monotone"
+                dataKey="ratings.loneliness"
+                stroke="#038007"
+                strokeWidth={2}
+              />
+              <Line
+                name="depression"
+                type="monotone"
+                dataKey="ratings.depression"
+                stroke="#026969"
+                strokeWidth={2}
+              />
+              <Line
+                name="happiness"
+                type="monotone"
+                dataKey="ratings.happiness"
+                stroke="#f5c402"
+                strokeWidth={2}
+              />
+              <Line
+                name="sadness"
+                type="monotone"
+                dataKey="ratings.sadness"
+                stroke="#020ff5"
+                strokeWidth={2}
+              />
 
-                <Tooltip
-                  isAnimationActive={true}
-                  position={{ x: 75, y: 250 }}
-                />
-              </LineChart>
-            </Box>
+              <Legend
+                verticalAlign="bottom"
+                height={36}
+                payload={[
+                  {
+                    value: "overall",
+                    type: "line",
+                    color: "white",
+                  },
+                  {
+                    value: "anxiety",
+                    type: "line",
+                    color: "#ab0202",
+                  },
+                  {
+                    value: "loneliness",
+                    type: "line",
+                    color: "#038007",
+                  },
+                  {
+                    value: "depression",
+                    type: "line",
+                    color: "#026969",
+                  },
+                  {
+                    value: "happiness",
+                    type: "line",
+                    color: "#f5c402",
+                  },
+                  {
+                    value: "sadness",
+                    type: "line",
+                    color: "#020ff5",
+                  },
+                ]}
+              />
+              <XAxis dataKey="date" />
+
+              <Tooltip isAnimationActive={true} position={mapSize().tooltip} />
+            </LineChart>
           </Grid>
         </Grid>
       ) : (

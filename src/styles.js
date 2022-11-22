@@ -3,10 +3,11 @@ import chronicleLogo from "../src/logo.ico";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    padding: theme.spacing(20, 0, 20),
+    padding: theme.spacing(20, 0, 0),
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+
     // backgroundImage: `url(${chronicleLogo})`,
     // backgroundRepeat: "no-repeat",
     // backgroundPosition: "50% 100%",

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Card, CardHeader, Typography } from "@mui/material";
+import { Grid, Card, CardHeader, Typography, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { DateRange } from "react-date-range";
@@ -30,11 +30,14 @@ export function GetJournals() {
     console.log("getuserprofile");
     // needs to be set in each api call in order to assure the variable is se
     try {
-      const res = await axios.get("https://localhost:7177/api/users/search/" + email, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
+      const res = await axios.get(
+        "https://localhost:7177/api/users/search/" + email,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       localStorage.setItem("id", res.data.id);
       setTrigger(!trigger);
     } catch (error) {
@@ -74,38 +77,59 @@ export function GetJournals() {
   }, [state]);
 
   return (
-    <>
-      {viewCalenderButton ? (
-        <>
-          {viewCalender ? (
-            <>
-              <DateRange
-                editableDateInputs={true}
-                onChange={(item) => setState([item.selection])}
-                moveRangeOnFirstSelection={false}
-                ranges={state}
-              />
-              <button onClick={() => setViewCalender(false)}>Close</button>
-            </>
-          ) : (
-            <button onClick={() => setViewCalender(true)}>View Calender</button>
-          )}
-        </>
-      ) : (
-        <></>
-      )}
+    <Grid>
+      <Box
+        display={"flex"}
+        justifyContent="center"
+        maxWidth={400}
+        style={{ backgroundColor: "gray", borderRadius: 1 }}
+      >
+        {viewCalenderButton ? (
+          <Grid>
+            {viewCalender ? (
+              <Box justifyContent="center">
+                <DateRange
+                  editableDateInputs={true}
+                  onChange={(item) => setState([item.selection])}
+                  moveRangeOnFirstSelection={false}
+                  ranges={state}
+                />
+                <Button onClick={() => setViewCalender(false)}>Close</Button>
+              </Box>
+            ) : (
+              <Box>
+                <Button onClick={() => setViewCalender(true)}>
+                  View Calender
+                </Button>
+              </Box>
+            )}
+          </Grid>
+        ) : (
+          <></>
+        )}
+      </Box>
 
-      <Grid item>
-        {journals && journals.length === 0 ? <div>Looks like you haven't journalled yet</div> : <></>}
+      <Grid container spacing={1}>
+        {journals && journals.length === 0 ? (
+          <div>Looks like you haven't journalled yet</div>
+        ) : (
+          <></>
+        )}
         {journals ? (
           journals.map((journal, i) => (
-            <>
+            <Grid item xs={12} sm={6} md={3}>
               <CardHeader
                 key={journal.date}
-                title={DateTime.fromISO(journal.date).toLocaleString(DateTime.DATETIME_MED)}
+                title={DateTime.fromISO(journal.date).toLocaleString(
+                  DateTime.DATETIME_MED
+                )}
               />
 
-              <Card direction="column" justify="center" sx={{ p: 2, m: 3, maxWidth: 300 }}>
+              <Card
+                direction="column"
+                justify="center"
+                sx={{ p: 2, m: 3, maxWidth: 300 }}
+              >
                 <ul key={i}>
                   <Typography>Date: {journal.date}</Typography>
                   <Typography>type: {journal.journalType}</Typography>
@@ -113,18 +137,24 @@ export function GetJournals() {
                   <Typography>Rating:</Typography>
                   <Typography>Overall: {journal.ratings.overall}</Typography>
                   <Typography>Anxiety: {journal.ratings.anxiety}</Typography>
-                  <Typography>Depression: {journal.ratings.depression}</Typography>
-                  <Typography>Happiness: {journal.ratings.happiness}</Typography>
-                  <Typography>Lonliness: {journal.ratings.lonliness}</Typography>
+                  <Typography>
+                    Depression: {journal.ratings.depression}
+                  </Typography>
+                  <Typography>
+                    Happiness: {journal.ratings.happiness}
+                  </Typography>
+                  <Typography>
+                    Lonliness: {journal.ratings.lonliness}
+                  </Typography>
                   <Typography>Sadness: {journal.ratings.sadness}</Typography>
                 </ul>
               </Card>
-            </>
+            </Grid>
           ))
         ) : (
           <div> nothing</div>
         )}
       </Grid>
-    </>
+    </Grid>
   );
 }
