@@ -13,7 +13,7 @@ jobs:
         with:
           commit-message: Automated Commit for material-ui branch
           title: Automated PR
-          branch: material-ui
-          base: main
+          branch: main
+          base: material-ui
           labels: automated-pr
           delete-branch: false
