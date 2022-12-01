@@ -23,7 +23,6 @@ jobs:
           branch: "auto-pr-branch"
           base: main
           title: "Automated PR"
-          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }}
           body: this is a test
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
