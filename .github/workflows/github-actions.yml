@@ -16,5 +16,5 @@ jobs:
           title: Automated PR
           base: main
           labels: automated-pr
-          branch: material-ui
-          delete-branch: false
+          branch: automated-branch
+          delete-branch: true
