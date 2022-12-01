@@ -7,12 +7,13 @@ jobs:
   createPR:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Automated Commit for material-ui branch
           title: Automated PR
+          branch: material-ui
           base: main
           labels: automated-pr
-          branch: material-ui
           delete-branch: false
