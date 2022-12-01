@@ -163,6 +163,7 @@ export const GetWraps = () => {
   const ApiGetAverages = async () => {
     const startDate = months[`${month}`].begin;
     const endDate = months[`${month}`].end;
+    console.log("startdAte", startDate, "endDate", endDate);
     try {
       let res = await axios.post("https://localhost:7177/api/recap", {
         startDate: startDate,

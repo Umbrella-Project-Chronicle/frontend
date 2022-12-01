@@ -2,27 +2,28 @@ name: create PR
 on:
   push:
     branches:
-      - material-ui
+      - main
 jobs:
-  createPR:
-    runs-on: ubuntu-latest
 
-    steps:
-      - name: checking out code
-        uses: actions/checkout@v2
+  # createPR:
+  #   runs-on: ubuntu-latest
 
-      - name: extract git commit data
-        uses: rlespinasse/git-commit-data-action@v1.x
+  #   steps:
+  #     - name: checking out code
+  #       uses: actions/checkout@v2
 
-      # - name: update author info
-      #   run: echo ${{env.GIT_COMMIT_AUTHOR_NAME}} > AUTHOR
+  #     - name: extract git commit data
+  #       uses: rlespinasse/git-commit-data-action@v1.x
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          branch: "auto-pr-branch"
-          base: main
-          title: "Automated PR"
-          body: this is a test
-          token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: false
+  #     - name: update author info
+  #       run: echo ${{env.GIT_COMMIT_AUTHOR_NAME}} > AUTHOR
+
+  #     - name: Create Pull Request
+  #       uses: peter-evans/create-pull-request@v3
+  #       with:
+  #         branch: "auto-pr-branch"
+  #         base: main
+  #         title: "Automated PR"
+  #         body: this is a test
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         delete-branch: false

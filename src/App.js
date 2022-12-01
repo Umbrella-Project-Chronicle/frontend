@@ -24,6 +24,7 @@ import useStyles from "./styles";
 import { Brief } from "./Components/Forms/NewJournals/Brief.js";
 import { GetWraps } from "./Components/Forms/GetWraps.js";
 import { GetJournals } from "./Components/Forms/GetJournals";
+import { LandingPage } from "./Components/Forms/LandingPage.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -69,6 +70,16 @@ function App() {
               element={
                 <Grid>
                   <SignIn />
+                </Grid>
+              }
+            ></Route>
+
+            <Route
+              path="/home"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <LandingPage />
                 </Grid>
               }
             ></Route>
