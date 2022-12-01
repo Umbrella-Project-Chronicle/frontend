@@ -6,15 +6,24 @@ on:
 jobs:
   createPR:
     runs-on: ubuntu-latest
+
     steps:
       - name: checking out code
         uses: actions/checkout@v2
 
+      - name: extract git commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+
+      - name: update author info
+        run: echo ${{env.GIT_COMMIT_AUTHOR_NAME}} > AUTHOR
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "material-ui"
+          branch: "auto-pr-branch"
           base: main
-          title: Automated PR
-          commit-message: Automated Commit for material-ui branch
+          title: "Automated PR"
+          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }}
+          body: this is a test
+          token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
