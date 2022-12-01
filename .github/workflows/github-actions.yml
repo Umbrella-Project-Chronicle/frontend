@@ -17,4 +17,4 @@ jobs:
           base: main
           labels: automated-pr
           branch: material-ui
-          delete-branch: true
+          delete-branch: false
