@@ -17,3 +17,4 @@ jobs:
           base: material-ui
           labels: automated-pr
           delete-branch: false
+          reviewers: eliot-pitman-va
