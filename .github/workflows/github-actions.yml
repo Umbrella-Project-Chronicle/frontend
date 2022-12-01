@@ -13,7 +13,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "auto-pr-branch"
+          branch: "material-ui"
           base: main
           title: Automated PR
           commit-message: Automated Commit for material-ui branch
