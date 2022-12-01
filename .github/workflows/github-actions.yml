@@ -7,8 +7,6 @@ jobs:
   createPR:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v2
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
@@ -16,5 +14,5 @@ jobs:
           title: Automated PR
           base: main
           labels: automated-pr
-          branch: automated-branch
-          delete-branch: true
+          branch: material-ui
+          delete-branch: false
