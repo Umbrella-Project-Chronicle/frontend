@@ -29,18 +29,18 @@ export const NewJournal = () => {
             borderRadius: 10,
           }}
         >
-          <Box className={classes.alignItems}>
-            <Typography variant="h3">Full</Typography>
+          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+            <Typography variant="h4">Full</Typography>
           </Box>
 
-          <Box className={classes.alignItems} style={{ mt: "30px" }}>
+          <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
             <IconButton
               onClick={() => {
                 navigate("/newjournals/full");
               }}
             >
               <StarBorderIcon style={{ fontSize: "200px" }} />
-              <Typography variant="h3">+</Typography>
+              <Typography variant="h4">+</Typography>
               <DriveFileRenameOutlineIcon style={{ fontSize: "200px" }} />
             </IconButton>
           </Box>
@@ -55,10 +55,10 @@ export const NewJournal = () => {
             borderRadius: 10,
           }}
         >
-          <Box className={classes.alignItems}>
-            <Typography variant="h3">Standard</Typography>
+          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+            <Typography variant="h4">Standard</Typography>
           </Box>
-          <Box className={classes.alignItems}>
+          <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
             <IconButton
               onClick={() => {
                 navigate("/newjournals/standard");
@@ -78,10 +78,10 @@ export const NewJournal = () => {
             borderRadius: 10,
           }}
         >
-          <Box className={classes.alignItems} style={{ p: 10 }}>
-            <Typography variant="h3">Brief</Typography>
+          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+            <Typography variant="h4">Brief</Typography>
           </Box>
-          <Box className={classes.alignItems}>
+          <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
             <IconButton
               onClick={() => {
                 navigate("/newjournals/brief");

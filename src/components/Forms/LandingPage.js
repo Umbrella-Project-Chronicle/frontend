@@ -49,8 +49,8 @@ export const LandingPage = () => {
             borderRadius: 10,
           }}
         >
-          <Box className={classes.alignItems}>
-            <Typography>New Journal</Typography>
+          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+            <Typography variant="h4">New Journal</Typography>
           </Box>
 
           <Box className={classes.alignItems} style={{ mt: "30px" }}>
@@ -73,8 +73,8 @@ export const LandingPage = () => {
             borderRadius: 10,
           }}
         >
-          <Box className={classes.alignItems}>
-            <Typography>Wraps</Typography>
+          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+            <Typography variant="h4">Wraps</Typography>
           </Box>
           <Box className={classes.alignItems}>
             <IconButton
@@ -96,8 +96,8 @@ export const LandingPage = () => {
             borderRadius: 10,
           }}
         >
-          <Box className={classes.alignItems} style={{ p: 10 }}>
-            <Typography>Past Journals</Typography>
+          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+            <Typography variant="h4">Past Journals</Typography>
           </Box>
           <Box className={classes.alignItems}>
             <IconButton
