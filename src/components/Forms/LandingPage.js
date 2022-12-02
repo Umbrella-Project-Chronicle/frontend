@@ -8,12 +8,35 @@ import useStyles from "../../styles";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import { useMediaQuery } from "react-responsive";
 
 export const LandingPage = () => {
   const classes = useStyles();
   const email = localStorage.getItem("email");
   const token = JSON.parse(localStorage.getItem("userToken"));
   const navigate = useNavigate();
+
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isMobile = useMediaQuery({
+    query: "(max-width: 600px)",
+  });
+
+  const iconSize = () => {
+    const mobile = {
+      typography: "h5",
+      icon: "150px",
+    };
+    const desktop = {
+      icon: "250px",
+    };
+    if (isMobile) {
+      return mobile;
+    } else {
+      return desktop;
+    }
+  };
 
   const GetUserProfile = async () => {
     console.log("getuserprofile");
@@ -49,7 +72,7 @@ export const LandingPage = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">New Journal</Typography>
+            <Typography variant="h3">New Journal</Typography>
           </Box>
 
           <Box className={classes.alignItems} style={{ mt: "30px" }}>
@@ -58,7 +81,7 @@ export const LandingPage = () => {
                 navigate("/newjournals");
               }}
             >
-              <HistoryEduIcon style={{ fontSize: "250px" }} />
+              <HistoryEduIcon style={{ fontSize: iconSize().icon }} />
             </IconButton>
           </Box>
         </Card>
@@ -73,7 +96,7 @@ export const LandingPage = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Wraps</Typography>
+            <Typography variant="h3">Wraps</Typography>
           </Box>
           <Box className={classes.alignItems}>
             <IconButton
@@ -81,7 +104,7 @@ export const LandingPage = () => {
                 navigate("/wraps");
               }}
             >
-              <HistoryIcon style={{ fontSize: "250px" }} />
+              <HistoryIcon style={{ fontSize: iconSize().icon }} />
             </IconButton>
           </Box>
         </Card>
@@ -96,7 +119,7 @@ export const LandingPage = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Past Journals</Typography>
+            <Typography variant="h3">Past Journals</Typography>
           </Box>
           <Box className={classes.alignItems}>
             <IconButton
@@ -104,7 +127,7 @@ export const LandingPage = () => {
                 navigate("/journals");
               }}
             >
-              <ManageSearchIcon style={{ fontSize: "250px" }} />
+              <ManageSearchIcon style={{ fontSize: iconSize().icon }} />
             </IconButton>
           </Box>
         </Card>

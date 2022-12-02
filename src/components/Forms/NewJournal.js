@@ -12,8 +12,30 @@ import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import TimesOneMobiledataIcon from "@mui/icons-material/TimesOneMobiledata";
+import { useMediaQuery } from "react-responsive";
 
 export const NewJournal = () => {
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isMobile = useMediaQuery({
+    query: "(max-width: 600px)",
+  });
+
+  const iconSize = () => {
+    const mobile = {
+      typography: "h5",
+      icon: "100px",
+    };
+    const desktop = {
+      icon: "250px",
+    };
+    if (isMobile) {
+      return mobile;
+    } else {
+      return desktop;
+    }
+  };
   const classes = useStyles();
 
   const navigate = useNavigate();
@@ -30,7 +52,7 @@ export const NewJournal = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Full</Typography>
+            <Typography variant="h3">Full</Typography>
           </Box>
 
           <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
@@ -39,9 +61,11 @@ export const NewJournal = () => {
                 navigate("/newjournals/full");
               }}
             >
-              <StarBorderIcon style={{ fontSize: "200px" }} />
-              <Typography variant="h4">+</Typography>
-              <DriveFileRenameOutlineIcon style={{ fontSize: "200px" }} />
+              <StarBorderIcon style={{ fontSize: iconSize().icon }} />
+              <Typography variant="h3">+</Typography>
+              <DriveFileRenameOutlineIcon
+                style={{ fontSize: iconSize().icon }}
+              />
             </IconButton>
           </Box>
         </Card>
@@ -56,7 +80,7 @@ export const NewJournal = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Standard</Typography>
+            <Typography variant="h3">Standard</Typography>
           </Box>
           <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
             <IconButton
@@ -64,7 +88,7 @@ export const NewJournal = () => {
                 navigate("/newjournals/standard");
               }}
             >
-              <StarBorderIcon style={{ fontSize: "200px" }} />
+              <StarBorderIcon style={{ fontSize: iconSize().icon }} />
             </IconButton>
           </Box>
         </Card>
@@ -79,7 +103,7 @@ export const NewJournal = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Brief</Typography>
+            <Typography variant="h3">Brief</Typography>
           </Box>
           <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
             <IconButton
@@ -87,8 +111,8 @@ export const NewJournal = () => {
                 navigate("/newjournals/brief");
               }}
             >
-              <TimesOneMobiledataIcon style={{ fontSize: "200px" }} />
-              <StarBorderIcon style={{ fontSize: "200px" }} />
+              <TimesOneMobiledataIcon style={{ fontSize: iconSize().icon }} />
+              <StarBorderIcon style={{ fontSize: iconSize().icon }} />
             </IconButton>
           </Box>
         </Card>

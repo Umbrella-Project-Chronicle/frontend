@@ -133,7 +133,6 @@ function SignUp() {
           borderRadius: 1,
         }}
       >
-        {/* <Avatar src="" sx={{ m: 3 }}></Avatar> */}
         <Typography component="h1" variant="h5" sx={{ fontSize: 40, mb: 2 }}>
           Chronicle
         </Typography>
