@@ -3,7 +3,6 @@ import { Grid, Box, Card, Typography } from "@material-ui/core";
 import axios from "axios";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import HistoryIcon from "@mui/icons-material/History";
-import BackpackIcon from "@mui/icons-material/Backpack";
 import useStyles from "../../styles";
 
 import { IconButton } from "@mui/material";
