@@ -1,46 +1,98 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { Card, Box, CardContent, Typography, CardHeader, Divider, Link, List, ListItem, Grid } from "@mui/material";
+import React, { useEffect } from "react";
+import { Grid, Box, Card, Typography } from "@material-ui/core";
 
-export const PostJournal = (text) => {
-  // console.log("called postJournal", "tokemn", token, "userID", user.id, "firstName", user.firstName, "text", text);
-  const token = JSON.parse(localStorage.getItem("userToken"));
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+import HistoryIcon from "@mui/icons-material/History";
+
+import useStyles from "../../styles";
+
+import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import TimesOneMobiledataIcon from "@mui/icons-material/TimesOneMobiledata";
+
+export const NewJournal = () => {
+  const classes = useStyles();
+
+  const navigate = useNavigate();
 
   return (
-    <Grid item>
-      <Card item xs={12} sm={6} md={3} sx={{ backgroundColor: "#2E3B55", m: 4 }}>
-        <CardContent align="center">
-          <CardHeader title="Choose Journal Type" sx={{ mb: "-10px" }} />
-          <Divider color="white" sx={{ borderBottomWidth: "5px" }} />
-          <List>
-            <ListItem>
-              <Typography
-                component="a"
-                href="/newjournals/brief"
-                sx={{ mt: "10px", fontSize: 20 }}
-                color="white"
-                gutterBottom
-              >
-                Brief Journal
-              </Typography>
-            </ListItem>
-          </List>
-          <List>
-            <ListItem>
-              <Typography component="a" href="/newjournals/standard" sx={{ fontSize: 20 }} color="white" gutterBottom>
-                Standard Journal
-              </Typography>
-            </ListItem>
-          </List>
-          <List>
-            <ListItem>
-              <Typography component="a" href="/newjournals/full" sx={{ fontSize: 20 }} color="white" gutterBottom>
-                Full Journal
-              </Typography>
-            </ListItem>
-          </List>
-        </CardContent>
-      </Card>
+    <Grid container spacing={2} justifyContent="center">
+      <Grid item xs={10} sm={12} md={12} lg={12}>
+        <Card
+          style={{
+            minHeight: "300px",
+            backgroundColor: "rgba(240, 240, 240,0.8)",
+            p: 3,
+            borderRadius: 10,
+          }}
+        >
+          <Box className={classes.alignItems}>
+            <Typography variant="h3">Full</Typography>
+          </Box>
+
+          <Box className={classes.alignItems} style={{ mt: "30px" }}>
+            <IconButton
+              onClick={() => {
+                navigate("/newjournals/full");
+              }}
+            >
+              <StarBorderIcon style={{ fontSize: "200px" }} />
+              <Typography variant="h3">+</Typography>
+              <DriveFileRenameOutlineIcon style={{ fontSize: "200px" }} />
+            </IconButton>
+          </Box>
+        </Card>
+      </Grid>
+      <Grid item xs={10} sm={12} md={12} lg={12}>
+        <Card
+          style={{
+            minHeight: "300px",
+            backgroundColor: "rgba(240, 240, 240,0.8)",
+            p: 3,
+            borderRadius: 10,
+          }}
+        >
+          <Box className={classes.alignItems}>
+            <Typography variant="h3">Standard</Typography>
+          </Box>
+          <Box className={classes.alignItems}>
+            <IconButton
+              onClick={() => {
+                navigate("/newjournals/standard");
+              }}
+            >
+              <StarBorderIcon style={{ fontSize: "200px" }} />
+            </IconButton>
+          </Box>
+        </Card>
+      </Grid>
+      <Grid item xs={10} sm={12} md={12} lg={12}>
+        <Card
+          style={{
+            minHeight: "300px",
+            backgroundColor: "rgba(240, 240, 240,0.8)",
+            p: 3,
+            borderRadius: 10,
+          }}
+        >
+          <Box className={classes.alignItems} style={{ p: 10 }}>
+            <Typography variant="h3">Brief</Typography>
+          </Box>
+          <Box className={classes.alignItems}>
+            <IconButton
+              onClick={() => {
+                navigate("/newjournals/brief");
+              }}
+            >
+              <TimesOneMobiledataIcon style={{ fontSize: "200px" }} />
+              <StarBorderIcon style={{ fontSize: "200px" }} />
+            </IconButton>
+          </Box>
+        </Card>
+      </Grid>
     </Grid>
   );
 };
