@@ -15,7 +15,7 @@ import {
   HelpCards,
 } from "./Components/Forms/Cards.js";
 import JournalCards from "./Components/Forms/JournalCards.js";
-import { PostJournal } from "./Components/Forms/NewJournal";
+import { NewJournal } from "./Components/Forms/NewJournal";
 import { Grid, Box } from "@mui/material";
 import { Full } from "./Components/Forms/NewJournals/Full.js";
 import { Standard } from "./Components/Forms/NewJournals/Standard.js";
@@ -24,6 +24,7 @@ import useStyles from "./styles";
 import { Brief } from "./Components/Forms/NewJournals/Brief.js";
 import { GetWraps } from "./Components/Forms/GetWraps.js";
 import { GetJournals } from "./Components/Forms/GetJournals";
+import { LandingPage } from "./Components/Forms/LandingPage.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -69,6 +70,16 @@ function App() {
               element={
                 <Grid>
                   <SignIn />
+                </Grid>
+              }
+            ></Route>
+
+            <Route
+              path="/home"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <LandingPage />
                 </Grid>
               }
             ></Route>
@@ -128,7 +139,7 @@ function App() {
               element={
                 <Grid>
                   <ResponsiveAppBar />
-                  <PostJournal />
+                  <NewJournal />
                 </Grid>
               }
             ></Route>

@@ -79,12 +79,16 @@ function ResponsiveAppBar(props) {
           <StyledToolbar>
             <Container maxWidth="xl">
               <Toolbar disableGutters>
-                <img src={Logo} alt="logo" style={{ maxWidth: 60, maxHeight: 60 }} />
+                <img
+                  src={Logo}
+                  alt="logo"
+                  style={{ maxWidth: 60, maxHeight: 60 }}
+                />
                 <Typography
                   variant="h6"
                   noWrap
                   component="a"
-                  href="/journals"
+                  href="/home"
                   sx={{
                     mr: 2,
                     display: { xs: "none", md: "flex" },
@@ -144,21 +148,14 @@ function ResponsiveAppBar(props) {
                     >
                       <Typography textAlign="center">Wraps</Typography>
                     </MenuItem>
-                    {/* <MenuItem
-                      onClick={() => {
-                        handleCloseNavMenu("/stats");
-                      }}
-                    >
-                      <Typography textAlign="center">stats</Typography>
-                    </MenuItem> */}
                   </Menu>
                 </Box>
-                {/* <img src={Logo} alt="logo" style={{ maxWidth: 60, maxHeight: 60 }} /> */}
+
                 <Typography
                   variant="h5"
                   noWrap
                   component="a"
-                  href=""
+                  href="/home"
                   sx={{
                     mr: 2,
                     display: { xs: "flex", md: "none" },
@@ -204,7 +201,14 @@ function ResponsiveAppBar(props) {
                   onClick={() => {
                     handleCloseNavMenu("/newjournals");
                   }}
-                  sx={{ align: "right", my: 2, mr: 2, mb: 3, color: "white", display: "block" }}
+                  sx={{
+                    align: "right",
+                    my: 2,
+                    mr: 2,
+                    mb: 3,
+                    color: "white",
+                    display: "block",
+                  }}
                 >
                   <Typography variant="h3" name="New Journal">
                     +
@@ -214,7 +218,10 @@ function ResponsiveAppBar(props) {
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                      <Avatar
+                        alt="Remy Sharp"
+                        src="/static/images/avatar/2.jpg"
+                      />
                     </IconButton>
                   </Tooltip>
                   <Menu

@@ -10,6 +10,7 @@ const { DateTime } = require("luxon");
 export function GetJournals() {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const email = localStorage.getItem("email");
+  const userID = localStorage.getItem("id");
 
   const THREE_MONTHS_AGO = new Date();
   THREE_MONTHS_AGO.setMonth(THREE_MONTHS_AGO.getMonth() - 3);
@@ -26,27 +27,26 @@ export function GetJournals() {
   ]);
   const [trigger, setTrigger] = useState(false);
 
-  const GetUserProfile = async () => {
-    console.log("getuserprofile");
-    // needs to be set in each api call in order to assure the variable is se
-    try {
-      const res = await axios.get(
-        "https://localhost:7177/api/users/search/" + email,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      localStorage.setItem("id", res.data.id);
-      setTrigger(!trigger);
-    } catch (error) {
-      console.log("ERROR: failed fetching user profile from api", error);
-    }
-  };
+  // const GetUserProfile = async () => {
+  //   console.log("getuserprofile");
+  //   // needs to be set in each api call in order to assure the variable is se
+  //   try {
+  //     const res = await axios.get(
+  //       "https://localhost:7177/api/users/search/" + email,
+  //       {
+  //         headers: {
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+  //     localStorage.setItem("id", res.data.id);
+  //     setTrigger(!trigger);
+  //   } catch (error) {
+  //     console.log("ERROR: failed fetching user profile from api", error);
+  //   }
+  // };
 
   const GetMonthofJournals = async () => {
-    const userID = localStorage.getItem("id");
     try {
       let res = await axios.post("https://localhost:7177/api/recap/journals", {
         startDate: state[0].startDate.toISOString(),
@@ -64,9 +64,9 @@ export function GetJournals() {
     }
   };
 
-  useEffect(() => {
-    GetUserProfile();
-  }, []);
+  // useEffect(() => {
+  //   GetUserProfile();
+  // }, []);
 
   useEffect(() => {
     GetMonthofJournals();

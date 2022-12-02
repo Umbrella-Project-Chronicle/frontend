@@ -25,7 +25,7 @@ function SignIn(props) {
   const navigate = useNavigate();
 
   const goToWelcome = (email) => {
-    navigate("/journals", { state: { email: email } });
+    navigate("/home", { state: { email: email } });
   };
 
   // api call to sign in

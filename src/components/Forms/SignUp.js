@@ -72,7 +72,7 @@ function SignUp() {
   const navigate = useNavigate();
 
   const goToWelcome = (email) => {
-    navigate("/journals");
+    navigate("/home");
   };
 
   // error handling

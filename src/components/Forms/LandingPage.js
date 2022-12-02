@@ -1,22 +1,42 @@
 import React, { useEffect } from "react";
 import { Grid, Box, Card, Typography } from "@material-ui/core";
-
+import axios from "axios";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import HistoryIcon from "@mui/icons-material/History";
-
+import BackpackIcon from "@mui/icons-material/Backpack";
 import useStyles from "../../styles";
 
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import TimesOneMobiledataIcon from "@mui/icons-material/TimesOneMobiledata";
 
-export const NewJournal = () => {
+export const LandingPage = () => {
   const classes = useStyles();
-
+  const email = localStorage.getItem("email");
+  const token = JSON.parse(localStorage.getItem("userToken"));
   const navigate = useNavigate();
+
+  const GetUserProfile = async () => {
+    console.log("getuserprofile");
+    // needs to be set in each api call in order to assure the variable is se
+    try {
+      const res = await axios.get(
+        "https://localhost:7177/api/users/search/" + email,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      localStorage.setItem("id", res.data.id);
+    } catch (error) {
+      console.log("ERROR: failed fetching user profile from api", error);
+    }
+  };
+
+  useEffect(() => {
+    GetUserProfile();
+  }, []);
 
   return (
     <Grid container spacing={2} justifyContent="center">
@@ -30,18 +50,16 @@ export const NewJournal = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Full</Typography>
+            <Typography variant="h4">New Journal</Typography>
           </Box>
 
-          <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
+          <Box className={classes.alignItems} style={{ mt: "30px" }}>
             <IconButton
               onClick={() => {
-                navigate("/newjournals/full");
+                navigate("/newjournals");
               }}
             >
-              <StarBorderIcon style={{ fontSize: "200px" }} />
-              <Typography variant="h4">+</Typography>
-              <DriveFileRenameOutlineIcon style={{ fontSize: "200px" }} />
+              <HistoryEduIcon style={{ fontSize: "250px" }} />
             </IconButton>
           </Box>
         </Card>
@@ -56,15 +74,15 @@ export const NewJournal = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Standard</Typography>
+            <Typography variant="h4">Wraps</Typography>
           </Box>
-          <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
+          <Box className={classes.alignItems}>
             <IconButton
               onClick={() => {
-                navigate("/newjournals/standard");
+                navigate("/wraps");
               }}
             >
-              <StarBorderIcon style={{ fontSize: "200px" }} />
+              <HistoryIcon style={{ fontSize: "250px" }} />
             </IconButton>
           </Box>
         </Card>
@@ -79,16 +97,15 @@ export const NewJournal = () => {
           }}
         >
           <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h4">Brief</Typography>
+            <Typography variant="h4">Past Journals</Typography>
           </Box>
-          <Box className={classes.alignItems} style={{ marginBottom: "50px" }}>
+          <Box className={classes.alignItems}>
             <IconButton
               onClick={() => {
-                navigate("/newjournals/brief");
+                navigate("/journals");
               }}
             >
-              <TimesOneMobiledataIcon style={{ fontSize: "200px" }} />
-              <StarBorderIcon style={{ fontSize: "200px" }} />
+              <ManageSearchIcon style={{ fontSize: "250px" }} />
             </IconButton>
           </Box>
         </Card>
