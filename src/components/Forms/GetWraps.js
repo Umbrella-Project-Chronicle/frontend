@@ -30,6 +30,7 @@ export const GetWraps = () => {
   const [trigger, setTrigger] = useState(false);
   const [month, setMonth] = useState(DateTime.now().toFormat("MMMM"));
   const [year, setYear] = useState(DateTime.now().toFormat("yyyy"));
+  const token = JSON.parse(localStorage.getItem("userToken"));
   const [backgroundColorTrigger, setBackgroundColorTrigger] = useState(false);
   const [averages, setAverages] = useState({
     overall: null,
@@ -120,10 +121,7 @@ export const GetWraps = () => {
 
     return (
       <Grid>
-        <FormControl
-          sx={{ minWidth: 80, borderColor: "white" }}
-          variant="standard"
-        >
+        <FormControl sx={{ minWidth: 80, borderColor: "white" }} variant="standard">
           <InputLabel>Month</InputLabel>
           <Select
             value={month}
@@ -146,12 +144,22 @@ export const GetWraps = () => {
   const GetJournals = async () => {
     const startDate = months[`${month}`].begin;
     const endDate = months[`${month}`].end;
+    console.log(token);
     try {
-      let res = await axios.post("https://localhost:7177/api/recap/journals", {
-        startDate: startDate,
-        endDate: endDate,
-        userID: userID,
-      });
+      let res = await axios.post(
+        "https://localhost:7177/api/recap/journals",
+        {
+          startDate: startDate,
+          endDate: endDate,
+          userID: userID,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       setJournals(res.data);
       console.log(res);
       console.log(trigger);
@@ -163,13 +171,23 @@ export const GetWraps = () => {
   const ApiGetAverages = async () => {
     const startDate = months[`${month}`].begin;
     const endDate = months[`${month}`].end;
+
     console.log("startdAte", startDate, "endDate", endDate);
     try {
-      let res = await axios.post("https://localhost:7177/api/recap", {
-        startDate: startDate,
-        endDate: endDate,
-        userID: userID,
-      });
+      let res = await axios.post(
+        "https://localhost:7177/api/recap",
+        {
+          startDate: startDate,
+          endDate: endDate,
+          userID: userID,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       console.log("api averages", res);
       setAverages({
         overall: res.data.emotionAverages.Overall,
@@ -265,70 +283,44 @@ export const GetWraps = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <StyledTableCell style={{ fontSize: 20 }}>
-                    Emotion
-                  </StyledTableCell>
+                  <StyledTableCell style={{ fontSize: 20 }}>Emotion</StyledTableCell>
                   <StyledTableCell>{selectMonth()}</StyledTableCell>
                 </TableHead>
                 <TableBody>
                   <StyledTableRow>
                     <StyledTableCell>Overall</StyledTableCell>
                     <StyledTableCell>
-                      {averages.overall ? (
-                        averages.overall.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
+                      {averages.overall ? averages.overall.toFixed(2) : <CircularProgress />}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Sadness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.sadness ? (
-                        averages.sadness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
+                      {averages.sadness ? averages.sadness.toFixed(2) : <CircularProgress />}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Depression</StyledTableCell>
                     <StyledTableCell>
-                      {averages.depression ? (
-                        averages.depression.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
+                      {averages.depression ? averages.depression.toFixed(2) : <CircularProgress />}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Happiness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.happiness ? (
-                        averages.happiness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
+                      {averages.happiness ? averages.happiness.toFixed(2) : <CircularProgress />}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Loneliness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.loneliness ? (
-                        averages.loneliness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
+                      {averages.loneliness ? averages.loneliness.toFixed(2) : <CircularProgress />}
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell>Sadness</StyledTableCell>
                     <StyledTableCell>
-                      {averages.sadness ? (
-                        averages.sadness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
+                      {averages.sadness ? averages.sadness.toFixed(2) : <CircularProgress />}
                     </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
@@ -359,41 +351,11 @@ export const GetWraps = () => {
                 stroke="white"
                 strokeWidth={2}
               />
-              <Line
-                name="anxiety"
-                type="monotone"
-                dataKey="ratings.anxiety"
-                stroke="#ab0202"
-                strokeWidth={2}
-              />
-              <Line
-                name="loneliness"
-                type="monotone"
-                dataKey="ratings.loneliness"
-                stroke="#038007"
-                strokeWidth={2}
-              />
-              <Line
-                name="depression"
-                type="monotone"
-                dataKey="ratings.depression"
-                stroke="#026969"
-                strokeWidth={2}
-              />
-              <Line
-                name="happiness"
-                type="monotone"
-                dataKey="ratings.happiness"
-                stroke="#f5c402"
-                strokeWidth={2}
-              />
-              <Line
-                name="sadness"
-                type="monotone"
-                dataKey="ratings.sadness"
-                stroke="#020ff5"
-                strokeWidth={2}
-              />
+              <Line name="anxiety" type="monotone" dataKey="ratings.anxiety" stroke="#ab0202" strokeWidth={2} />
+              <Line name="loneliness" type="monotone" dataKey="ratings.loneliness" stroke="#038007" strokeWidth={2} />
+              <Line name="depression" type="monotone" dataKey="ratings.depression" stroke="#026969" strokeWidth={2} />
+              <Line name="happiness" type="monotone" dataKey="ratings.happiness" stroke="#f5c402" strokeWidth={2} />
+              <Line name="sadness" type="monotone" dataKey="ratings.sadness" stroke="#020ff5" strokeWidth={2} />
 
               <Legend
                 verticalAlign="bottom"
