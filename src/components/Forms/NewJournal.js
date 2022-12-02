@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { Grid, Box, Card, Typography } from "@material-ui/core";
 
-import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
-import HistoryIcon from "@mui/icons-material/History";
-
 import useStyles from "../../styles";
 
 import { IconButton } from "@mui/material";
@@ -28,7 +25,7 @@ export const NewJournal = () => {
       icon: "100px",
     };
     const desktop = {
-      icon: "250px",
+      icon: "200px",
     };
     if (isMobile) {
       return mobile;
@@ -61,10 +58,14 @@ export const NewJournal = () => {
                 navigate("/newjournals/full");
               }}
             >
-              <StarBorderIcon style={{ fontSize: iconSize().icon }} />
-              <Typography variant="h3">+</Typography>
+              <StarBorderIcon
+                style={{ fontSize: iconSize().icon, color: "black" }}
+              />
+              <Typography variant="h3" style={{ color: "black" }}>
+                +
+              </Typography>
               <DriveFileRenameOutlineIcon
-                style={{ fontSize: iconSize().icon }}
+                style={{ fontSize: iconSize().icon, color: "black" }}
               />
             </IconButton>
           </Box>
@@ -88,7 +89,9 @@ export const NewJournal = () => {
                 navigate("/newjournals/standard");
               }}
             >
-              <StarBorderIcon style={{ fontSize: iconSize().icon }} />
+              <StarBorderIcon
+                style={{ fontSize: iconSize().icon, color: "black" }}
+              />
             </IconButton>
           </Box>
         </Card>
@@ -111,8 +114,12 @@ export const NewJournal = () => {
                 navigate("/newjournals/brief");
               }}
             >
-              <TimesOneMobiledataIcon style={{ fontSize: iconSize().icon }} />
-              <StarBorderIcon style={{ fontSize: iconSize().icon }} />
+              <TimesOneMobiledataIcon
+                style={{ fontSize: iconSize().icon, color: "black" }}
+              />
+              <StarBorderIcon
+                style={{ fontSize: iconSize().icon, color: "black" }}
+              />
             </IconButton>
           </Box>
         </Card>

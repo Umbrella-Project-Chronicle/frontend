@@ -29,7 +29,7 @@ export const LandingPage = () => {
       icon: "150px",
     };
     const desktop = {
-      icon: "250px",
+      icon: "200px",
     };
     if (isMobile) {
       return mobile;
@@ -81,7 +81,9 @@ export const LandingPage = () => {
                 navigate("/newjournals");
               }}
             >
-              <HistoryEduIcon style={{ fontSize: iconSize().icon }} />
+              <HistoryEduIcon
+                style={{ fontSize: iconSize().icon, color: "black" }}
+              />
             </IconButton>
           </Box>
         </Card>
@@ -104,7 +106,9 @@ export const LandingPage = () => {
                 navigate("/wraps");
               }}
             >
-              <HistoryIcon style={{ fontSize: iconSize().icon }} />
+              <HistoryIcon
+                style={{ fontSize: iconSize().icon, color: "black" }}
+              />
             </IconButton>
           </Box>
         </Card>
@@ -127,7 +131,9 @@ export const LandingPage = () => {
                 navigate("/journals");
               }}
             >
-              <ManageSearchIcon style={{ fontSize: iconSize().icon }} />
+              <ManageSearchIcon
+                style={{ fontSize: iconSize().icon, color: "black" }}
+              />
             </IconButton>
           </Box>
         </Card>
