@@ -4,6 +4,7 @@ import { Grid, Card, CardHeader, Typography, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { DateRange } from "react-date-range";
+import { useMediaQuery } from "react-responsive";
 
 const { DateTime } = require("luxon");
 
@@ -12,11 +13,37 @@ export function GetJournals() {
   const email = localStorage.getItem("email");
   const userID = localStorage.getItem("id");
 
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isMobile = useMediaQuery({
+    query: "(max-width: 600px)",
+  });
+
+  const doesCalendarShow = () => {
+    const desktop = {
+      calendar: true,
+    };
+    const mobile = {
+      calendar: false,
+    };
+
+    if (isDesktop) {
+      return desktop;
+    } else {
+      return mobile;
+    }
+  };
+
+  console.log(doesCalendarShow().calendar);
+
   const THREE_MONTHS_AGO = new Date();
   THREE_MONTHS_AGO.setMonth(THREE_MONTHS_AGO.getMonth() - 3);
   const [journals, setJournals] = useState(null);
-  const [viewCalender, setViewCalender] = useState(false);
-  const [viewCalenderButton, setViewCalenderButton] = useState(false);
+  const [viewCalendar, setViewCalendar] = useState(doesCalendarShow().calendar);
+  const [viewCalendarButton, setViewCalendarButton] = useState(
+    doesCalendarShow().calendar
+  );
 
   const [state, setState] = useState([
     {
@@ -57,7 +84,7 @@ export function GetJournals() {
       console.log(res);
 
       if (res.data.length > 0) {
-        setViewCalenderButton(true);
+        setViewCalendarButton(true);
       }
     } catch (error) {
       console.log(error);
@@ -84,9 +111,9 @@ export function GetJournals() {
         maxWidth={400}
         style={{ backgroundColor: "gray", borderRadius: 1 }}
       >
-        {viewCalenderButton ? (
+        {viewCalendarButton ? (
           <Grid>
-            {viewCalender ? (
+            {viewCalendar ? (
               <Box justifyContent="center">
                 <DateRange
                   editableDateInputs={true}
@@ -94,12 +121,12 @@ export function GetJournals() {
                   moveRangeOnFirstSelection={false}
                   ranges={state}
                 />
-                <Button onClick={() => setViewCalender(false)}>Close</Button>
+                <Button onClick={() => setViewCalendar(false)}>Close</Button>
               </Box>
             ) : (
               <Box>
-                <Button onClick={() => setViewCalender(true)}>
-                  View Calender
+                <Button onClick={() => setViewCalendar(true)}>
+                  View Calendar
                 </Button>
               </Box>
             )}
