@@ -11,6 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import { styled } from "@mui/material/styles";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
@@ -153,6 +154,7 @@ function ResponsiveAppBar(props) {
 
                 <Typography
                   variant="h5"
+                  fontSize={12}
                   noWrap
                   component="a"
                   href="/home"
@@ -187,14 +189,6 @@ function ResponsiveAppBar(props) {
                   >
                     Wrap
                   </Button>
-                  {/* <Button
-                    onClick={() => {
-                      handleCloseNavMenu("/stats");
-                    }}
-                    sx={{ my: 2, color: "white", display: "block" }}
-                  >
-                    stats
-                  </Button> */}
                 </Box>
 
                 <Button
@@ -218,10 +212,7 @@ function ResponsiveAppBar(props) {
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/2.jpg"
-                      />
+                      <AccountCircleIcon style={{ fontSize: "50px" }} />
                     </IconButton>
                   </Tooltip>
                   <Menu
