@@ -154,6 +154,7 @@ function ResponsiveAppBar(props) {
 
                 <Typography
                   variant="h5"
+                  fontSize={12}
                   noWrap
                   component="a"
                   href="/home"
@@ -168,11 +169,7 @@ function ResponsiveAppBar(props) {
                     textDecoration: "none",
                   }}
                 >
-                  <img
-                    src={Logo}
-                    alt="logo"
-                    style={{ maxWidth: 60, maxHeight: 60 }}
-                  />
+                  CHRONICLE
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                   <Button
