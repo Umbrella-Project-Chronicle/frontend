@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Card, CardHeader, Typography, Button } from "@mui/material";
+import {
+  Grid,
+  Card,
+  CardHeader,
+  Typography,
+  Button,
+  Modal,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { DateRange } from "react-date-range";
 import { useMediaQuery } from "react-responsive";
+import { EditJournal } from "./EditJournal.js";
+import useStyles from "../../styles.js";
 
 const { DateTime } = require("luxon");
 
@@ -12,12 +21,15 @@ export function GetJournals() {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const email = localStorage.getItem("email");
   const userID = localStorage.getItem("id");
+  const [editJournalTrigger, setEditJournalTrigger] = useState(false);
+
+  const classes = useStyles();
 
   const isDesktop = useMediaQuery({
-    query: "(min-width: 1224px)",
+    query: "(min-width: 1025px)",
   });
   const isMobile = useMediaQuery({
-    query: "(max-width: 600px)",
+    query: "(max-width: 767px)",
   });
 
   const doesCalendarShow = () => {
@@ -45,6 +57,11 @@ export function GetJournals() {
     doesCalendarShow().calendar
   );
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [modalData, setModalData] = useState(null);
+
   const [state, setState] = useState([
     {
       startDate: THREE_MONTHS_AGO,
@@ -53,25 +70,6 @@ export function GetJournals() {
     },
   ]);
   const [trigger, setTrigger] = useState(false);
-
-  // const GetUserProfile = async () => {
-  //   console.log("getuserprofile");
-  //   // needs to be set in each api call in order to assure the variable is se
-  //   try {
-  //     const res = await axios.get(
-  //       "https://localhost:7177/api/users/search/" + email,
-  //       {
-  //         headers: {
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-  //     localStorage.setItem("id", res.data.id);
-  //     setTrigger(!trigger);
-  //   } catch (error) {
-  //     console.log("ERROR: failed fetching user profile from api", error);
-  //   }
-  // };
 
   const GetMonthofJournals = async () => {
     try {
@@ -91,9 +89,11 @@ export function GetJournals() {
     }
   };
 
-  // useEffect(() => {
-  //   GetUserProfile();
-  // }, []);
+  function GetJournalType(j) {
+    if (j.journalType === 1) return "Brief";
+    else if (j.journalType === 2) return "Standard";
+    else if (j.journalType === 3) return "Full";
+  }
 
   useEffect(() => {
     GetMonthofJournals();
@@ -102,6 +102,18 @@ export function GetJournals() {
   useEffect(() => {
     GetMonthofJournals();
   }, [state]);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
     <Grid>
@@ -145,41 +157,72 @@ export function GetJournals() {
         {journals ? (
           journals.map((journal, i) => (
             <Grid item xs={12} sm={6} md={3}>
-              <CardHeader
-                key={journal.date}
-                title={DateTime.fromISO(journal.date).toLocaleString(
-                  DateTime.DATETIME_MED
-                )}
-              />
+              <CardHeader key={journal.date} />
 
               <Card
                 direction="column"
                 justify="center"
                 sx={{ p: 2, m: 3, maxWidth: 300 }}
               >
-                <ul key={i}>
-                  <Typography>Date: {journal.date}</Typography>
-                  <Typography>type: {journal.journalType}</Typography>
-                  <Typography noWrap>Text: {journal.response}</Typography>
-                  <Typography>Rating:</Typography>
+                <Typography>
+                  Date:{" "}
+                  {DateTime.fromISO(journal.date).toLocaleString(
+                    DateTime.DATETIME_MED
+                  )}{" "}
+                </Typography>
+                <Button
+                  onClick={() => {
+                    setModalData(journal);
+                    handleOpen();
+                  }}
+                >
+                  Edit Journal
+                </Button>
+                <Modal open={open} onClose={handleClose}>
+                  <Box className={classes.modal}>
+                    <EditJournal journal={modalData} />
+                  </Box>
+                </Modal>
+
+                <Typography>Journal Type: {GetJournalType(journal)}</Typography>
+                <Typography>Ratings:</Typography>
+                <ul className="ratingsUl" key={i}>
+                  <Typography>ID: {journal.id}</Typography>
                   <Typography>Overall: {journal.ratings.overall}</Typography>
-                  <Typography>Anxiety: {journal.ratings.anxiety}</Typography>
-                  <Typography>
-                    Depression: {journal.ratings.depression}
-                  </Typography>
-                  <Typography>
-                    Happiness: {journal.ratings.happiness}
-                  </Typography>
-                  <Typography>
-                    Lonliness: {journal.ratings.lonliness}
-                  </Typography>
-                  <Typography>Sadness: {journal.ratings.sadness}</Typography>
+                  {journal.journalType >= 2 ? (
+                    <div>
+                      <Typography>
+                        Anxiety: {journal.ratings.anxiety}
+                      </Typography>
+                      <Typography>
+                        Depression: {journal.ratings.depression}
+                      </Typography>
+                      <Typography>
+                        Happiness: {journal.ratings.happiness}
+                      </Typography>
+                      <Typography>
+                        Loneliness: {journal.ratings.loneliness}
+                      </Typography>
+                      <Typography>
+                        Sadness: {journal.ratings.sadness}
+                      </Typography>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </ul>
+                {journal.journalType === 3 ? (
+                  <div>
+                    <Typography>Text: {journal.response}</Typography>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </Card>
             </Grid>
           ))
         ) : (
-          <div> nothing</div>
+          <div> No Journals Exists </div>
         )}
       </Grid>
     </Grid>

@@ -1,21 +1,38 @@
-import React, { useState } from "react";
 import axios from "axios";
-import { Box, Button, Grid, Typography, Divider } from "@mui/material";
+import React, { useState } from "react";
+import {
+  TextField,
+  Box,
+  Button,
+  Grid,
+  Typography,
+  Divider,
+  Modal,
+} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
-import useStyles from "../../../styles.js";
+import useStyles from "/Users/eliotpitman/Desktop/umbrella/frontend/src/styles.js";
+
 import { useMediaQuery } from "react-responsive";
 
-export const Standard = () => {
-  const [success, setSuccess] = useState(false);
-  const [overall, setOverall] = useState(5);
-  const [happiness, setHappiness] = useState(5);
-  const [depression, setDepression] = useState(5);
-  const [anxiety, setAnxiety] = useState(5);
-  const [sadness, setSadness] = useState(5);
-  const [loneliness, setLoneliness] = useState(5);
-  const token = JSON.parse(localStorage.getItem("userToken"));
+export const EditJournal = ({ journal }) => {
+  const [updatedText, setUpdatedText] = useState(journal.response);
   const userID = localStorage.getItem("id");
+  const token = JSON.parse(localStorage.getItem("userToken"));
+  const [updatedOverall, setUpdatedOverall] = useState(journal.ratings.overall);
+  const [updatedHappiness, setUpdatedHappiness] = useState(
+    journal.ratings.happiness
+  );
+  const [updatedDepression, setUpdatedDepression] = useState(
+    journal.ratings.depression
+  );
+  const [updatedAnxiety, setUpdatedAnxiety] = useState(journal.ratings.anxiety);
+  const [updatedSadness, setUpdatedSadness] = useState(journal.ratings.sadness);
+  const [updatedLoneliness, setUpdatedLoneliness] = useState(
+    journal.ratings.loneliness
+  );
+  const [success, setSuccess] = useState(false);
+
   const classes = useStyles();
   const isDesktop = useMediaQuery({
     query: "(min-width: 1025px)",
@@ -38,23 +55,27 @@ export const Standard = () => {
       return desktop;
     }
   };
+  function valuetext(value) {
+    return value;
+  }
 
-  const postJournal = () => {
+  const updateJournal = () => {
+    console.log(journal.id);
     axios
-      .post(
-        "https://localhost:7177/api/journal",
+      .put(
+        "https://localhost:7177/api/journal/" + journal.id,
         {
-          JournalType: 2,
+          JournalType: journal.journalType,
           UserId: userID,
           Ratings: {
-            Overall: overall,
-            Happiness: happiness,
-            Depression: depression,
-            Anxiety: anxiety,
-            Sadness: sadness,
-            Loneliness: loneliness,
+            Overall: updatedOverall,
+            Happiness: updatedHappiness,
+            Depression: updatedDepression,
+            Anxiety: updatedAnxiety,
+            Sadness: updatedSadness,
+            Loneliness: updatedLoneliness,
           },
-          Response: "",
+          Response: updatedText,
         },
         {
           headers: {
@@ -64,20 +85,23 @@ export const Standard = () => {
         }
       )
       .then((res) => {
+        console.log("journal updated", res);
         setSuccess(true);
-        console.log("journal post", res);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  function valuetext(value) {
-    return value;
-  }
-
   return (
     <Grid>
+      <Box>
+        <button
+          onClick={() => {
+            updateJournal();
+          }}
+        ></button>
+      </Box>
       <Grid
         sx={{
           mt: 4,
@@ -98,10 +122,11 @@ export const Standard = () => {
               textAlign: "center",
             }}
           >
-            Standard Journal
+            Full Journal
           </Typography>
         </Box>
         <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
+        {journal.id}
         <Box
           sx={{
             backgroundColor: "gray",
@@ -122,22 +147,19 @@ export const Standard = () => {
               m: 3,
               borderRadius: 1,
             }}
-            sm={{
-              width: "100%",
-            }}
           >
             <Typography className={classes.alignItems}>Overall</Typography>
             <Slider
               aria-label="rating"
-              defaultValue={5}
+              defaultValue={journal.ratings.overall}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={1}
               marks
               min={1}
               max={10}
-              onChange={(event) => setOverall(event.target.value)}
-              value={overall}
+              onChange={(event) => setUpdatedOverall(event.target.value)}
+              value={updatedOverall}
             />
           </Box>
 
@@ -153,15 +175,15 @@ export const Standard = () => {
             <Typography className={classes.alignItems}>Happiness</Typography>
             <Slider
               aria-label="rating"
-              defaultValue={5}
+              defaultValue={updatedHappiness}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={1}
               marks
               min={1}
               max={10}
-              onChange={(event) => setHappiness(event.target.value)}
-              value={happiness}
+              onChange={(event) => setUpdatedHappiness(event.target.value)}
+              value={updatedHappiness}
             />
           </Box>
           <Box
@@ -176,15 +198,15 @@ export const Standard = () => {
             <Typography className={classes.alignItems}>Depression</Typography>
             <Slider
               aria-label="rating"
-              defaultValue={5}
+              defaultValue={updatedDepression}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={1}
               marks
               min={1}
               max={10}
-              onChange={(event) => setDepression(event.target.value)}
-              value={depression}
+              onChange={(event) => setUpdatedDepression(event.target.value)}
+              value={updatedDepression}
             />
           </Box>
           <Box
@@ -199,15 +221,15 @@ export const Standard = () => {
             <Typography className={classes.alignItems}>Anxiety</Typography>
             <Slider
               aria-label="rating"
-              defaultValue={5}
+              defaultValue={updatedAnxiety}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={1}
               marks
               min={1}
               max={10}
-              onChange={(event) => setAnxiety(event.target.value)}
-              value={anxiety}
+              onChange={(event) => setUpdatedAnxiety(event.target.value)}
+              value={updatedAnxiety}
             />
           </Box>
           <Box
@@ -222,15 +244,15 @@ export const Standard = () => {
             <Typography className={classes.alignItems}>Sadness</Typography>
             <Slider
               aria-label="rating"
-              defaultValue={5}
+              defaultValue={updatedSadness}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={1}
               marks
               min={1}
               max={10}
-              onChange={(event) => setSadness(event.target.value)}
-              value={sadness}
+              onChange={(event) => setUpdatedSadness(event.target.value)}
+              value={updatedSadness}
             />
           </Box>
           <Box
@@ -245,18 +267,35 @@ export const Standard = () => {
             <Typography className={classes.alignItems}>Loneliness</Typography>
             <Slider
               aria-label="rating"
-              defaultValue={5}
+              defaultValue={updatedLoneliness}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={1}
               marks
               min={1}
               max={10}
-              onChange={(event) => setLoneliness(event.target.value)}
-              value={loneliness}
+              onChange={(event) => setUpdatedLoneliness(event.target.value)}
+              value={updatedLoneliness}
             />
           </Box>
-
+          <Box
+            sx={{
+              width: ratingSize().width,
+              boxShadow: 4,
+              p: 3,
+              backgroundColor: "gray",
+              borderRadius: 1,
+            }}
+          >
+            <TextField
+              // autoComplete
+              placeholder={journal.response}
+              multiline
+              fullWidth
+              onChange={(event) => setUpdatedText(event.target.value)}
+              value={updatedText}
+            />
+          </Box>
           <Box
             sx={{
               backgroundColor: "black",
@@ -265,16 +304,8 @@ export const Standard = () => {
               width: "100%",
             }}
             className={classes.alignItems}
-          >
-            <Button
-              onClick={() => {
-                postJournal();
-              }}
-            >
-              Submit Journal
-            </Button>
-          </Box>
-          {success && <Alert severity="success">Submitted Journal!</Alert>}
+          ></Box>
+          {success && <Alert severity="success">Updated Journal!</Alert>}
         </Box>
       </Grid>
     </Grid>

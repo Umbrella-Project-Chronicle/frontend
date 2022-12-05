@@ -11,6 +11,7 @@ import {
 import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
 import useStyles from "../../../styles.js";
+import { useMediaQuery } from "react-responsive";
 
 export const Full = () => {
   const [text, setText] = useState("");
@@ -24,6 +25,27 @@ export const Full = () => {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const userID = localStorage.getItem("id");
   const classes = useStyles();
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1025px)",
+  });
+  const isMobile = useMediaQuery({
+    query: "(max-width: 767px)",
+  });
+
+  const ratingSize = () => {
+    const mobile = {
+      width: "100%",
+    };
+    const desktop = {
+      width: "44%",
+    };
+
+    if (isMobile) {
+      return mobile;
+    } else {
+      return desktop;
+    }
+  };
 
   const postJournal = () => {
     axios
@@ -76,15 +98,33 @@ export const Full = () => {
       >
         <Box sx={{ justifyContent: "center" }}>
           <Typography
-            sx={{ fontWeight: "bold", fontSize: 40, letterSpacing: 6 }}
+            sx={{
+              fontWeight: "bold",
+              fontSize: 40,
+              letterSpacing: 12,
+              justifyContent: "center",
+              textAlign: "center",
+            }}
           >
             Full Journal
           </Typography>
         </Box>
         <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
-        <Box sx={{ backgroundColor: "gray", boxShadow: 4 }}>
+        <Box
+          sx={{
+            backgroundColor: "gray",
+            boxShadow: 4,
+            display: "flex",
+            flex: 1,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "flex-start",
+            justifyContent: "center",
+          }}
+        >
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -108,6 +148,7 @@ export const Full = () => {
 
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -130,6 +171,7 @@ export const Full = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -152,6 +194,7 @@ export const Full = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -174,6 +217,7 @@ export const Full = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -196,6 +240,7 @@ export const Full = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -218,6 +263,7 @@ export const Full = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               boxShadow: 4,
               p: 3,
               backgroundColor: "gray",
@@ -234,7 +280,12 @@ export const Full = () => {
             />
           </Box>
           <Box
-            sx={{ backgroundColor: "black", boxShadow: 4, borderRadius: 1 }}
+            sx={{
+              backgroundColor: "black",
+              boxShadow: 4,
+              borderRadius: 1,
+              width: "100%",
+            }}
             className={classes.alignItems}
           >
             <Button

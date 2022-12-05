@@ -21,6 +21,7 @@ import { GetWraps } from "./Components/Forms/GetWraps.js";
 import { GetJournals } from "./Components/Forms/GetJournals";
 import { LandingPage } from "./Components/Forms/LandingPage.js";
 import { AboutCards } from "./Components/Forms/About.js";
+import { EditJournal } from "./Components/Forms/EditJournal.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -126,6 +127,15 @@ function App() {
                 <Grid>
                   <ResponsiveAppBar />
                   <GetJournals />
+                </Grid>
+              }
+            ></Route>
+            <Route
+              path="/test"
+              element={
+                <Grid>
+                  <ResponsiveAppBar />
+                  <EditJournal />
                 </Grid>
               }
             ></Route>
