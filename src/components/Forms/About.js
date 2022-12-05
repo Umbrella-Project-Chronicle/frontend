@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button, Box, Grid, Card } from "@mui/material";
+import { Paper, Button, Box, Grid, Card, Modal } from "@mui/material";
 import useStyles from "../../styles";
 import { CardContent, Typography, IconButton } from "@material-ui/core";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -10,9 +10,12 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 import { OverlayTrigger } from "react-bootstrap";
 
-export const AboutCards = () => {
-  const [trigger, setTrigger] = useState(true);
+export const AboutCards = ({ isLandingPage }) => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const items = [
     {
       title: "Welcome to Chronicle!",
@@ -62,40 +65,59 @@ export const AboutCards = () => {
   ];
 
   return (
-    <Grid minWidth={300} sx={{ position: "fixed" }}>
-      {trigger ? (
-        <Carousel height="1000px" navButtonsAlwaysVisible="true">
-          {items.map((item, i) => (
-            <Grid>
-              <Card
-                sx={{
-                  background: "rgba(240, 240, 240,1.0)",
-                  maxWidth: 300,
-                }}
-                className={classes.alignCarItems}
-              >
-                <CardContent>
-                  <Box
-                    onClick={() => {
-                      setTrigger(false);
-                      localStorage.removeItem("firstTime");
-                    }}
-                  >
-                    <CancelIcon />
-                  </Box>
-                  <Typography sx={{ fontSize: 14 }}>{item.title}</Typography>
-                  <Typography variant="h4"> {item.subtitle}</Typography>
-                  <Typography>{item.body}</Typography>
-                  <Grid>{item.icon}</Grid>
-                  <Grid>{item.icon2}</Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Carousel>
+    <Box>
+      {isLandingPage ? (
+        <Grid>
+          <Button onClick={handleOpen}>Which is Which?</Button>
+          <Modal open={open} onClose={handleClose}>
+            <Box className={classes.modal}>
+              <Carousel>
+                {items.map((item) => (
+                  <Grid>
+                    <Card
+                      sx={{
+                        background: "rgba(240, 240, 240,1.0)",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography sx={{ fontSize: 14 }}>
+                          {item.title}
+                        </Typography>
+                        <Typography variant="h4"> {item.subtitle}</Typography>
+                        <Typography>{item.body}</Typography>
+                        <Grid>{item.icon}</Grid>
+                        <Grid>{item.icon2}</Grid>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Carousel>
+            </Box>
+          </Modal>
+        </Grid>
       ) : (
-        <></>
+        <Box className={classes.aboutModal}>
+          <Carousel>
+            {items.map((item) => (
+              <Grid>
+                <Card
+                  sx={{
+                    background: "rgba(240, 240, 240,1.0)",
+                  }}
+                >
+                  <CardContent>
+                    <Typography sx={{ fontSize: 14 }}>{item.title}</Typography>
+                    <Typography variant="h4"> {item.subtitle}</Typography>
+                    <Typography>{item.body}</Typography>
+                    <Grid>{item.icon}</Grid>
+                    <Grid>{item.icon2}</Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Carousel>
+        </Box>
       )}
-    </Grid>
+    </Box>
   );
 };

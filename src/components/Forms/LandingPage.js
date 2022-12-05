@@ -25,7 +25,6 @@ export const LandingPage = () => {
       return false;
     }
   };
-  const [isFirstTime, setIsFirstTime] = useState(check());
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -73,7 +72,7 @@ export const LandingPage = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center">
-      {isFirstTime ? <AboutCards /> : <></>}
+      <Box item>{check() ? <AboutCards isLandingPage="true" /> : <></>}</Box>
       <Grid item xs={10} sm={12} md={12} lg={12}>
         <Card
           style={{
