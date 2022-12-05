@@ -28,7 +28,9 @@ export const GetWraps = () => {
   const userID = localStorage.getItem("id");
   const [journals, setJournals] = useState(null);
   const [trigger, setTrigger] = useState(false);
-  const [month, setMonth] = useState(DateTime.now().toFormat("MMMM"));
+  const [month, setMonth] = useState(
+    DateTime.now().minus({ month: 1 }).toFormat("MMMM")
+  );
   const [year, setYear] = useState(DateTime.now().toFormat("yyyy"));
   const [backgroundColorTrigger, setBackgroundColorTrigger] = useState(false);
   const [averages, setAverages] = useState({
