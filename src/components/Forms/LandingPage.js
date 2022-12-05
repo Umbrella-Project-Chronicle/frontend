@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Box, Card, Typography } from "@material-ui/core";
 import axios from "axios";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
@@ -7,14 +7,25 @@ import useStyles from "../../styles";
 
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import { useMediaQuery } from "react-responsive";
+import { AboutCards } from "./About";
 
 export const LandingPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const classes = useStyles();
   const email = localStorage.getItem("email");
   const token = JSON.parse(localStorage.getItem("userToken"));
-  const navigate = useNavigate();
+  const check = () => {
+    if (localStorage.getItem("firstTime")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const [isFirstTime, setIsFirstTime] = useState(check());
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -62,6 +73,7 @@ export const LandingPage = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center">
+      {isFirstTime ? <AboutCards /> : <></>}
       <Grid item xs={10} sm={12} md={12} lg={12}>
         <Card
           style={{

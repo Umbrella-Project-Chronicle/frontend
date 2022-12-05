@@ -72,6 +72,10 @@ function SignUp() {
   const navigate = useNavigate();
 
   const goToWelcome = (email) => {
+    localStorage.setItem(
+      "firstTime",
+      "hello! Welcome to Chronicle, checking your local storage i see, very clever"
+    );
     navigate("/home");
   };
 

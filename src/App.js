@@ -8,12 +8,7 @@ import { useState, useEffect } from "react";
 import GetToken from "./Components/Forms/CachedToken";
 import SignOut from "./Components/Forms/SignOut.js";
 import ResponsiveAppBar from "./Components/Forms/AppBar.js";
-import {
-  WrapCards,
-  ProfileCards,
-  AboutCards,
-  HelpCards,
-} from "./Components/Forms/Cards.js";
+import { ProfileCards, HelpCards } from "./Components/Forms/Cards.js";
 import JournalCards from "./Components/Forms/JournalCards.js";
 import { NewJournal } from "./Components/Forms/NewJournal";
 import { Grid, Box } from "@mui/material";
@@ -25,6 +20,7 @@ import { Brief } from "./Components/Forms/NewJournals/Brief.js";
 import { GetWraps } from "./Components/Forms/GetWraps.js";
 import { GetJournals } from "./Components/Forms/GetJournals";
 import { LandingPage } from "./Components/Forms/LandingPage.js";
+import { AboutCards } from "./Components/Forms/About.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -108,7 +104,6 @@ function App() {
               path="/about"
               element={
                 <Grid>
-                  {" "}
                   <ResponsiveAppBar />
                   <AboutCards />
                 </Grid>

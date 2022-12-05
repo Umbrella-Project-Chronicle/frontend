@@ -24,6 +24,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  alignCarItems: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    marginTop: "100px",
+    justifyContent: "space-between",
+    minHeight: 500,
+    minWidth: 500,
+  },
 }));
 
 export default useStyles;
