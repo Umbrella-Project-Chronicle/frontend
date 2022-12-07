@@ -53,16 +53,18 @@ const useStyles = makeStyles((theme) => ({
     p: 4,
   },
   journalModal: {
-    // display: "none" /* Hidden by default */,
+    // display: "block" /* Hidden by default */,
+
     position: "fixed" /* Stay in place */,
     zIndex: "1" /* Sit on top */,
     left: "25%",
     top: "25%",
     width: "50%" /* Full width */,
-    height: "50%" /* Full height */,
+    height: "70%" /* Full height */,
     overflow: "auto" /* Enable scroll if needed */,
-    backgroundColor: "rgb(0,0,0)" /* Fallback color */,
-    backgroundColor: "rgba(0,0,0,0.4)" /* Black w/ opacity */,
+    backgroundColor: "gray" /* Fallback color */,
+    backgroundColor: "gray" /* Black w/ opacity */,
+    borderRadius: 10,
   },
   mobileJournalModal: {
     // display: "none" /* Hidden by default */,
@@ -73,8 +75,12 @@ const useStyles = makeStyles((theme) => ({
     width: "75%" /* Full width */,
     height: "75%" /* Full height */,
     overflow: "auto" /* Enable scroll if needed */,
-    backgroundColor: "rgb(0,0,0)" /* Fallback color */,
-    backgroundColor: "rgba(0,0,0,0.4)" /* Black w/ opacity */,
+    backgroundColor: "gray" /* Fallback color */,
+    backgroundColor: "gray" /* Black w/ opacity */,
+    borderRadius: 10,
+  },
+  isBlurred: {
+    filter: "blur(2px)",
   },
 }));
 

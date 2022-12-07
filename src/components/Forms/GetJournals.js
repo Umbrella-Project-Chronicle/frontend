@@ -116,7 +116,6 @@ export function GetJournals() {
   const modal = () => {
     return (
       <Box className={sizing().className}>
-        <EditJournal journal={modalData} />
         <Box>
           <Button
             onClick={() => {
@@ -126,115 +125,126 @@ export function GetJournals() {
             CLOSE
           </Button>
         </Box>
+        <EditJournal journal={modalData} />
       </Box>
     );
+  };
+
+  const modalBlur = () => {
+    if (open) {
+      return classes.isBlurred;
+    }
   };
 
   return (
     <Grid>
       <Grid>{open === true ? modal() : <></>}</Grid>
-      <Box
-        display={"flex"}
-        justifyContent="center"
-        maxWidth={400}
-        style={{ backgroundColor: "gray", borderRadius: 1 }}
-      >
-        {viewCalendarButton ? (
-          <Grid>
-            {viewCalendar ? (
-              <Box justifyContent="center">
-                <DateRange
-                  editableDateInputs={true}
-                  onChange={(item) => setState([item.selection])}
-                  moveRangeOnFirstSelection={false}
-                  ranges={state}
-                />
-                <Button onClick={() => setViewCalendar(false)}>Close</Button>
-              </Box>
-            ) : (
-              <Box>
-                <Button onClick={() => setViewCalendar(true)}>
-                  View Calendar
-                </Button>
-              </Box>
-            )}
-          </Grid>
-        ) : (
-          <></>
-        )}
-      </Box>
+      <Grid className={modalBlur()}>
+        <Box
+          display={"flex"}
+          justifyContent="center"
+          maxWidth={400}
+          style={{ backgroundColor: "gray", borderRadius: 1 }}
+        >
+          {viewCalendarButton ? (
+            <Grid>
+              {viewCalendar ? (
+                <Box justifyContent="center">
+                  <DateRange
+                    editableDateInputs={true}
+                    onChange={(item) => setState([item.selection])}
+                    moveRangeOnFirstSelection={false}
+                    ranges={state}
+                  />
+                  <Button onClick={() => setViewCalendar(false)}>Close</Button>
+                </Box>
+              ) : (
+                <Box>
+                  <Button onClick={() => setViewCalendar(true)}>
+                    View Calendar
+                  </Button>
+                </Box>
+              )}
+            </Grid>
+          ) : (
+            <></>
+          )}
+        </Box>
 
-      <Grid container spacing={1}>
-        {journals && journals.length === 0 ? (
-          <div>Looks like you haven't journalled yet</div>
-        ) : (
-          <></>
-        )}
-        {journals ? (
-          journals.map((journal, i) => (
-            <Grid item xs={12} sm={6} md={3}>
-              <CardHeader key={journal.date} />
+        <Grid container spacing={1}>
+          {journals && journals.length === 0 ? (
+            <div>Looks like you haven't journalled yet</div>
+          ) : (
+            <></>
+          )}
+          {journals ? (
+            journals.map((journal, i) => (
+              <Grid item xs={12} sm={6} md={3}>
+                <CardHeader key={journal.date} />
 
-              <Card
-                direction="column"
-                justify="center"
-                sx={{ p: 2, m: 3, maxWidth: 300 }}
-              >
-                <Typography>
-                  Date:{" "}
-                  {DateTime.fromISO(journal.date).toLocaleString(
-                    DateTime.DATETIME_MED
-                  )}{" "}
-                </Typography>
-                <Button
-                  onClick={() => {
-                    setModalData(journal);
-                    handleOpen();
-                  }}
+                <Card
+                  direction="column"
+                  justify="center"
+                  sx={{ p: 2, m: 3, maxWidth: 300 }}
                 >
-                  Edit Journal
-                </Button>
+                  <Typography>
+                    Date:{" "}
+                    {DateTime.fromISO(journal.date).toLocaleString(
+                      DateTime.DATETIME_MED
+                    )}{" "}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      setModalData(journal);
+                      handleOpen();
+                    }}
+                  >
+                    Edit Journal
+                  </Button>
 
-                <Typography>Journal Type: {GetJournalType(journal)}</Typography>
-                <Typography>Ratings:</Typography>
-                <ul className="ratingsUl" key={i}>
-                  <Typography>ID: {journal.id}</Typography>
-                  <Typography>Overall: {journal.ratings.overall}</Typography>
-                  {journal.journalType >= 2 ? (
+                  <Typography>
+                    Journal Type: {GetJournalType(journal)}
+                  </Typography>
+                  <Typography>Ratings:</Typography>
+                  <ul className="ratingsUl" key={i}>
+                    <Typography>ID: {journal.id}</Typography>
+                    <Typography>Overall: {journal.ratings.overall}</Typography>
+                    {journal.journalType >= 2 ? (
+                      <div>
+                        <Typography>
+                          Anxiety: {journal.ratings.anxiety}
+                        </Typography>
+                        <Typography>
+                          Depression: {journal.ratings.depression}
+                        </Typography>
+                        <Typography>
+                          Happiness: {journal.ratings.happiness}
+                        </Typography>
+                        <Typography>
+                          Loneliness: {journal.ratings.loneliness}
+                        </Typography>
+                        <Typography>
+                          Sadness: {journal.ratings.sadness}
+                        </Typography>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </ul>
+                  {journal.journalType === 3 ? (
                     <div>
-                      <Typography>
-                        Anxiety: {journal.ratings.anxiety}
-                      </Typography>
-                      <Typography>
-                        Depression: {journal.ratings.depression}
-                      </Typography>
-                      <Typography>
-                        Happiness: {journal.ratings.happiness}
-                      </Typography>
-                      <Typography>
-                        Loneliness: {journal.ratings.loneliness}
-                      </Typography>
-                      <Typography>
-                        Sadness: {journal.ratings.sadness}
-                      </Typography>
+                      <Typography>Text: {journal.response}</Typography>
                     </div>
                   ) : (
                     <></>
                   )}
-                </ul>
-                {journal.journalType === 3 ? (
-                  <div>
-                    <Typography>Text: {journal.response}</Typography>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </Card>
-            </Grid>
-          ))
-        ) : (
-          <div> No Journals Exists </div>
-        )}
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <div> No Journals Exists </div>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );

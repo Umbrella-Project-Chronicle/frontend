@@ -33,27 +33,7 @@ export const EditJournal = ({ journal }) => {
   );
 
   const classes = useStyles();
-  // const isDesktop = useMediaQuery({
-  //   query: "(min-width: 1025px)",
-  // });
-  // const isMobile = useMediaQuery({
-  //   query: "(max-width: 767px)",
-  // });
 
-  // const ratingSize = () => {
-  //   const mobile = {
-  //     width: "100%",
-  //   };
-  //   const desktop = {
-  //     width: "44%",
-  //   };
-
-  //   if (isMobile) {
-  //     return mobile;
-  //   } else {
-  //     return desktop;
-  //   }
-  // };
   function valuetext(value) {
     return value;
   }
