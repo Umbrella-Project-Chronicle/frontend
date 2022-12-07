@@ -21,7 +21,11 @@ export function GetJournals() {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const email = localStorage.getItem("email");
   const userID = localStorage.getItem("id");
-  const [editJournalTrigger, setEditJournalTrigger] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [journals, setJournals] = useState(null);
 
   const classes = useStyles();
 
@@ -32,12 +36,14 @@ export function GetJournals() {
     query: "(max-width: 767px)",
   });
 
-  const doesCalendarShow = () => {
+  const sizing = () => {
     const desktop = {
       calendar: true,
+      className: classes.journalModal,
     };
     const mobile = {
       calendar: false,
+      className: classes.mobileJournalModal,
     };
 
     if (isDesktop) {
@@ -47,20 +53,13 @@ export function GetJournals() {
     }
   };
 
-  console.log(doesCalendarShow().calendar);
+  const [viewCalendar, setViewCalendar] = useState(sizing().calendar);
+  const [viewCalendarButton, setViewCalendarButton] = useState(
+    sizing().calendar
+  );
 
   const THREE_MONTHS_AGO = new Date();
   THREE_MONTHS_AGO.setMonth(THREE_MONTHS_AGO.getMonth() - 3);
-  const [journals, setJournals] = useState(null);
-  const [viewCalendar, setViewCalendar] = useState(doesCalendarShow().calendar);
-  const [viewCalendarButton, setViewCalendarButton] = useState(
-    doesCalendarShow().calendar
-  );
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [modalData, setModalData] = useState(null);
 
   const [state, setState] = useState([
     {
@@ -97,26 +96,34 @@ export function GetJournals() {
 
   useEffect(() => {
     GetMonthofJournals();
+    console.log("trigger");
   }, [trigger]);
 
   useEffect(() => {
     GetMonthofJournals();
+    console.log("state");
   }, [state]);
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
+  const modal = () => {
+    return (
+      <Box className={sizing().className}>
+        <EditJournal journal={modalData} />
+        <Box>
+          <Button
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            CLOSE
+          </Button>
+        </Box>
+      </Box>
+    );
   };
 
   return (
     <Grid>
+      <Grid>{open === true ? modal() : <></>}</Grid>
       <Box
         display={"flex"}
         justifyContent="center"
@@ -178,11 +185,6 @@ export function GetJournals() {
                 >
                   Edit Journal
                 </Button>
-                <Modal open={open} onClose={handleClose}>
-                  <Box className={classes.modal}>
-                    <EditJournal journal={modalData} />
-                  </Box>
-                </Modal>
 
                 <Typography>Journal Type: {GetJournalType(journal)}</Typography>
                 <Typography>Ratings:</Typography>
