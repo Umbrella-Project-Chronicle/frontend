@@ -169,7 +169,7 @@ function ResponsiveAppBar(props) {
                 >
                   <Button
                     onClick={() => {
-                      handleCloseNavMenu("/newjournal");
+                      handleCloseNavMenu("/newjournals");
                     }}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >

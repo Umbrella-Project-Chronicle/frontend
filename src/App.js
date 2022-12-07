@@ -140,7 +140,7 @@ function App() {
               }
             ></Route>
             <Route
-              path="/newjournal"
+              path="/newjournals"
               element={
                 <Grid>
                   <ResponsiveAppBar />

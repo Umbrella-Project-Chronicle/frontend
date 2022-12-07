@@ -72,11 +72,20 @@ export function GetJournals() {
 
   const GetMonthofJournals = async () => {
     try {
-      let res = await axios.post("https://localhost:7177/api/recap/journals", {
-        startDate: state[0].startDate.toISOString(),
-        endDate: state[0].endDate.toISOString(),
-        userID: userID,
-      });
+      let res = await axios.post(
+        "https://localhost:7177/api/recap/journals",
+        {
+          startDate: state[0].startDate.toISOString(),
+          endDate: state[0].endDate.toISOString(),
+          userID: userID,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       setJournals(res.data);
       console.log(res);
 
@@ -94,10 +103,10 @@ export function GetJournals() {
     else if (j.journalType === 3) return "Full";
   }
 
-  useEffect(() => {
-    GetMonthofJournals();
-    console.log("trigger");
-  }, [trigger]);
+  // useEffect(() => {
+  //   GetMonthofJournals();
+  //   console.log("trigger");
+  // }, [trigger]);
 
   useEffect(() => {
     GetMonthofJournals();
