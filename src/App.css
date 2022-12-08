@@ -49,6 +49,10 @@ main {
   color: #61dafb;
 }
 
+.tool-tip {
+  pointer-events: auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

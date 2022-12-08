@@ -82,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
   isBlurred: {
     filter: "blur(2px)",
   },
+  toolTip: {
+    pointerEvents: "auto",
+  },
 }));
 
 export default useStyles;

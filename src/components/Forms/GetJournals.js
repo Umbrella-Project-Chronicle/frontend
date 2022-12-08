@@ -21,8 +21,8 @@ export function GetJournals() {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const email = localStorage.getItem("email");
   const userID = localStorage.getItem("id");
-  const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [journals, setJournals] = useState(null);
