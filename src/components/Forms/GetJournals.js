@@ -179,14 +179,10 @@ export function GetJournals() {
           )}
           {journals ? (
             journals.map((journal, i) => (
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} md={6} lg={4}>
                 <CardHeader key={journal.date} />
 
-                <Card
-                  direction="column"
-                  justify="center"
-                  sx={{ p: 2, m: 3, maxWidth: 300 }}
-                >
+                <Card sx={{ p: 2, m: 3, maxWidth: 300, minWidth: 300 }}>
                   <Typography>
                     Date:{" "}
                     {DateTime.fromISO(journal.date).toLocaleString(
