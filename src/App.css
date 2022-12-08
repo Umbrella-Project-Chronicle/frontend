@@ -40,10 +40,6 @@
 html,
 main {
   background: url(./logo.ico) no-repeat center center fixed;
-  /* -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover; */
-  /* background-size: cover; */
   background-color: #282c34;
   background-position: "center";
   background-size: "400px 450px";
