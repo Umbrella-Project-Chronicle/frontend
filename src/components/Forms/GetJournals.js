@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Card, CardHeader, Typography, Button } from "@mui/material";
+import {
+  Grid,
+  Card,
+  CardHeader,
+  Typography,
+  Button,
+  Modal,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { DateRange } from "react-date-range";
 import { useMediaQuery } from "react-responsive";
+import { EditJournal } from "./EditJournal.js";
+import useStyles from "../../styles.js";
 
 const { DateTime } = require("luxon");
 
@@ -12,20 +21,29 @@ export function GetJournals() {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const email = localStorage.getItem("email");
   const userID = localStorage.getItem("id");
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [journals, setJournals] = useState(null);
+
+  const classes = useStyles();
 
   const isDesktop = useMediaQuery({
-    query: "(min-width: 1224px)",
+    query: "(min-width: 1025px)",
   });
   const isMobile = useMediaQuery({
-    query: "(max-width: 600px)",
+    query: "(max-width: 767px)",
   });
 
-  const doesCalendarShow = () => {
+  const sizing = () => {
     const desktop = {
       calendar: true,
+      className: classes.journalModal,
     };
     const mobile = {
       calendar: false,
+      className: classes.mobileJournalModal,
     };
 
     if (isDesktop) {
@@ -35,15 +53,13 @@ export function GetJournals() {
     }
   };
 
-  console.log(doesCalendarShow().calendar);
+  const [viewCalendar, setViewCalendar] = useState(sizing().calendar);
+  const [viewCalendarButton, setViewCalendarButton] = useState(
+    sizing().calendar
+  );
 
   const THREE_MONTHS_AGO = new Date();
   THREE_MONTHS_AGO.setMonth(THREE_MONTHS_AGO.getMonth() - 3);
-  const [journals, setJournals] = useState(null);
-  const [viewCalendar, setViewCalendar] = useState(doesCalendarShow().calendar);
-  const [viewCalendarButton, setViewCalendarButton] = useState(
-    doesCalendarShow().calendar
-  );
 
   const [state, setState] = useState([
     {
@@ -54,32 +70,22 @@ export function GetJournals() {
   ]);
   const [trigger, setTrigger] = useState(false);
 
-  // const GetUserProfile = async () => {
-  //   console.log("getuserprofile");
-  //   // needs to be set in each api call in order to assure the variable is se
-  //   try {
-  //     const res = await axios.get(
-  //       "https://localhost:7177/api/users/search/" + email,
-  //       {
-  //         headers: {
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-  //     localStorage.setItem("id", res.data.id);
-  //     setTrigger(!trigger);
-  //   } catch (error) {
-  //     console.log("ERROR: failed fetching user profile from api", error);
-  //   }
-  // };
-
   const GetMonthofJournals = async () => {
     try {
-      let res = await axios.post("https://localhost:7177/api/recap/journals", {
-        startDate: state[0].startDate.toISOString(),
-        endDate: state[0].endDate.toISOString(),
-        userID: userID,
-      });
+      let res = await axios.post(
+        "https://localhost:7177/api/recap/journals",
+        {
+          startDate: state[0].startDate.toISOString(),
+          endDate: state[0].endDate.toISOString(),
+          userID: userID,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       setJournals(res.data);
       console.log(res);
 
@@ -91,96 +97,154 @@ export function GetJournals() {
     }
   };
 
+  function GetJournalType(j) {
+    if (j.journalType === 1) return "Brief";
+    else if (j.journalType === 2) return "Standard";
+    else if (j.journalType === 3) return "Full";
+  }
+
   // useEffect(() => {
-  //   GetUserProfile();
-  // }, []);
+  //   GetMonthofJournals();
+  //   console.log("trigger");
+  // }, [trigger]);
 
   useEffect(() => {
     GetMonthofJournals();
-  }, [trigger]);
-
-  useEffect(() => {
-    GetMonthofJournals();
+    console.log("state");
   }, [state]);
+
+  const modal = () => {
+    return (
+      <Box className={sizing().className}>
+        <Box>
+          <Button
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            CLOSE
+          </Button>
+        </Box>
+        <EditJournal journal={modalData} />
+      </Box>
+    );
+  };
+
+  const modalBlur = () => {
+    if (open) {
+      return classes.isBlurred;
+    }
+  };
 
   return (
     <Grid>
-      <Box
-        display={"flex"}
-        justifyContent="center"
-        maxWidth={400}
-        style={{ backgroundColor: "gray", borderRadius: 1 }}
-      >
-        {viewCalendarButton ? (
-          <Grid>
-            {viewCalendar ? (
-              <Box justifyContent="center">
-                <DateRange
-                  editableDateInputs={true}
-                  onChange={(item) => setState([item.selection])}
-                  moveRangeOnFirstSelection={false}
-                  ranges={state}
-                />
-                <Button onClick={() => setViewCalendar(false)}>Close</Button>
-              </Box>
-            ) : (
-              <Box>
-                <Button onClick={() => setViewCalendar(true)}>
-                  View Calendar
-                </Button>
-              </Box>
-            )}
-          </Grid>
-        ) : (
-          <></>
-        )}
-      </Box>
-
-      <Grid container spacing={1}>
-        {journals && journals.length === 0 ? (
-          <div>Looks like you haven't journalled yet</div>
-        ) : (
-          <></>
-        )}
-        {journals ? (
-          journals.map((journal, i) => (
-            <Grid item xs={12} sm={6} md={3}>
-              <CardHeader
-                key={journal.date}
-                title={DateTime.fromISO(journal.date).toLocaleString(
-                  DateTime.DATETIME_MED
-                )}
-              />
-
-              <Card
-                direction="column"
-                justify="center"
-                sx={{ p: 2, m: 3, maxWidth: 300 }}
-              >
-                <ul key={i}>
-                  <Typography>Date: {journal.date}</Typography>
-                  <Typography>type: {journal.journalType}</Typography>
-                  <Typography noWrap>Text: {journal.response}</Typography>
-                  <Typography>Rating:</Typography>
-                  <Typography>Overall: {journal.ratings.overall}</Typography>
-                  <Typography>Anxiety: {journal.ratings.anxiety}</Typography>
-                  <Typography>
-                    Depression: {journal.ratings.depression}
-                  </Typography>
-                  <Typography>
-                    Happiness: {journal.ratings.happiness}
-                  </Typography>
-                  <Typography>
-                    Lonliness: {journal.ratings.lonliness}
-                  </Typography>
-                  <Typography>Sadness: {journal.ratings.sadness}</Typography>
-                </ul>
-              </Card>
+      <Grid>{open === true ? modal() : <></>}</Grid>
+      <Grid className={modalBlur()}>
+        <Box
+          display={"flex"}
+          justifyContent="center"
+          maxWidth={400}
+          style={{ backgroundColor: "gray", borderRadius: 1 }}
+        >
+          {viewCalendarButton ? (
+            <Grid>
+              {viewCalendar ? (
+                <Box justifyContent="center">
+                  <DateRange
+                    editableDateInputs={true}
+                    onChange={(item) => setState([item.selection])}
+                    moveRangeOnFirstSelection={false}
+                    ranges={state}
+                  />
+                  <Button onClick={() => setViewCalendar(false)}>Close</Button>
+                </Box>
+              ) : (
+                <Box>
+                  <Button onClick={() => setViewCalendar(true)}>
+                    View Calendar
+                  </Button>
+                </Box>
+              )}
             </Grid>
-          ))
-        ) : (
-          <div> nothing</div>
-        )}
+          ) : (
+            <></>
+          )}
+        </Box>
+
+        <Grid container spacing={1}>
+          {journals && journals.length === 0 ? (
+            <div>Looks like you haven't journalled yet</div>
+          ) : (
+            <></>
+          )}
+          {journals ? (
+            journals.map((journal, i) => (
+              <Grid item xs={12} sm={6} md={3}>
+                <CardHeader key={journal.date} />
+
+                <Card
+                  direction="column"
+                  justify="center"
+                  sx={{ p: 2, m: 3, maxWidth: 300 }}
+                >
+                  <Typography>
+                    Date:{" "}
+                    {DateTime.fromISO(journal.date).toLocaleString(
+                      DateTime.DATETIME_MED
+                    )}{" "}
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      setModalData(journal);
+                      handleOpen();
+                    }}
+                  >
+                    Edit Journal
+                  </Button>
+
+                  <Typography>
+                    Journal Type: {GetJournalType(journal)}
+                  </Typography>
+                  <Typography>Ratings:</Typography>
+                  <ul className="ratingsUl" key={i}>
+                    <Typography>ID: {journal.id}</Typography>
+                    <Typography>Overall: {journal.ratings.overall}</Typography>
+                    {journal.journalType >= 2 ? (
+                      <div>
+                        <Typography>
+                          Anxiety: {journal.ratings.anxiety}
+                        </Typography>
+                        <Typography>
+                          Depression: {journal.ratings.depression}
+                        </Typography>
+                        <Typography>
+                          Happiness: {journal.ratings.happiness}
+                        </Typography>
+                        <Typography>
+                          Loneliness: {journal.ratings.loneliness}
+                        </Typography>
+                        <Typography>
+                          Sadness: {journal.ratings.sadness}
+                        </Typography>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </ul>
+                  {journal.journalType === 3 ? (
+                    <div>
+                      <Typography>Text: {journal.response}</Typography>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <div> No Journals Exists </div>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );

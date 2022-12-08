@@ -4,6 +4,7 @@ import { Box, Button, Grid, Typography, Divider } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
 import useStyles from "../../../styles.js";
+import { useMediaQuery } from "react-responsive";
 
 export const Standard = () => {
   const [success, setSuccess] = useState(false);
@@ -16,6 +17,27 @@ export const Standard = () => {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const userID = localStorage.getItem("id");
   const classes = useStyles();
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1025px)",
+  });
+  const isMobile = useMediaQuery({
+    query: "(max-width: 767px)",
+  });
+
+  const ratingSize = () => {
+    const mobile = {
+      width: "100%",
+    };
+    const desktop = {
+      width: "44%",
+    };
+
+    if (isMobile) {
+      return mobile;
+    } else {
+      return desktop;
+    }
+  };
 
   const postJournal = () => {
     axios
@@ -68,19 +90,40 @@ export const Standard = () => {
       >
         <Box sx={{ justifyContent: "center" }}>
           <Typography
-            sx={{ fontWeight: "bold", fontSize: 40, letterSpacing: 6 }}
+            sx={{
+              fontWeight: "bold",
+              fontSize: 40,
+              letterSpacing: 12,
+              justifyContent: "center",
+              textAlign: "center",
+            }}
           >
             Standard Journal
           </Typography>
         </Box>
         <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
-        <Box sx={{ backgroundColor: "gray", boxShadow: 4 }}>
+        <Box
+          sx={{
+            backgroundColor: "gray",
+            boxShadow: 4,
+            display: "flex",
+            flex: 1,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "flex-start",
+            justifyContent: "center",
+          }}
+        >
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
               borderRadius: 1,
+            }}
+            sm={{
+              width: "100%",
             }}
           >
             <Typography className={classes.alignItems}>Overall</Typography>
@@ -100,6 +143,7 @@ export const Standard = () => {
 
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -122,6 +166,7 @@ export const Standard = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -144,6 +189,7 @@ export const Standard = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -166,6 +212,7 @@ export const Standard = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -188,6 +235,7 @@ export const Standard = () => {
           </Box>
           <Box
             sx={{
+              width: ratingSize().width,
               backgroundColor: "gray",
               boxShadow: 4,
               m: 3,
@@ -210,7 +258,12 @@ export const Standard = () => {
           </Box>
 
           <Box
-            sx={{ backgroundColor: "black", boxShadow: 4, borderRadius: 1 }}
+            sx={{
+              backgroundColor: "black",
+              boxShadow: 4,
+              borderRadius: 1,
+              width: "100%",
+            }}
             className={classes.alignItems}
           >
             <Button

@@ -41,7 +41,8 @@ function ResponsiveAppBar(props) {
     paddingBottom: theme.spacing(2),
     // Override media queries injected by theme.mixins.toolbar
     "@media all": {
-      minHeight: 128,
+      height: "128px",
+      alignItems: "center",
     },
   }));
 
@@ -84,24 +85,8 @@ function ResponsiveAppBar(props) {
                   src={Logo}
                   alt="logo"
                   style={{ maxWidth: 60, maxHeight: 60 }}
+                  alignItems="center"
                 />
-                <Typography
-                  variant="h6"
-                  noWrap
-                  component="a"
-                  href="/home"
-                  sx={{
-                    mr: 2,
-                    display: { xs: "none", md: "flex" },
-                    fontFamily: "monospace",
-                    fontWeight: 700,
-                    letterSpacing: ".3rem",
-                    color: "inherit",
-                    textDecoration: "none",
-                  }}
-                >
-                  CHRONICLE
-                </Typography>
 
                 <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                   <IconButton
@@ -116,24 +101,29 @@ function ResponsiveAppBar(props) {
                   </IconButton>
                   <Menu
                     id="menu-appbar"
-                    anchorEl={anchorElNav}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
+                    anchorElNav={anchorElNav}
                     keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
                     open={Boolean(anchorElNav)}
                     onClose={() => {
                       handleCloseNavMenu("");
                     }}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
                     sx={{
                       display: { xs: "block", md: "none" },
+                      ml: { xs: "80px" },
+                      mt: { xs: "80px" },
                     }}
                   >
+                    <MenuItem
+                      onClick={() => {
+                        handleCloseNavMenu("/newjournals");
+                      }}
+                    >
+                      <Typography textAlign="center">Create Journal</Typography>
+                    </MenuItem>
                     <MenuItem
                       onClick={() => {
                         handleCloseNavMenu("/journals");
@@ -153,17 +143,16 @@ function ResponsiveAppBar(props) {
                 </Box>
 
                 <Typography
-                  variant="h5"
-                  fontSize={12}
+                  variant="h6"
                   noWrap
                   component="a"
                   href="/home"
                   sx={{
                     mr: 2,
-                    display: { xs: "flex", md: "none" },
-                    flexGrow: 1,
+                    display: { xs: "flex" },
+                    flexGrow: { xs: 20, md: 0 },
                     fontFamily: "monospace",
-                    fontWeight: 700,
+                    fontWeight: { xs: 600, md: 700 },
                     letterSpacing: ".3rem",
                     color: "inherit",
                     textDecoration: "none",
@@ -171,7 +160,22 @@ function ResponsiveAppBar(props) {
                 >
                   CHRONICLE
                 </Typography>
-                <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    display: { xs: "none", md: "flex" },
+                    my: 2,
+                  }}
+                >
+                  <Button
+                    onClick={() => {
+                      handleCloseNavMenu("/newjournals");
+                    }}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    Create Journal
+                  </Button>
+
                   <Button
                     onClick={() => {
                       handleCloseNavMenu("/journals");
@@ -191,24 +195,6 @@ function ResponsiveAppBar(props) {
                   </Button>
                 </Box>
 
-                <Button
-                  onClick={() => {
-                    handleCloseNavMenu("/newjournals");
-                  }}
-                  sx={{
-                    align: "right",
-                    my: 2,
-                    mr: 2,
-                    mb: 3,
-                    color: "white",
-                    display: "block",
-                  }}
-                >
-                  <Typography variant="h3" name="New Journal">
-                    +
-                  </Typography>
-                </Button>
-
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -216,21 +202,17 @@ function ResponsiveAppBar(props) {
                     </IconButton>
                   </Tooltip>
                   <Menu
-                    sx={{ mt: "45px" }}
+                    sx={{ mt: "100px" }}
                     id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
+                    anchorElUser={anchorElUser}
                     keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
                     open={Boolean(anchorElUser)}
                     onClose={() => {
                       handleCloseUserMenu("");
+                    }}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
                     }}
                   >
                     <MenuItem
@@ -238,21 +220,21 @@ function ResponsiveAppBar(props) {
                         handleCloseUserMenu("/profile");
                       }}
                     >
-                      <Typography textAlign="center">profile</Typography>
+                      <Typography textAlign="center">Profile</Typography>
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
                         handleCloseUserMenu("/about");
                       }}
                     >
-                      <Typography textAlign="center">about</Typography>
+                      <Typography textAlign="center">About</Typography>
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
                         handleCloseUserMenu("/help");
                       }}
                     >
-                      <Typography textAlign="center">help</Typography>
+                      <Typography textAlign="center">Help</Typography>
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
@@ -260,7 +242,7 @@ function ResponsiveAppBar(props) {
                       }}
                     >
                       <Typography sx={{ color: "red" }} textAlign="center">
-                        sign out
+                        Sign Out
                       </Typography>
                     </MenuItem>
                   </Menu>

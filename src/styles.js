@@ -52,6 +52,36 @@ const useStyles = makeStyles((theme) => ({
     bgcolor: "background.paper",
     p: 4,
   },
+  journalModal: {
+    // display: "block" /* Hidden by default */,
+
+    position: "fixed" /* Stay in place */,
+    zIndex: "1" /* Sit on top */,
+    left: "25%",
+    top: "25%",
+    width: "50%" /* Full width */,
+    height: "70%" /* Full height */,
+    overflow: "auto" /* Enable scroll if needed */,
+    backgroundColor: "gray" /* Fallback color */,
+    backgroundColor: "gray" /* Black w/ opacity */,
+    borderRadius: 10,
+  },
+  mobileJournalModal: {
+    // display: "none" /* Hidden by default */,
+    position: "fixed" /* Stay in place */,
+    zIndex: "1" /* Sit on top */,
+    left: "15%",
+    top: "20%",
+    width: "75%" /* Full width */,
+    height: "75%" /* Full height */,
+    overflow: "auto" /* Enable scroll if needed */,
+    backgroundColor: "gray" /* Fallback color */,
+    backgroundColor: "gray" /* Black w/ opacity */,
+    borderRadius: 10,
+  },
+  isBlurred: {
+    filter: "blur(2px)",
+  },
 }));
 
 export default useStyles;
