@@ -1,29 +1,20 @@
-name: create PR
-on:
-  push:
-    branches:
-      - main
-jobs:
-
-  # createPR:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: checking out code
-  #       uses: actions/checkout@v2
-
-  #     - name: extract git commit data
-  #       uses: rlespinasse/git-commit-data-action@v1.x
-
-  #     - name: update author info
-  #       run: echo ${{env.GIT_COMMIT_AUTHOR_NAME}} > AUTHOR
-
-  #     - name: Create Pull Request
-  #       uses: peter-evans/create-pull-request@v3
-  #       with:
-  #         branch: "auto-pr-branch"
-  #         base: main
-  #         title: "Automated PR"
-  #         body: this is a test
-  #         token: ${{ secrets.GITHUB_TOKEN }}
-  #         delete-branch: false
+# name: create PR
+# on:
+#   push:
+#     branches:
+#       - development
+# jobs:
+#   deploy:
+#     needs: [unit-tests]
+#     runs-on: ubuntu-latest
+#     env:
+#       FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ESTIMATO_PRODUCTION }}
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 16
+#       - run: npm ci
+#       - run: npm install -g firebase-tools
+#       - run: npm run build
+#       - run: firebase deploy --token "$FIREBASE_TOKEN"
