@@ -54,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
   },
   journalModal: {
     // display: "block" /* Hidden by default */,
-
     position: "fixed" /* Stay in place */,
     zIndex: "1" /* Sit on top */,
     left: "25%",

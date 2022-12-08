@@ -18,6 +18,7 @@ import {
   CircularProgress,
   Toolbar,
   Button,
+  Typography,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import circularProgressClasses from "@mui/material";
@@ -62,7 +63,27 @@ export const GetWraps = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [modal, setModal] = useState(null);
+  const [modalData, setModalData] = useState(null);
+  const omitZeros = (values) => {
+    console.log("ommit zeros before ", values);
+
+    setJournals(
+      values.map((value) => {
+        if (value.journalType === 1) {
+          value.ratings.anxiety = null;
+          value.ratings.depression = null;
+          value.ratings.happiness = null;
+          value.ratings.loneliness = null;
+          value.ratings.sadness = null;
+          return value;
+        } else {
+          return value;
+        }
+      })
+    );
+
+    console.log("ommit zeros after ", journals);
+  };
 
   const months = {
     January: {
@@ -163,7 +184,7 @@ export const GetWraps = () => {
   const GetJournals = async () => {
     const startDate = months[`${month}`].begin;
     const endDate = months[`${month}`].end;
-    console.log(token);
+
     try {
       let res = await axios.post(
         "https://localhost:7177/api/recap/journals",
@@ -179,9 +200,10 @@ export const GetWraps = () => {
           },
         }
       );
-      setJournals(res.data);
-      console.log(res);
-      console.log(trigger);
+
+      console.log("getjournal", res);
+      omitZeros(res.data);
+      console.log("journals", journals);
     } catch (error) {
       console.log(error);
     }
@@ -191,7 +213,7 @@ export const GetWraps = () => {
     const startDate = months[`${month}`].begin;
     const endDate = months[`${month}`].end;
 
-    console.log("startdAte", startDate, "endDate", endDate);
+    // console.log("startdAte", startDate, "endDate", endDate);
     try {
       let res = await axios.post(
         "https://localhost:7177/api/recap",
@@ -207,7 +229,7 @@ export const GetWraps = () => {
           },
         }
       );
-      console.log("api averages", res);
+      // console.log("api averages", res);
       setAverages({
         overall: res.data.emotionAverages.Overall,
         anxiety: res.data.emotionAverages.Sadness,
@@ -216,7 +238,7 @@ export const GetWraps = () => {
         loneliness: res.data.emotionAverages.Loneliness,
         sadness: res.data.emotionAverages.Sadness,
       });
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -251,7 +273,7 @@ export const GetWraps = () => {
     },
   }));
 
-  console.log(journals);
+  console.log("journals by return", journals);
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -262,13 +284,14 @@ export const GetWraps = () => {
 
   const sizing = () => {
     const desktop = {
-      height: 800,
-      width: 1200,
+      height: 900,
+      width: 1300,
       className: classes.journalModal,
     };
     const mediumSize = {
-      height: 400,
-      width: 600,
+      height: 600,
+      width: 800,
+      className: classes.journalModal,
     };
     const mobile = {
       height: 300,
@@ -294,208 +317,277 @@ export const GetWraps = () => {
     if (props.payload.length === 0) {
       return null;
     } else {
-      setModal(props.payload[0].payload);
+      const journal = props.payload;
+
+      journal.map((x) => {
+        return <Grid>{x.name}</Grid>;
+      });
 
       return (
         <Grid className={classes.toolTip}>
-          <Button
-            onClick={() => {
-              handleOpen();
-              console.log("open", open);
-            }}
-          >
-            View/Edit Journal
-          </Button>
+          <Box sx={{ backgroundColor: "white" }}>
+            {/* <Box>
+              <Typography>{journal.JournalType}</Typography>
+            </Box> */}
 
-          {open ? <EditJournal journal={modal} /> : <></>}
-
-          <Box>{props.payload[0].payload.id}</Box>
+            <Button
+              onClick={() => {
+                setModalData(props.payload[0].payload);
+                handleOpen();
+              }}
+            >
+              Edit/View Journal
+            </Button>
+          </Box>
         </Grid>
       );
     }
   };
 
+  const modalBlur = () => {
+    if (open) {
+      return classes.isBlurred;
+    }
+  };
+
+  const modal = () => {
+    return (
+      <Box className={sizing().className}>
+        <Box>
+          <Button
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            CLOSE
+          </Button>
+          <EditJournal journal={modalData} />
+        </Box>
+      </Box>
+    );
+  };
+
+  const CustomLabel = ({ x, y, stroke, value, width }) => {
+    // console.log("customlabel");
+    // console.log("value", value);
+    if (value != 0) {
+      // No label if there is a value. Let the cell handle it.
+      return null;
+    }
+
+    return (
+      <text
+        x={x}
+        y={y}
+        // Move slightly above axis
+        dy={-10}
+        // Center text
+        dx={width / 2}
+        fill={stroke}
+        fontSize={15}
+        textAnchor="middle"
+      >
+        N/A
+      </text>
+    );
+  };
+
   return (
-    <Grid sx={{ m: 4 }}>
-      {averages ? (
-        <Grid spacing={2}>
-          <Grid xs={10} sm={6} md={6} sx={{ p: 5 }} maxWidth="450px">
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <StyledTableCell style={{ fontSize: 20 }}>
-                    Emotion
-                  </StyledTableCell>
-                  <StyledTableCell>{selectMonth()}</StyledTableCell>
-                </TableHead>
-                <TableBody>
-                  <StyledTableRow>
-                    <StyledTableCell>Overall</StyledTableCell>
-                    <StyledTableCell>
-                      {averages.overall ? (
-                        averages.overall.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
+    <Grid>
+      <Grid>{open ? modal() : <></>}</Grid>
+      <Grid className={modalBlur()}>
+        {averages ? (
+          <Grid spacing={2}>
+            <Grid xs={10} sm={6} md={6} sx={{ p: 5 }} maxWidth="450px">
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <StyledTableCell style={{ fontSize: 20 }}>
+                      Emotion
                     </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell>Sadness</StyledTableCell>
-                    <StyledTableCell>
-                      {averages.sadness ? (
-                        averages.sadness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell>Depression</StyledTableCell>
-                    <StyledTableCell>
-                      {averages.depression ? (
-                        averages.depression.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell>Happiness</StyledTableCell>
-                    <StyledTableCell>
-                      {averages.happiness ? (
-                        averages.happiness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell>Loneliness</StyledTableCell>
-                    <StyledTableCell>
-                      {averages.loneliness ? (
-                        averages.loneliness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell>Sadness</StyledTableCell>
-                    <StyledTableCell>
-                      {averages.sadness ? (
-                        averages.sadness.toFixed(2)
-                      ) : (
-                        <CircularProgress />
-                      )}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+                    <StyledTableCell>{selectMonth()}</StyledTableCell>
+                  </TableHead>
+                  <TableBody>
+                    <StyledTableRow>
+                      <StyledTableCell>Overall</StyledTableCell>
+                      <StyledTableCell>
+                        {averages.overall ? (
+                          averages.overall.toFixed(2)
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell>Sadness</StyledTableCell>
+                      <StyledTableCell>
+                        {averages.sadness ? (
+                          averages.sadness.toFixed(2)
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell>Depression</StyledTableCell>
+                      <StyledTableCell>
+                        {averages.depression ? (
+                          averages.depression.toFixed(2)
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell>Happiness</StyledTableCell>
+                      <StyledTableCell>
+                        {averages.happiness ? (
+                          averages.happiness.toFixed(2)
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell>Loneliness</StyledTableCell>
+                      <StyledTableCell>
+                        {averages.loneliness ? (
+                          averages.loneliness.toFixed(2)
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell>Sadness</StyledTableCell>
+                      <StyledTableCell>
+                        {averages.sadness ? (
+                          averages.sadness.toFixed(2)
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+
+            <Grid>
+              <LineChart
+                height={sizing().height}
+                width={sizing().width}
+                data={journals}
+              >
+                <Line
+                  connectNulls={true}
+                  name="overall"
+                  label={<CustomLabel />}
+                  isAnimationActive={false}
+                  type="monotone"
+                  dataKey="ratings.overall"
+                  stroke="white"
+                  strokeWidth={2}
+                />
+                <Line
+                  connectNulls={true}
+                  name="anxiety"
+                  label={<CustomLabel />}
+                  type="monotone"
+                  dataKey="ratings.anxiety"
+                  stroke="#ab0202"
+                  strokeWidth={2}
+                />
+                <Line
+                  connectNulls={true}
+                  name="loneliness"
+                  label={<CustomLabel />}
+                  type="monotone"
+                  dataKey="ratings.loneliness"
+                  stroke="#038007"
+                  strokeWidth={2}
+                />
+                <Line
+                  connectNulls={true}
+                  name="depression"
+                  label={<CustomLabel />}
+                  type="monotone"
+                  dataKey="ratings.depression"
+                  stroke="#026969"
+                  strokeWidth={2}
+                />
+                <Line
+                  connectNulls={true}
+                  name="happiness"
+                  label={<CustomLabel />}
+                  type="monotone"
+                  dataKey="ratings.happiness"
+                  stroke="#f5c402"
+                  strokeWidth={2}
+                />
+                <Line
+                  connectNulls={true}
+                  name="sadness"
+                  label={<CustomLabel />}
+                  type="monotone"
+                  dataKey="ratings.sadness"
+                  stroke="#020ff5"
+                  strokeWidth={2}
+                />
+
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  payload={[
+                    {
+                      value: "overall",
+                      type: "line",
+                      color: "white",
+                    },
+                    {
+                      value: "anxiety",
+                      type: "line",
+                      color: "#ab0202",
+                    },
+                    {
+                      value: "loneliness",
+                      type: "line",
+                      color: "#038007",
+                    },
+                    {
+                      value: "depression",
+                      type: "line",
+                      color: "#026969",
+                    },
+                    {
+                      value: "happiness",
+                      type: "line",
+                      color: "#f5c402",
+                    },
+                    {
+                      value: "sadness",
+                      type: "line",
+                      color: "#020ff5",
+                    },
+                  ]}
+                />
+                <XAxis dataKey={month} />
+
+                <Tooltip
+                  trigger="click"
+                  content={<CustomTooltip />}
+                  // className={classes.toolTip}
+                  // isAnimationActive={true}
+                  // position={sizing().tooltip}
+                  // trigger="click"
+                />
+              </LineChart>
+            </Grid>
           </Grid>
-
-          <Grid>
-            <LineChart
-              height={sizing().height}
-              width={sizing().width}
-              data={journals}
-            >
-              <Line
-                name="overall"
-                isAnimationActive={false}
-                type="monotone"
-                dataKey="ratings.overall"
-                stroke="white"
-                strokeWidth={2}
-              />
-              <Line
-                name="anxiety"
-                type="monotone"
-                dataKey="ratings.anxiety"
-                stroke="#ab0202"
-                strokeWidth={2}
-              />
-              <Line
-                name="loneliness"
-                type="monotone"
-                dataKey="ratings.loneliness"
-                stroke="#038007"
-                strokeWidth={2}
-              />
-              <Line
-                name="depression"
-                type="monotone"
-                dataKey="ratings.depression"
-                stroke="#026969"
-                strokeWidth={2}
-              />
-              <Line
-                name="happiness"
-                type="monotone"
-                dataKey="ratings.happiness"
-                stroke="#f5c402"
-                strokeWidth={2}
-              />
-              <Line
-                name="sadness"
-                type="monotone"
-                dataKey="ratings.sadness"
-                stroke="#020ff5"
-                strokeWidth={2}
-              />
-
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-                payload={[
-                  {
-                    value: "overall",
-                    type: "line",
-                    color: "white",
-                  },
-                  {
-                    value: "anxiety",
-                    type: "line",
-                    color: "#ab0202",
-                  },
-                  {
-                    value: "loneliness",
-                    type: "line",
-                    color: "#038007",
-                  },
-                  {
-                    value: "depression",
-                    type: "line",
-                    color: "#026969",
-                  },
-                  {
-                    value: "happiness",
-                    type: "line",
-                    color: "#f5c402",
-                  },
-                  {
-                    value: "sadness",
-                    type: "line",
-                    color: "#020ff5",
-                  },
-                ]}
-              />
-              <XAxis dataKey={month} />
-
-              <Tooltip
-                trigger="click"
-                content={<CustomTooltip />}
-                // className={classes.toolTip}
-                // isAnimationActive={true}
-                // position={sizing().tooltip}
-                // trigger="click"
-              />
-            </LineChart>
-          </Grid>
-        </Grid>
-      ) : (
-        <></>
-      )}
+        ) : (
+          <></>
+        )}
+      </Grid>
     </Grid>
   );
 };

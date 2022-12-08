@@ -138,7 +138,7 @@ export function GetJournals() {
 
   return (
     <Grid>
-      <Grid>{open === true ? modal() : <></>}</Grid>
+      <Grid>{open ? modal() : <></>}</Grid>
       <Grid className={modalBlur()}>
         <Box
           display={"flex"}
