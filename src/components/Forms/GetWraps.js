@@ -355,8 +355,20 @@ export const GetWraps = () => {
     const data = () => {
       if (journal.length === 1) {
         return (
-          <Grid className={classes.alignItems}>
-            <Box>Overall: {journal[0].value}</Box>
+          <Grid
+            className={classes.alignItems}
+            sx={{ maxWidth: 200, padding: 3 }}
+          >
+            <Box sx={{ margin: 2 }}>
+              <div>
+                {DateTime.fromISO(journal[0].payload.date).toFormat(
+                  "MMMM dd, yyyy"
+                )}
+              </div>
+            </Box>
+            <Box>
+              <div>Overall: {journal[0].value}</div>
+            </Box>
           </Grid>
         );
       } else {
@@ -405,7 +417,7 @@ export const GetWraps = () => {
                 handleOpen();
               }}
             >
-              Edit/View Journal
+              <Typography sx={{ fontSize: 12 }}>Edit/View Journal</Typography>
             </Button>
           </Box>
         </Grid>
