@@ -29,13 +29,13 @@ export const AboutCards = ({ isLandingPage }) => {
     {
       title: "How It Works",
       subtitle: "It's So Simple",
-      body: "Every Day, We'll send you a reminder to journal and you can choose from 3 types that suits your needs",
+      body: "Every Day, we'll send you a reminder to journal and you can choose from 3 types that suits your needs",
       icon: "",
     },
     {
       title: "Option 1 - 'Full'",
       subtitle: "Best Option (in our opinion)",
-      body: "This provides the most data and gets you the most out of our app. You provide a 0-10 rating on 6 emotions as well as a journal on how your day went.",
+      body: "This provides the most data and gets you the most out of our app. You provide a 1-10 rating on 6 emotions as well as a journal on how your day went.",
       icon: <AutoAwesomeIcon style={{ fontSize: "100px" }} />,
       icon2: <DriveFileRenameOutlineIcon style={{ fontSize: "100px" }} />,
     },
@@ -61,7 +61,7 @@ export const AboutCards = ({ isLandingPage }) => {
     {
       title: "Summary",
       subtitle: "It's as powerful as you want it to be",
-      body: "While we did try to alleviate barriers that prevent people from journalling, unltimately it's up to you how consistent you want to be with your progress. Happy Chronicling! ",
+      body: "While we did try to alleviate barriers that prevent people from journalling, unltimately it's up to you on how consistent you want to be with your progress. Happy Chronicling! ",
       icon: "",
       link: "",
     },
