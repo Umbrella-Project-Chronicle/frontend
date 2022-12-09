@@ -91,7 +91,7 @@ export function GetJournals() {
           },
         }
       );
-      setJournals(res.data);
+      setJournals(res.data.reverse());
       console.log(res);
 
       if (res.data.length > 0) {
@@ -198,18 +198,15 @@ export function GetJournals() {
         <Grid>
           <Grid>{open ? modal() : <></>}</Grid>
           <Grid className={modalBlur()}>
-            <Box
-              name="calendar"
-              justifyContent="center"
-              maxWidth={400}
-              style={{ borderRadius: 5 }}
-            >
+            <Box name="calendar" maxWidth={400} sx={{ margin: 3 }}>
               {viewCalendarButton ? (
                 <Grid>
                   {viewCalendar ? (
                     <Box justifyContent="center">
                       <Button onClick={() => setViewCalendar(false)}>
-                        <CloseIcon />
+                        <Box>
+                          <CloseIcon />
+                        </Box>
                       </Button>
                       <DateRange
                         editableDateInputs={true}
@@ -219,9 +216,17 @@ export function GetJournals() {
                       />
                     </Box>
                   ) : (
-                    <Box>
+                    <Box justifyContent="center">
                       <Button onClick={() => setViewCalendar(true)}>
-                        View Calendar
+                        <Box
+                          sx={{
+                            backgroundColor: "black",
+                            borderRadius: 1,
+                            padding: 2,
+                          }}
+                        >
+                          <Typography>View Calendar</Typography>
+                        </Box>
                       </Button>
                     </Box>
                   )}
@@ -235,7 +240,7 @@ export function GetJournals() {
               {journals ? (
                 journals.map((journal, i) => (
                   <Grid>
-                    <Grid item xs={12} md={8} lg={4}>
+                    <Grid item xs={8} sm={8} md={8} lg={4}>
                       <CardHeader key={journal.date} />
 
                       <Card sx={{ p: 2, m: 3, maxWidth: 300, minWidth: 300 }}>
@@ -259,7 +264,6 @@ export function GetJournals() {
                         </Typography>
                         <Typography>Ratings:</Typography>
                         <ul className="ratingsUl" key={i}>
-                          <Typography>ID: {journal.id}</Typography>
                           <Typography>
                             Overall: {journal.ratings.overall}
                           </Typography>
