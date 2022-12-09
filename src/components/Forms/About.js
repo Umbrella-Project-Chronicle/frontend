@@ -9,6 +9,7 @@ import TimesOneMobiledataIcon from "@mui/icons-material/TimesOneMobiledata";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 import { OverlayTrigger } from "react-bootstrap";
+import InfoIcon from "@mui/icons-material/Info";
 
 export const AboutCards = ({ isLandingPage }) => {
   const classes = useStyles();
@@ -68,7 +69,9 @@ export const AboutCards = ({ isLandingPage }) => {
     <Box>
       {isLandingPage ? (
         <Grid>
-          <Button onClick={handleOpen}>Which is Which?</Button>
+          <Button onClick={handleOpen}>
+            Info <InfoIcon />
+          </Button>
           <Modal open={open} onClose={handleClose}>
             <Box className={classes.modal}>
               <Carousel>

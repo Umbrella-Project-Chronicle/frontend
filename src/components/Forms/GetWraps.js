@@ -19,6 +19,7 @@ import {
   Toolbar,
   Button,
   Typography,
+  IconButton,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import circularProgressClasses from "@mui/material";
@@ -30,6 +31,8 @@ import { borderColor } from "@mui/system";
 import { useMediaQuery } from "react-responsive";
 import { EditJournal } from "./EditJournal";
 import useStyles from "../../styles";
+import { useNavigate } from "react-router-dom";
+import InfoIcon from "@mui/icons-material/Info";
 
 export const GetWraps = () => {
   const { DateTime } = require("luxon");
@@ -84,6 +87,8 @@ export const GetWraps = () => {
 
     console.log("ommit zeros after ", journals);
   };
+
+  const navigate = useNavigate();
 
   const months = {
     January: {
@@ -185,6 +190,8 @@ export const GetWraps = () => {
     const startDate = months[`${month}`].begin;
     const endDate = months[`${month}`].end;
 
+    console.log("get journals api call");
+
     try {
       let res = await axios.post(
         "https://localhost:7177/api/recap/journals",
@@ -203,7 +210,7 @@ export const GetWraps = () => {
 
       console.log("getjournal", res);
       omitZeros(res.data);
-      console.log("journals", journals);
+      // console.log("journals", journals);
     } catch (error) {
       console.log(error);
     }
@@ -213,7 +220,8 @@ export const GetWraps = () => {
     const startDate = months[`${month}`].begin;
     const endDate = months[`${month}`].end;
 
-    // console.log("startdAte", startDate, "endDate", endDate);
+    console.log("startdAte", startDate, "endDate", endDate);
+    console.log("userId", userID, "token", token);
     try {
       let res = await axios.post(
         "https://localhost:7177/api/recap",
@@ -273,8 +281,6 @@ export const GetWraps = () => {
     },
   }));
 
-  console.log("journals by return", journals);
-
   const isDesktop = useMediaQuery({
     query: "(min-width: 1224px)",
   });
@@ -287,11 +293,13 @@ export const GetWraps = () => {
       height: 900,
       width: 1300,
       className: classes.journalModal,
+      icon: "200px",
     };
     const mediumSize = {
       height: 600,
       width: 800,
       className: classes.journalModal,
+      icon: "200px",
     };
     const mobile = {
       height: 300,
@@ -301,6 +309,8 @@ export const GetWraps = () => {
         y: 375,
       },
       className: classes.mobileJournalModal,
+      typography: "h5",
+      icon: "150px",
     };
     if (isDesktop) {
       return desktop;
@@ -392,200 +402,271 @@ export const GetWraps = () => {
     );
   };
 
+  const untilNextMonth = () => {
+    const values = {
+      days: DateTime.now()
+        .endOf("month")
+        .diff(DateTime.now(), ["days", "hours"]).values.days,
+      hours: Math.round(
+        DateTime.now().endOf("month").diff(DateTime.now(), ["days", "hours"])
+          .values.hours
+      ),
+    };
+
+    return values;
+  };
+
+  console.log("journals by return", journals);
+
+  const areThereNoJournals = () => {
+    if (journals === null) {
+      return true;
+    } else if (journals === []) {
+      return true;
+    } else if (journals.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  console.log("are there no journals", areThereNoJournals());
+
   return (
     <Grid>
-      <Grid>{open ? modal() : <></>}</Grid>
-      <Grid className={modalBlur()}>
-        {averages ? (
-          <Grid spacing={2}>
-            <Grid xs={10} sm={6} md={6} sx={{ p: 5 }} maxWidth="450px">
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <StyledTableCell style={{ fontSize: 20 }}>
-                      Emotion
-                    </StyledTableCell>
-                    <StyledTableCell>{selectMonth()}</StyledTableCell>
-                  </TableHead>
-                  <TableBody>
-                    <StyledTableRow>
-                      <StyledTableCell>Overall</StyledTableCell>
-                      <StyledTableCell>
-                        {averages.overall ? (
-                          averages.overall.toFixed(2)
-                        ) : (
-                          <CircularProgress />
-                        )}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                      <StyledTableCell>Sadness</StyledTableCell>
-                      <StyledTableCell>
-                        {averages.sadness ? (
-                          averages.sadness.toFixed(2)
-                        ) : (
-                          <CircularProgress />
-                        )}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                      <StyledTableCell>Depression</StyledTableCell>
-                      <StyledTableCell>
-                        {averages.depression ? (
-                          averages.depression.toFixed(2)
-                        ) : (
-                          <CircularProgress />
-                        )}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                      <StyledTableCell>Happiness</StyledTableCell>
-                      <StyledTableCell>
-                        {averages.happiness ? (
-                          averages.happiness.toFixed(2)
-                        ) : (
-                          <CircularProgress />
-                        )}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                      <StyledTableCell>Loneliness</StyledTableCell>
-                      <StyledTableCell>
-                        {averages.loneliness ? (
-                          averages.loneliness.toFixed(2)
-                        ) : (
-                          <CircularProgress />
-                        )}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                      <StyledTableCell>Sadness</StyledTableCell>
-                      <StyledTableCell>
-                        {averages.sadness ? (
-                          averages.sadness.toFixed(2)
-                        ) : (
-                          <CircularProgress />
-                        )}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Grid>
-
-            <Grid>
-              <LineChart
-                height={sizing().height}
-                width={sizing().width}
-                data={journals}
+      <Grid>
+        {areThereNoJournals() ? (
+          <Grid container spacing={1} justifyContent="center">
+            <Grid item xs={10} sm={10} md={12} lg={12}>
+              <Card
+                style={{
+                  minHeight: "300px",
+                  backgroundColor: "rgba(240, 240, 240,0.8)",
+                  p: 10,
+                  borderRadius: 10,
+                  margin: 10,
+                }}
               >
-                <Line
-                  connectNulls={true}
-                  name="overall"
-                  label={<CustomLabel />}
-                  isAnimationActive={false}
-                  type="monotone"
-                  dataKey="ratings.overall"
-                  stroke="white"
-                  strokeWidth={2}
-                />
-                <Line
-                  connectNulls={true}
-                  name="anxiety"
-                  label={<CustomLabel />}
-                  type="monotone"
-                  dataKey="ratings.anxiety"
-                  stroke="#ab0202"
-                  strokeWidth={2}
-                />
-                <Line
-                  connectNulls={true}
-                  name="loneliness"
-                  label={<CustomLabel />}
-                  type="monotone"
-                  dataKey="ratings.loneliness"
-                  stroke="#038007"
-                  strokeWidth={2}
-                />
-                <Line
-                  connectNulls={true}
-                  name="depression"
-                  label={<CustomLabel />}
-                  type="monotone"
-                  dataKey="ratings.depression"
-                  stroke="#026969"
-                  strokeWidth={2}
-                />
-                <Line
-                  connectNulls={true}
-                  name="happiness"
-                  label={<CustomLabel />}
-                  type="monotone"
-                  dataKey="ratings.happiness"
-                  stroke="#f5c402"
-                  strokeWidth={2}
-                />
-                <Line
-                  connectNulls={true}
-                  name="sadness"
-                  label={<CustomLabel />}
-                  type="monotone"
-                  dataKey="ratings.sadness"
-                  stroke="#020ff5"
-                  strokeWidth={2}
-                />
+                <Box className={classes.alignItems}>
+                  <Typography variant="h4" sx={{ margin: 5 }}>
+                    Wraps Occur Every Month
+                  </Typography>
+                </Box>
+                <Box className={classes.alignItems} style={{ margin: 10 }}>
+                  <Typography varient="h5">
+                    You have {untilNextMonth().days} days and{" "}
+                    {untilNextMonth().hours} hours until your first Wrap!
+                  </Typography>
+                </Box>
 
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  payload={[
-                    {
-                      value: "overall",
-                      type: "line",
-                      color: "white",
-                    },
-                    {
-                      value: "anxiety",
-                      type: "line",
-                      color: "#ab0202",
-                    },
-                    {
-                      value: "loneliness",
-                      type: "line",
-                      color: "#038007",
-                    },
-                    {
-                      value: "depression",
-                      type: "line",
-                      color: "#026969",
-                    },
-                    {
-                      value: "happiness",
-                      type: "line",
-                      color: "#f5c402",
-                    },
-                    {
-                      value: "sadness",
-                      type: "line",
-                      color: "#020ff5",
-                    },
-                  ]}
-                />
-                <XAxis dataKey={month} />
-
-                <Tooltip
-                  trigger="click"
-                  content={<CustomTooltip />}
-                  // className={classes.toolTip}
-                  // isAnimationActive={true}
-                  // position={sizing().tooltip}
-                  // trigger="click"
-                />
-              </LineChart>
+                <Box className={classes.alignItems} style={{ mt: "30px" }}>
+                  <IconButton
+                    onClick={() => {
+                      navigate("/about");
+                    }}
+                  >
+                    <InfoIcon
+                      style={{
+                        fontSize: sizing().icon,
+                        color: "black",
+                        marginBottom: 20,
+                      }}
+                    />
+                  </IconButton>
+                </Box>
+              </Card>
             </Grid>
           </Grid>
         ) : (
-          <></>
+          <Grid>
+            <Grid>{open ? modal() : <></>}</Grid>
+            <Grid className={modalBlur()}>
+              {averages ? (
+                <Grid spacing={2}>
+                  <Grid xs={10} sm={6} md={6} sx={{ p: 5 }} maxWidth="450px">
+                    <TableContainer component={Paper}>
+                      <Table>
+                        <TableHead>
+                          <StyledTableCell style={{ fontSize: 20 }}>
+                            Emotion
+                          </StyledTableCell>
+                          <StyledTableCell>{selectMonth()}</StyledTableCell>
+                        </TableHead>
+                        <TableBody>
+                          <StyledTableRow>
+                            <StyledTableCell>Overall</StyledTableCell>
+                            <StyledTableCell>
+                              {averages.overall ? (
+                                averages.overall.toFixed(2)
+                              ) : (
+                                <CircularProgress />
+                              )}
+                            </StyledTableCell>
+                          </StyledTableRow>
+                          <StyledTableRow>
+                            <StyledTableCell>Sadness</StyledTableCell>
+                            <StyledTableCell>
+                              {averages.sadness ? (
+                                averages.sadness.toFixed(2)
+                              ) : (
+                                <CircularProgress />
+                              )}
+                            </StyledTableCell>
+                          </StyledTableRow>
+                          <StyledTableRow>
+                            <StyledTableCell>Depression</StyledTableCell>
+                            <StyledTableCell>
+                              {averages.depression ? (
+                                averages.depression.toFixed(2)
+                              ) : (
+                                <CircularProgress />
+                              )}
+                            </StyledTableCell>
+                          </StyledTableRow>
+                          <StyledTableRow>
+                            <StyledTableCell>Happiness</StyledTableCell>
+                            <StyledTableCell>
+                              {averages.happiness ? (
+                                averages.happiness.toFixed(2)
+                              ) : (
+                                <CircularProgress />
+                              )}
+                            </StyledTableCell>
+                          </StyledTableRow>
+                          <StyledTableRow>
+                            <StyledTableCell>Loneliness</StyledTableCell>
+                            <StyledTableCell>
+                              {averages.loneliness ? (
+                                averages.loneliness.toFixed(2)
+                              ) : (
+                                <CircularProgress />
+                              )}
+                            </StyledTableCell>
+                          </StyledTableRow>
+                          <StyledTableRow>
+                            <StyledTableCell>Sadness</StyledTableCell>
+                            <StyledTableCell>
+                              {averages.sadness ? (
+                                averages.sadness.toFixed(2)
+                              ) : (
+                                <CircularProgress />
+                              )}
+                            </StyledTableCell>
+                          </StyledTableRow>
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Grid>
+
+                  <Grid>
+                    <LineChart
+                      height={sizing().height}
+                      width={sizing().width}
+                      data={journals}
+                    >
+                      <Line
+                        connectNulls={true}
+                        name="overall"
+                        label={<CustomLabel />}
+                        isAnimationActive={false}
+                        type="monotone"
+                        dataKey="ratings.overall"
+                        stroke="white"
+                        strokeWidth={2}
+                      />
+                      <Line
+                        connectNulls={true}
+                        name="anxiety"
+                        label={<CustomLabel />}
+                        type="monotone"
+                        dataKey="ratings.anxiety"
+                        stroke="#ab0202"
+                        strokeWidth={2}
+                      />
+                      <Line
+                        connectNulls={true}
+                        name="loneliness"
+                        label={<CustomLabel />}
+                        type="monotone"
+                        dataKey="ratings.loneliness"
+                        stroke="#038007"
+                        strokeWidth={2}
+                      />
+                      <Line
+                        connectNulls={true}
+                        name="depression"
+                        label={<CustomLabel />}
+                        type="monotone"
+                        dataKey="ratings.depression"
+                        stroke="#026969"
+                        strokeWidth={2}
+                      />
+                      <Line
+                        connectNulls={true}
+                        name="happiness"
+                        label={<CustomLabel />}
+                        type="monotone"
+                        dataKey="ratings.happiness"
+                        stroke="#f5c402"
+                        strokeWidth={2}
+                      />
+                      <Line
+                        connectNulls={true}
+                        name="sadness"
+                        label={<CustomLabel />}
+                        type="monotone"
+                        dataKey="ratings.sadness"
+                        stroke="#020ff5"
+                        strokeWidth={2}
+                      />
+
+                      <Legend
+                        verticalAlign="bottom"
+                        height={36}
+                        payload={[
+                          {
+                            value: "overall",
+                            type: "line",
+                            color: "white",
+                          },
+                          {
+                            value: "anxiety",
+                            type: "line",
+                            color: "#ab0202",
+                          },
+                          {
+                            value: "loneliness",
+                            type: "line",
+                            color: "#038007",
+                          },
+                          {
+                            value: "depression",
+                            type: "line",
+                            color: "#026969",
+                          },
+                          {
+                            value: "happiness",
+                            type: "line",
+                            color: "#f5c402",
+                          },
+                          {
+                            value: "sadness",
+                            type: "line",
+                            color: "#020ff5",
+                          },
+                        ]}
+                      />
+                      <XAxis dataKey={month} />
+
+                      <Tooltip trigger="click" content={<CustomTooltip />} />
+                    </LineChart>
+                  </Grid>
+                </Grid>
+              ) : (
+                <></>
+              )}
+            </Grid>
+          </Grid>
         )}
       </Grid>
     </Grid>

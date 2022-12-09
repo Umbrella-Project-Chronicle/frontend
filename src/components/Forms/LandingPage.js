@@ -73,7 +73,7 @@ export const LandingPage = () => {
   return (
     <Grid container spacing={2} justifyContent="center">
       <Box item>{check() ? <AboutCards isLandingPage="true" /> : <></>}</Box>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
+      <Grid item xs={10} sm={10} md={10} lg={12}>
         <Card
           style={{
             minHeight: "300px",
@@ -99,7 +99,7 @@ export const LandingPage = () => {
           </Box>
         </Card>
       </Grid>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
+      <Grid item xs={10} sm={10} md={10} lg={12}>
         <Card
           style={{
             minHeight: "300px",
@@ -124,7 +124,7 @@ export const LandingPage = () => {
           </Box>
         </Card>
       </Grid>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
+      <Grid item xs={10} sm={10} md={10} lg={12}>
         <Card
           style={{
             minHeight: "300px",
