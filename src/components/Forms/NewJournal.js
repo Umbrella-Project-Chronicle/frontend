@@ -39,7 +39,7 @@ export const NewJournal = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center">
-      <Grid item xs={10} sm={12} md={12} lg={12}>
+      <Grid item xs={10} sm={10} md={10} lg={10}>
         <Card
           style={{
             minHeight: "300px",
@@ -71,7 +71,7 @@ export const NewJournal = () => {
           </Box>
         </Card>
       </Grid>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
+      <Grid item xs={10} sm={10} md={10} lg={10}>
         <Card
           style={{
             minHeight: "300px",
@@ -96,7 +96,7 @@ export const NewJournal = () => {
           </Box>
         </Card>
       </Grid>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
+      <Grid item xs={10} sm={10} md={10} lg={10}>
         <Card
           style={{
             minHeight: "300px",

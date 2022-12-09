@@ -3,12 +3,15 @@ import Carousel from "react-material-ui-carousel";
 import { Paper, Button, Box, Grid, Card, Modal } from "@mui/material";
 import useStyles from "../../styles";
 import { CardContent, Typography, IconButton } from "@material-ui/core";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import TimesOneMobiledataIcon from "@mui/icons-material/TimesOneMobiledata";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 import { OverlayTrigger } from "react-bootstrap";
+import InfoIcon from "@mui/icons-material/Info";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import StarHalfIcon from "@mui/icons-material/StarHalf";
 
 export const AboutCards = ({ isLandingPage }) => {
   const classes = useStyles();
@@ -33,20 +36,20 @@ export const AboutCards = ({ isLandingPage }) => {
       title: "Option 1 - 'Full'",
       subtitle: "Best Option (in our opinion)",
       body: "This provides the most data and gets you the most out of our app. You provide a 0-10 rating on 6 emotions as well as a journal on how your day went.",
-      icon: <StarBorderIcon style={{ fontSize: "100px" }} />,
+      icon: <AutoAwesomeIcon style={{ fontSize: "100px" }} />,
       icon2: <DriveFileRenameOutlineIcon style={{ fontSize: "100px" }} />,
     },
     {
       title: "Option 2 - Standard",
       subtitle: "Still Privides Data If You're In a Hurry",
       body: "You just provide your ratings for 6 emotions",
-      icon: <StarBorderIcon style={{ fontSize: "100px" }} />,
+      icon: <StarIcon style={{ fontSize: "100px" }} />,
     },
     {
       title: "Option 3 - Brief",
       subtitle: "If you're really in a hurry",
-      body: "If you're super busy but still want to track your data, you can provide a brief 1 rating on your overall day.",
-      icon: <StarBorderIcon style={{ fontSize: "100px" }} />,
+      body: "If you're super busy but still want to track your data, you can provide a brief rating on your overall day.",
+      icon: <StarHalfIcon style={{ fontSize: "100px" }} />,
       icon2: <TimesOneMobiledataIcon style={{ fontSize: "100px" }} />,
     },
     {
@@ -68,7 +71,9 @@ export const AboutCards = ({ isLandingPage }) => {
     <Box>
       {isLandingPage ? (
         <Grid>
-          <Button onClick={handleOpen}>Which is Which?</Button>
+          <Button onClick={handleOpen}>
+            Info <InfoIcon />
+          </Button>
           <Modal open={open} onClose={handleClose}>
             <Box className={classes.modal}>
               <Carousel>
@@ -85,8 +90,12 @@ export const AboutCards = ({ isLandingPage }) => {
                         </Typography>
                         <Typography variant="h4"> {item.subtitle}</Typography>
                         <Typography>{item.body}</Typography>
-                        <Grid>{item.icon}</Grid>
-                        <Grid>{item.icon2}</Grid>
+                        <Box className={classes.alignItems}>
+                          <Grid>{item.icon}</Grid>
+                        </Box>
+                        {/* <Box justifyContent="center">
+                          <Grid>{item.icon2}</Grid>
+                        </Box> */}
                       </CardContent>
                     </Card>
                   </Grid>

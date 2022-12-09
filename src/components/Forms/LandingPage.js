@@ -71,83 +71,87 @@ export const LandingPage = () => {
   }, []);
 
   return (
-    <Grid container spacing={2} justifyContent="center">
-      <Box item>{check() ? <AboutCards isLandingPage="true" /> : <></>}</Box>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
-        <Card
-          style={{
-            minHeight: "300px",
-            backgroundColor: "rgba(240, 240, 240,0.8)",
-            p: 3,
-            borderRadius: 10,
-          }}
-        >
-          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h3">New Journal</Typography>
-          </Box>
+    <Grid>
+      <Box className={classes.alignItems}>
+        {check() ? <AboutCards isLandingPage="true" /> : <></>}
+      </Box>
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={10} sm={10} md={10} lg={12}>
+          <Card
+            style={{
+              minHeight: "300px",
+              backgroundColor: "rgba(240, 240, 240,0.8)",
+              p: 3,
+              borderRadius: 10,
+            }}
+          >
+            <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+              <Typography variant="h3">New Journal</Typography>
+            </Box>
 
-          <Box className={classes.alignItems} style={{ mt: "30px" }}>
-            <IconButton
-              onClick={() => {
-                navigate("/newjournals");
-              }}
-            >
-              <HistoryEduIcon
-                style={{ fontSize: iconSize().icon, color: "black" }}
-              />
-            </IconButton>
-          </Box>
-        </Card>
-      </Grid>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
-        <Card
-          style={{
-            minHeight: "300px",
-            backgroundColor: "rgba(240, 240, 240,0.8)",
-            p: 3,
-            borderRadius: 10,
-          }}
-        >
-          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h3">Wraps</Typography>
-          </Box>
-          <Box className={classes.alignItems}>
-            <IconButton
-              onClick={() => {
-                navigate("/wraps");
-              }}
-            >
-              <HistoryIcon
-                style={{ fontSize: iconSize().icon, color: "black" }}
-              />
-            </IconButton>
-          </Box>
-        </Card>
-      </Grid>
-      <Grid item xs={10} sm={12} md={12} lg={12}>
-        <Card
-          style={{
-            minHeight: "300px",
-            backgroundColor: "rgba(240, 240, 240,0.8)",
-            p: 3,
-            borderRadius: 10,
-          }}
-        >
-          <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
-            <Typography variant="h3">Past Journals</Typography>
-          </Box>
-          <Box className={classes.alignItems}>
-            <IconButton
-              onClick={() => {
-                navigate("/journals");
-              }}
-            >
-              <ManageSearchIcon
-                style={{ fontSize: iconSize().icon, color: "black" }}
-              />
-            </IconButton>
-          </Box>
-        </Card>
+            <Box className={classes.alignItems} style={{ mt: "30px" }}>
+              <IconButton
+                onClick={() => {
+                  navigate("/newjournals");
+                }}
+              >
+                <HistoryEduIcon
+                  style={{ fontSize: iconSize().icon, color: "black" }}
+                />
+              </IconButton>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid item xs={10} sm={10} md={10} lg={12}>
+          <Card
+            style={{
+              minHeight: "300px",
+              backgroundColor: "rgba(240, 240, 240,0.8)",
+              p: 3,
+              borderRadius: 10,
+            }}
+          >
+            <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+              <Typography variant="h3">Wraps</Typography>
+            </Box>
+            <Box className={classes.alignItems}>
+              <IconButton
+                onClick={() => {
+                  navigate("/wraps");
+                }}
+              >
+                <HistoryIcon
+                  style={{ fontSize: iconSize().icon, color: "black" }}
+                />
+              </IconButton>
+            </Box>
+          </Card>
+        </Grid>
+        <Grid item xs={10} sm={10} md={10} lg={12}>
+          <Card
+            style={{
+              minHeight: "300px",
+              backgroundColor: "rgba(240, 240, 240,0.8)",
+              p: 3,
+              borderRadius: 10,
+            }}
+          >
+            <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+              <Typography variant="h3">Past Journals</Typography>
+            </Box>
+            <Box className={classes.alignItems}>
+              <IconButton
+                onClick={() => {
+                  navigate("/journals");
+                }}
+              >
+                <ManageSearchIcon
+                  style={{ fontSize: iconSize().icon, color: "black" }}
+                />
+              </IconButton>
+            </Box>
+          </Card>
+        </Grid>
       </Grid>
     </Grid>
   );

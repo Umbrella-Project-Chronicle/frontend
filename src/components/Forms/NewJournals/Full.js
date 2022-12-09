@@ -12,6 +12,7 @@ import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
 import useStyles from "../../../styles.js";
 import { useMediaQuery } from "react-responsive";
+import { useNavigate } from "react-router-dom";
 
 export const Full = () => {
   const [text, setText] = useState("");
@@ -25,6 +26,7 @@ export const Full = () => {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const userID = localStorage.getItem("id");
   const classes = useStyles();
+  const navigate = useNavigate();
   const isDesktop = useMediaQuery({
     query: "(min-width: 1025px)",
   });
@@ -74,6 +76,9 @@ export const Full = () => {
       .then((res) => {
         setSuccess(true);
         console.log("journal post", res);
+        setTimeout(() => {
+          navigate("/journals");
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);

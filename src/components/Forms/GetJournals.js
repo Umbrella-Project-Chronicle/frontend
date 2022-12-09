@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
   Modal,
+  IconButton,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -14,6 +15,9 @@ import { DateRange } from "react-date-range";
 import { useMediaQuery } from "react-responsive";
 import { EditJournal } from "./EditJournal.js";
 import useStyles from "../../styles.js";
+import { useNavigate } from "react-router-dom";
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+import CloseIcon from "@mui/icons-material/Close";
 
 const { DateTime } = require("luxon");
 
@@ -21,11 +25,12 @@ export function GetJournals() {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const email = localStorage.getItem("email");
   const userID = localStorage.getItem("id");
-  const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [journals, setJournals] = useState(null);
+  const navigate = useNavigate();
 
   const classes = useStyles();
 
@@ -86,7 +91,7 @@ export function GetJournals() {
           },
         }
       );
-      setJournals(res.data);
+      setJournals(res.data.reverse());
       console.log(res);
 
       if (res.data.length > 0) {
@@ -136,112 +141,172 @@ export function GetJournals() {
     }
   };
 
+  const iconSize = () => {
+    const mobile = {
+      typography: "h5",
+      icon: "150px",
+    };
+    const desktop = {
+      icon: "200px",
+    };
+    if (isMobile) {
+      return mobile;
+    } else {
+      return desktop;
+    }
+  };
+
   return (
     <Grid>
-      <Grid>{open === true ? modal() : <></>}</Grid>
-      <Grid className={modalBlur()}>
-        <Box
-          display={"flex"}
-          justifyContent="center"
-          maxWidth={400}
-          style={{ backgroundColor: "gray", borderRadius: 1 }}
-        >
-          {viewCalendarButton ? (
-            <Grid>
-              {viewCalendar ? (
-                <Box justifyContent="center">
-                  <DateRange
-                    editableDateInputs={true}
-                    onChange={(item) => setState([item.selection])}
-                    moveRangeOnFirstSelection={false}
-                    ranges={state}
+      {journals && journals.length === 0 ? (
+        <Grid justifyContent="center">
+          <Grid item xs={10} sm={10} md={12} lg={12}>
+            <Card
+              style={{
+                minHeight: "300px",
+                backgroundColor: "rgba(240, 240, 240,0.8)",
+                p: 10,
+                borderRadius: 10,
+                margin: 10,
+              }}
+            >
+              <Box className={classes.alignItems} style={{ marginTop: "75px" }}>
+                <Typography variant="h3" sx={{ margin: 5 }}>
+                  Journal for the First Time
+                </Typography>
+              </Box>
+
+              <Box className={classes.alignItems} style={{ mt: "30px" }}>
+                <IconButton
+                  onClick={() => {
+                    navigate("/newjournals");
+                  }}
+                >
+                  <HistoryEduIcon
+                    style={{
+                      fontSize: iconSize().icon,
+                      color: "black",
+                      marginBottom: 20,
+                    }}
                   />
-                  <Button onClick={() => setViewCalendar(false)}>Close</Button>
-                </Box>
+                </IconButton>
+              </Box>
+            </Card>
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid>
+          <Grid>{open ? modal() : <></>}</Grid>
+          <Grid className={modalBlur()}>
+            <Box name="calendar" maxWidth={400} sx={{ margin: 3 }}>
+              {viewCalendarButton ? (
+                <Grid>
+                  {viewCalendar ? (
+                    <Box justifyContent="center">
+                      <Button onClick={() => setViewCalendar(false)}>
+                        <Box>
+                          <CloseIcon />
+                        </Box>
+                      </Button>
+                      <DateRange
+                        editableDateInputs={true}
+                        onChange={(item) => setState([item.selection])}
+                        moveRangeOnFirstSelection={false}
+                        ranges={state}
+                      />
+                    </Box>
+                  ) : (
+                    <Box justifyContent="center">
+                      <Button onClick={() => setViewCalendar(true)}>
+                        <Box
+                          sx={{
+                            backgroundColor: "black",
+                            borderRadius: 1,
+                            padding: 2,
+                          }}
+                        >
+                          <Typography>View Calendar</Typography>
+                        </Box>
+                      </Button>
+                    </Box>
+                  )}
+                </Grid>
               ) : (
-                <Box>
-                  <Button onClick={() => setViewCalendar(true)}>
-                    View Calendar
-                  </Button>
-                </Box>
+                <></>
+              )}
+            </Box>
+
+            <Grid container spacing={1}>
+              {journals ? (
+                journals.map((journal, i) => (
+                  <Grid>
+                    <Grid item xs={8} sm={8} md={8} lg={4}>
+                      <CardHeader key={journal.date} />
+
+                      <Card sx={{ p: 2, m: 3, maxWidth: 300, minWidth: 300 }}>
+                        <Typography>
+                          Date:{" "}
+                          {DateTime.fromISO(journal.date).toLocaleString(
+                            DateTime.DATETIME_MED
+                          )}{" "}
+                        </Typography>
+                        <Button
+                          onClick={() => {
+                            setModalData(journal);
+                            handleOpen();
+                          }}
+                        >
+                          Edit Journal
+                        </Button>
+
+                        <Typography>
+                          Journal Type: {GetJournalType(journal)}
+                        </Typography>
+                        <Typography>Ratings:</Typography>
+                        <ul className="ratingsUl" key={i}>
+                          <Typography>
+                            Overall: {journal.ratings.overall}
+                          </Typography>
+                          {journal.journalType >= 2 ? (
+                            <div>
+                              <Typography>
+                                Anxiety: {journal.ratings.anxiety}
+                              </Typography>
+                              <Typography>
+                                Depression: {journal.ratings.depression}
+                              </Typography>
+                              <Typography>
+                                Happiness: {journal.ratings.happiness}
+                              </Typography>
+                              <Typography>
+                                Loneliness: {journal.ratings.loneliness}
+                              </Typography>
+                              <Typography>
+                                Sadness: {journal.ratings.sadness}
+                              </Typography>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </ul>
+                        {journal.journalType === 3 ? (
+                          <div>
+                            <Typography>Text: {journal.response}</Typography>
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                      </Card>
+                    </Grid>
+                  </Grid>
+                ))
+              ) : (
+                <div> No Journals Exists </div>
               )}
             </Grid>
-          ) : (
-            <></>
-          )}
-        </Box>
-
-        <Grid container spacing={1}>
-          {journals && journals.length === 0 ? (
-            <div>Looks like you haven't journalled yet</div>
-          ) : (
-            <></>
-          )}
-          {journals ? (
-            journals.map((journal, i) => (
-              <Grid item xs={12} md={6} lg={4}>
-                <CardHeader key={journal.date} />
-
-                <Card sx={{ p: 2, m: 3, maxWidth: 300, minWidth: 300 }}>
-                  <Typography>
-                    Date:{" "}
-                    {DateTime.fromISO(journal.date).toLocaleString(
-                      DateTime.DATETIME_MED
-                    )}{" "}
-                  </Typography>
-                  <Button
-                    onClick={() => {
-                      setModalData(journal);
-                      handleOpen();
-                    }}
-                  >
-                    Edit Journal
-                  </Button>
-
-                  <Typography>
-                    Journal Type: {GetJournalType(journal)}
-                  </Typography>
-                  <Typography>Ratings:</Typography>
-                  <ul className="ratingsUl" key={i}>
-                    <Typography>ID: {journal.id}</Typography>
-                    <Typography>Overall: {journal.ratings.overall}</Typography>
-                    {journal.journalType >= 2 ? (
-                      <div>
-                        <Typography>
-                          Anxiety: {journal.ratings.anxiety}
-                        </Typography>
-                        <Typography>
-                          Depression: {journal.ratings.depression}
-                        </Typography>
-                        <Typography>
-                          Happiness: {journal.ratings.happiness}
-                        </Typography>
-                        <Typography>
-                          Loneliness: {journal.ratings.loneliness}
-                        </Typography>
-                        <Typography>
-                          Sadness: {journal.ratings.sadness}
-                        </Typography>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                  </ul>
-                  {journal.journalType === 3 ? (
-                    <div>
-                      <Typography>Text: {journal.response}</Typography>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <div> No Journals Exists </div>
-          )}
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Grid>
   );
 }

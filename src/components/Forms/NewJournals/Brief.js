@@ -11,6 +11,7 @@ import {
 import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
 import useStyles from "../../../styles.js";
+import { useNavigate } from "react-router-dom";
 
 export const Brief = () => {
   const [success, setSuccess] = useState(false);
@@ -18,6 +19,8 @@ export const Brief = () => {
   const token = JSON.parse(localStorage.getItem("userToken"));
   const userID = localStorage.getItem("id");
   const classes = useStyles();
+
+  const navigate = useNavigate();
 
   const postJournal = () => {
     axios
@@ -40,6 +43,9 @@ export const Brief = () => {
       .then((res) => {
         setSuccess(true);
         console.log("journal post", res);
+        setTimeout(() => {
+          navigate("/journals");
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);
