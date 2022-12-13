@@ -23,7 +23,7 @@ export const AboutCards = ({ isLandingPage }) => {
     {
       title: "Welcome to Chronicle!",
       subtitle: "What We're About",
-      body: "we simply want to provide a simple, easy to use tool that will track your emotional history and lend a helping hand in you becoming a more emotioanlly mature person.",
+      body: "we simply want to provide a simple, easy to use tool that will track your emotional history and lend a helping hand in you becoming a more emotionally mature person.",
       icon: "",
     },
     {

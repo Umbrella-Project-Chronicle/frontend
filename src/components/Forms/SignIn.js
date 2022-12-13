@@ -12,20 +12,19 @@ import {
 import useStyles from "../../styles.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// import SetNewUser from "./SetUser";
 
 function SignIn(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
   const styles = useStyles();
-  // const [user, setUser] = useState({ id: "", email: "", token: "", firstName: "", lastName: "" });
 
   // used to send user to welcome page
   const navigate = useNavigate();
 
-  const goToWelcome = (email) => {
-    navigate("/home", { state: { email: email } });
+  const goToWelcome = (userData) => {
+    navigate("/home", { state: { userData: userData } });
   };
 
   // api call to sign in
@@ -46,20 +45,49 @@ function SignIn(props) {
         console.log("response", response);
         if (response.status === 200) {
           const now = new Date().getTime();
+          localStorage.setItem("setUpTime", now);
+          localStorage.setItem("email", data.get("email"));
           localStorage.setItem(
             "userToken",
             JSON.stringify(response.data.token)
           );
-          localStorage.setItem("setUpTime", now);
-          localStorage.setItem("email", data.get("email"));
-          goToWelcome(data.get("email"));
           console.log(response);
+          GetUser();
         }
       })
       .catch((error) => {
         if (error.status === 409) {
           setError("Incorrect Password");
         } else setError("User Not Found");
+      });
+  };
+
+  const GetUser = () => {
+    console.log("getusercallsed");
+    const email = localStorage.getItem("email");
+    const token = JSON.parse(localStorage.getItem("userToken"));
+
+    console.log(email, token);
+
+    axios
+      .get("https://localhost:7177/api/users/search/" + email, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          console.log("get user response", res);
+
+          const userData = res.data;
+
+          goToWelcome(userData);
+        }
+      })
+      .catch((error) => {
+        console.log("ERROR: failed fetching user profile from api", error);
+        goToWelcome();
       });
   };
 

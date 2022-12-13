@@ -5,7 +5,7 @@ import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import HistoryIcon from "@mui/icons-material/History";
 import useStyles from "../../styles";
 
-import { IconButton } from "@mui/material";
+import { CardContent, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
@@ -25,6 +25,13 @@ export const LandingPage = () => {
       return false;
     }
   };
+
+  var userData = null;
+  if (location.state) {
+    userData = location.state.userData;
+  }
+
+  console.log("userdata on landing page", location);
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -76,6 +83,31 @@ export const LandingPage = () => {
         {check() ? <AboutCards isLandingPage="true" /> : <></>}
       </Box>
       <Grid container spacing={2} justifyContent="center">
+        {userData ? (
+          <Grid item xs={10} sm={10} md={10} lg={12}>
+            <Card
+              style={{
+                maxHeight: "100px",
+                backgroundColor: "rgba(240, 240, 240,0.8)",
+                p: 3,
+                borderRadius: 10,
+              }}
+            >
+              <Box className={classes.alignItems} style={{ margin: "10px" }}>
+                {userData.firstName ? (
+                  <Typography style={{ fontSize: 30 }}>
+                    Welcome back, {userData.firstName}
+                  </Typography>
+                ) : (
+                  <Typography style={{ fontSize: 30 }}>Welcome!</Typography>
+                )}
+              </Box>
+            </Card>
+          </Grid>
+        ) : (
+          <></>
+        )}
+
         <Grid item xs={10} sm={10} md={10} lg={12}>
           <Card
             style={{
