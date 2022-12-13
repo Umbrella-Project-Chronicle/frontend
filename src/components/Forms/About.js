@@ -93,9 +93,6 @@ export const AboutCards = ({ isLandingPage }) => {
                         <Box className={classes.alignItems}>
                           <Grid>{item.icon}</Grid>
                         </Box>
-                        {/* <Box justifyContent="center">
-                          <Grid>{item.icon2}</Grid>
-                        </Box> */}
                       </CardContent>
                     </Card>
                   </Grid>
@@ -118,8 +115,9 @@ export const AboutCards = ({ isLandingPage }) => {
                     <Typography sx={{ fontSize: 14 }}>{item.title}</Typography>
                     <Typography variant="h4"> {item.subtitle}</Typography>
                     <Typography>{item.body}</Typography>
-                    <Grid>{item.icon}</Grid>
-                    <Grid>{item.icon2}</Grid>
+                    <Box className={classes.alignItems}>
+                      <Grid>{item.icon}</Grid>
+                    </Box>
                   </CardContent>
                 </Card>
               </Grid>
