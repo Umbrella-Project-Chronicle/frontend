@@ -84,7 +84,7 @@ function App() {
             <Route
               path="/wraps"
               element={
-                <Grid alignItems="center">
+                <Grid>
                   {" "}
                   <ResponsiveAppBar />
                   <GetWraps />

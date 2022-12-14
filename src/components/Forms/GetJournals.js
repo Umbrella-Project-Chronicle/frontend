@@ -8,6 +8,7 @@ import {
   Button,
   Modal,
   IconButton,
+  Stack,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -266,222 +267,215 @@ export const GetJournals = () => {
           </Grid>
         </Grid>
       ) : (
-        <Grid>
-          <Grid>{open ? modal() : <></>}</Grid>
-          <div>{`value: ${value !== null ? value : "null"}`}</div>
-          <div>{`inputValue: '${inputValue}'`}</div>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Journal Type</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={value}
-              label="Age"
-              onChange={handleChange}
-            >
-              <MenuItem value={1}>Brief</MenuItem>
-              <MenuItem value={2}>Standard</MenuItem>
-              <MenuItem value={3}>Full</MenuItem>
-              <MenuItem value={0}>All</MenuItem>
-            </Select>
-          </FormControl>
+        <Grid id="journals">
+          {/* {open ? modal() : <></>}
+          <Grid container spacing={2}>
+            <Box id="search-components">
+              <Stack>
+                <Box item>
+                  <Typography
+                    onClick={() => {
+                      setSearch(journals);
+                      setValue(0);
+                    }}
+                  >
+                    Reset Filters
+                  </Typography>
+                </Box>
+                <FormControl item fullWidth>
+                  <InputLabel id="JournalFilter">Journal Type</InputLabel>
+                  <Select
+                    labelId="JournalFilter"
+                    id="JournalFilter"
+                    value={value}
+                    label="Age"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={1}>Brief</MenuItem>
+                    <MenuItem value={2}>Standard</MenuItem>
+                    <MenuItem value={3}>Full</MenuItem>
+                    <MenuItem value={0}>All</MenuItem>
+                  </Select>
+                </FormControl>
 
-          <Grid className={modalBlur()}>
-            <Box>
-              <Typography onClick={() => {}}>Reset</Typography>
-            </Box>
-            <Box name="calendar" maxWidth={400} sx={{ margin: 3 }}>
-              {viewCalendarButton ? (
-                <Grid>
-                  {viewCalendar ? (
-                    <Box justifyContent="center">
-                      <Button onClick={() => setViewCalendar(false)}>
-                        <Box>
-                          <CloseIcon />
+                <Box item name="calendar" maxWidth={400} sx={{ margin: 3 }}>
+                  {viewCalendarButton ? (
+                    <Grid>
+                      {viewCalendar ? (
+                        <Box justifyContent="center">
+                          <Button onClick={() => setViewCalendar(false)}>
+                            <Box>
+                              <CloseIcon />
+                            </Box>
+                          </Button>
+                          <DateRange
+                            editableDateInputs={true}
+                            onChange={(item) => setState([item.selection])}
+                            moveRangeOnFirstSelection={false}
+                            ranges={state}
+                          />
                         </Box>
-                      </Button>
-                      <DateRange
-                        editableDateInputs={true}
-                        onChange={(item) => setState([item.selection])}
-                        moveRangeOnFirstSelection={false}
-                        ranges={state}
-                      />
-                    </Box>
-                  ) : (
-                    <Box justifyContent="center">
-                      <Button onClick={() => setViewCalendar(true)}>
-                        <Box
-                          sx={{
-                            backgroundColor: "black",
-                            borderRadius: 1,
-                            padding: 2,
-                          }}
-                        >
-                          <Typography>View Calendar</Typography>
-                        </Box>
-                      </Button>
-                    </Box>
-                  )}
-                </Grid>
-              ) : (
-                <></>
-              )}
-            </Box>
-
-            <Grid container spacing={1}>
-              {search ? (
-                <Grid>
-                  {value
-                    ? filterByJournalType.map((journal, i) => {
-                        return (
-                          <Grid>
-                            <Grid item xs={8} sm={8} md={8} lg={4}>
-                              <CardHeader key={journal.date} />
-
-                              <Card
-                                sx={{
-                                  p: 2,
-                                  m: 3,
-                                  maxWidth: 300,
-                                  minWidth: 300,
-                                }}
-                              >
-                                <Typography>
-                                  Date:{" "}
-                                  {DateTime.fromISO(
-                                    journal.date
-                                  ).toLocaleString(DateTime.DATETIME_MED)}{" "}
-                                </Typography>
-                                <Button
-                                  onClick={() => {
-                                    setModalData(journal);
-                                    handleOpen();
-                                  }}
-                                >
-                                  Edit Journal
-                                </Button>
-
-                                <Typography>
-                                  Journal Type: {GetJournalType(journal)}
-                                </Typography>
-                                <Typography>Ratings:</Typography>
-                                <ul className="ratingsUl" key={i}>
-                                  <Typography>
-                                    Overall: {journal.ratings.overall}
-                                  </Typography>
-                                  {journal.journalType >= 2 ? (
-                                    <div>
-                                      <Typography>
-                                        Anxiety: {journal.ratings.anxiety}
-                                      </Typography>
-                                      <Typography>
-                                        Depression: {journal.ratings.depression}
-                                      </Typography>
-                                      <Typography>
-                                        Happiness: {journal.ratings.happiness}
-                                      </Typography>
-                                      <Typography>
-                                        Loneliness: {journal.ratings.loneliness}
-                                      </Typography>
-                                      <Typography>
-                                        Sadness: {journal.ratings.sadness}
-                                      </Typography>
-                                    </div>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </ul>
-                                {journal.journalType === 3 ? (
-                                  <div>
-                                    <Typography>
-                                      Text: {journal.response}
-                                    </Typography>
-                                  </div>
-                                ) : (
-                                  <></>
-                                )}
-                              </Card>
-                            </Grid>
-                          </Grid>
-                        );
-                      })
-                    : search.map((journal, i) => (
-                        <Grid>
-                          <Grid item xs={8} sm={8} md={8} lg={4}>
-                            <CardHeader key={journal.date} />
-
-                            <Card
-                              sx={{ p: 2, m: 3, maxWidth: 300, minWidth: 300 }}
+                      ) : (
+                        <Box justifyContent="center">
+                          <Button onClick={() => setViewCalendar(true)}>
+                            <Box
+                              sx={{
+                                backgroundColor: "black",
+                                borderRadius: 1,
+                                padding: 2,
+                              }}
                             >
-                              <Typography>
-                                Date:{" "}
-                                {DateTime.fromISO(journal.date).toLocaleString(
-                                  DateTime.DATETIME_MED
-                                )}{" "}
-                              </Typography>
-                              <Button
-                                onClick={() => {
-                                  setModalData(journal);
-                                  handleOpen();
-                                }}
-                              >
-                                Edit Journal
-                              </Button>
+                              <Typography>View Calendar</Typography>
+                            </Box>
+                          </Button>
+                        </Box>
+                      )}
+                    </Grid>
+                  ) : (
+                    <></>
+                  )}
+                </Box>
+              </Stack>
+            </Box> */}
 
+          <Grid>
+            {search ? (
+              <Grid container spacing={1}>
+                {value
+                  ? filterByJournalType.map((journal, i) => {
+                      return (
+                        <Box item xs={12} sm={8} md={6} lg={6}>
+                          <CardHeader key={journal.date} />
+                          <Box>
+                            <Typography>
+                              Date:{" "}
+                              {DateTime.fromISO(journal.date).toLocaleString(
+                                DateTime.DATETIME_MED
+                              )}{" "}
+                            </Typography>
+                            <Button
+                              onClick={() => {
+                                setModalData(journal);
+                                handleOpen();
+                              }}
+                            >
+                              Edit Journal
+                            </Button>
+
+                            <Typography>
+                              Journal Type: {GetJournalType(journal)}
+                            </Typography>
+                            <Typography>Ratings:</Typography>
+                            <ul className="ratingsUl" key={i}>
                               <Typography>
-                                Journal Type: {GetJournalType(journal)}
+                                Overall: {journal.ratings.overall}
                               </Typography>
-                              <Typography>Ratings:</Typography>
-                              <ul className="ratingsUl" key={i}>
-                                <Typography>
-                                  Overall: {journal.ratings.overall}
-                                </Typography>
-                                {journal.journalType >= 2 ? (
-                                  <div>
-                                    <Typography>
-                                      Anxiety: {journal.ratings.anxiety}
-                                    </Typography>
-                                    <Typography>
-                                      Depression: {journal.ratings.depression}
-                                    </Typography>
-                                    <Typography>
-                                      Happiness: {journal.ratings.happiness}
-                                    </Typography>
-                                    <Typography>
-                                      Loneliness: {journal.ratings.loneliness}
-                                    </Typography>
-                                    <Typography>
-                                      Sadness: {journal.ratings.sadness}
-                                    </Typography>
-                                  </div>
-                                ) : (
-                                  <></>
-                                )}
-                              </ul>
-                              {journal.journalType === 3 ? (
+                              {journal.journalType >= 2 ? (
                                 <div>
                                   <Typography>
-                                    Text: {journal.response}
+                                    Anxiety: {journal.ratings.anxiety}
+                                  </Typography>
+                                  <Typography>
+                                    Depression: {journal.ratings.depression}
+                                  </Typography>
+                                  <Typography>
+                                    Happiness: {journal.ratings.happiness}
+                                  </Typography>
+                                  <Typography>
+                                    Loneliness: {journal.ratings.loneliness}
+                                  </Typography>
+                                  <Typography>
+                                    Sadness: {journal.ratings.sadness}
                                   </Typography>
                                 </div>
                               ) : (
                                 <></>
                               )}
-                            </Card>
-                          </Grid>
-                        </Grid>
-                      ))}
-                </Grid>
-              ) : (
-                <Box>
-                  <Typography>
-                    No Journals Exist During This Time Period :(
-                  </Typography>
-                </Box>
-              )}
-            </Grid>
+                            </ul>
+                            {journal.journalType === 3 ? (
+                              <div>
+                                <Typography>
+                                  Text: {journal.response}
+                                </Typography>
+                              </div>
+                            ) : (
+                              <></>
+                            )}
+                          </Box>
+                        </Box>
+                      );
+                    })
+                  : search.map((journal, i) => (
+                      <Box item xs={12} sm={8} md={6} lg={6}>
+                        <CardHeader key={journal.date} />
+
+                        <Card sx={{ p: 2, m: 3 }}>
+                          <Typography>
+                            Date:{" "}
+                            {DateTime.fromISO(journal.date).toLocaleString(
+                              DateTime.DATETIME_MED
+                            )}{" "}
+                          </Typography>
+                          <Button
+                            onClick={() => {
+                              setModalData(journal);
+                              handleOpen();
+                            }}
+                          >
+                            Edit Journal
+                          </Button>
+
+                          <Typography>
+                            Journal Type: {GetJournalType(journal)}
+                          </Typography>
+                          <Typography>Ratings:</Typography>
+                          <ul className="ratingsUl" key={i}>
+                            <Typography>
+                              Overall: {journal.ratings.overall}
+                            </Typography>
+                            {journal.journalType >= 2 ? (
+                              <div>
+                                <Typography>
+                                  Anxiety: {journal.ratings.anxiety}
+                                </Typography>
+                                <Typography>
+                                  Depression: {journal.ratings.depression}
+                                </Typography>
+                                <Typography>
+                                  Happiness: {journal.ratings.happiness}
+                                </Typography>
+                                <Typography>
+                                  Loneliness: {journal.ratings.loneliness}
+                                </Typography>
+                                <Typography>
+                                  Sadness: {journal.ratings.sadness}
+                                </Typography>
+                              </div>
+                            ) : (
+                              <></>
+                            )}
+                          </ul>
+                          {journal.journalType === 3 ? (
+                            <div>
+                              <Typography>Text: {journal.response}</Typography>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </Card>
+                      </Box>
+                    ))}
+              </Grid>
+            ) : (
+              <Box>
+                <Typography>
+                  No Journals Exist During This Time Period :(
+                </Typography>
+              </Box>
+            )}
           </Grid>
         </Grid>
+        // </Grid>
       )}
     </Grid>
   );

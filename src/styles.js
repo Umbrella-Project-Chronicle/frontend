@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-
     // backgroundImage: `url(${chronicleLogo})`,
     // backgroundRepeat: "no-repeat",
     // backgroundPosition: "50% 100%",
@@ -80,6 +79,16 @@ const useStyles = makeStyles((theme) => ({
   },
   isBlurred: {
     filter: "blur(2px)",
+  },
+  containerIsBlurred: {
+    display: "flex",
+    flexWrap: "wrap",
+    filter: "blur(2px)",
+  },
+  containerNotBlurred: {
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "row",
   },
   toolTip: {
     pointerEvents: "auto",
