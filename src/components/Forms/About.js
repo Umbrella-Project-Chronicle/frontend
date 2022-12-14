@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button, Box, Grid, Card, Modal } from "@mui/material";
+import { Button, Box, Grid, Card, Modal } from "@mui/material";
 import useStyles from "../../styles";
 import { CardContent, Typography, IconButton } from "@material-ui/core";
 import StarIcon from "@mui/icons-material/Star";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import TimesOneMobiledataIcon from "@mui/icons-material/TimesOneMobiledata";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
-import { OverlayTrigger } from "react-bootstrap";
+
 import InfoIcon from "@mui/icons-material/Info";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
