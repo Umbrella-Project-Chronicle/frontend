@@ -15,13 +15,17 @@ import { DateRange } from "react-date-range";
 import { useMediaQuery } from "react-responsive";
 import { EditJournal } from "./EditJournal.js";
 import useStyles from "../../styles.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import CloseIcon from "@mui/icons-material/Close";
 
+import Autocomplete from "@mui/material/Autocomplete";
+
 const { DateTime } = require("luxon");
 
-export function GetJournals() {
+export const GetJournals = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const token = JSON.parse(localStorage.getItem("userToken"));
   const email = localStorage.getItem("email");
   const userID = localStorage.getItem("id");
@@ -30,9 +34,36 @@ export function GetJournals() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [journals, setJournals] = useState(null);
-  const navigate = useNavigate();
+  const typeFilterOptions = [3, 2, 1];
+  const [value, setValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
+
+  const [userData, setUserData] = useState(null);
+
+  const [search, setSearch] = useState(journals);
+
+  console.log("location", location);
 
   const classes = useStyles();
+  useEffect(() => {
+    if (location.state) {
+      console.log("location.state");
+      if (location.state.userData) {
+        console.log("location.state.userData", location.state.userData);
+        setUserData(location.state.userData);
+      }
+      if (location.state.journals) {
+        console.log("locationstate.journal", location.state.journals);
+        setJournals(location.state.journals);
+      } else {
+        GetUserJournals();
+      }
+    } else {
+      GetUserJournals();
+    }
+  }, [location]);
+
+  // console.log("journals", journals, "userData", userData);
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 1025px)",
@@ -73,7 +104,30 @@ export function GetJournals() {
       key: "selection",
     },
   ]);
-  const [trigger, setTrigger] = useState(false);
+
+  const GetUserJournals = async () => {
+    console.log("getuserjournals");
+    const token = JSON.parse(localStorage.getItem("userToken"));
+    const userID = localStorage.getItem("id");
+    try {
+      const res = await axios.get(
+        "https://localhost:7177/api/journal/user/" + userID,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        },
+        {
+          UserId: userID,
+        }
+      );
+      console.log("Journals fetched from api", res);
+      setJournals(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log("ERROR: failed fetching journals from api", err);
+    }
+  };
 
   const GetMonthofJournals = async () => {
     try {
@@ -91,7 +145,7 @@ export function GetJournals() {
           },
         }
       );
-      setJournals(res.data.reverse());
+      setSearch(res.data.reverse());
       console.log(res);
 
       if (res.data.length > 0) {
@@ -107,11 +161,6 @@ export function GetJournals() {
     else if (j.journalType === 2) return "Standard";
     else if (j.journalType === 3) return "Full";
   }
-
-  // useEffect(() => {
-  //   GetMonthofJournals();
-  //   console.log("trigger");
-  // }, [trigger]);
 
   useEffect(() => {
     GetMonthofJournals();
@@ -135,6 +184,10 @@ export function GetJournals() {
     );
   };
 
+  const filterByJournalType = journals.filter((obj) => {
+    return obj.journalType === value;
+  });
+
   const modalBlur = () => {
     if (open) {
       return classes.isBlurred;
@@ -155,6 +208,9 @@ export function GetJournals() {
       return desktop;
     }
   };
+
+  console.log("userdata", userData);
+  console.log("journals", journals);
 
   return (
     <Grid>
@@ -179,7 +235,7 @@ export function GetJournals() {
               <Box className={classes.alignItems} style={{ mt: "30px" }}>
                 <IconButton
                   onClick={() => {
-                    navigate("/newjournals");
+                    navigate("/newjournals", { state: { userData: userData } });
                   }}
                 >
                   <HistoryEduIcon
@@ -197,7 +253,11 @@ export function GetJournals() {
       ) : (
         <Grid>
           <Grid>{open ? modal() : <></>}</Grid>
+
           <Grid className={modalBlur()}>
+            <Box>
+              <Typography onClick={() => {}}>Reset</Typography>
+            </Box>
             <Box name="calendar" maxWidth={400} sx={{ margin: 3 }}>
               {viewCalendarButton ? (
                 <Grid>
@@ -237,8 +297,8 @@ export function GetJournals() {
             </Box>
 
             <Grid container spacing={1}>
-              {journals ? (
-                journals.map((journal, i) => (
+              {search ? (
+                search.map((journal, i) => (
                   <Grid>
                     <Grid item xs={8} sm={8} md={8} lg={4}>
                       <CardHeader key={journal.date} />
@@ -301,7 +361,11 @@ export function GetJournals() {
                   </Grid>
                 ))
               ) : (
-                <div> No Journals Exists </div>
+                <Box>
+                  <Typography>
+                    No Journals Exist During This Time Period :(
+                  </Typography>
+                </Box>
               )}
             </Grid>
           </Grid>
@@ -309,4 +373,4 @@ export function GetJournals() {
       )}
     </Grid>
   );
-}
+};
