@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  TextField,
-  Box,
-  Button,
-  Grid,
-  Typography,
-  Divider,
-} from "@mui/material";
+import { Box, Button, Grid, Typography, Divider } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Slider from "@mui/material/Slider";
 import useStyles from "../../../styles.js";
@@ -57,60 +50,64 @@ export const Brief = () => {
   }
 
   return (
-    <Grid>
-      <Grid
+    <Grid sx={{ padding: 2 }}>
+      <Box sx={{ justifyContent: "center" }}>
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            fontSize: 40,
+            letterSpacing: 6,
+          }}
+        >
+          Brief Journal
+        </Typography>
+      </Box>
+      <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
+
+      <Box
         sx={{
-          mt: 4,
+          display: "flex",
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "flex-start",
+          justifyContent: "center",
           boxShadow: 4,
-          bgcolor: "rgba(240, 240, 240,0.5)",
-          m: 5,
-          p: 2,
-          borderRadius: 1,
+          padding: 2,
         }}
       >
-        <Box sx={{ justifyContent: "center" }}>
-          <Typography
-            sx={{ fontWeight: "bold", fontSize: 40, letterSpacing: 6 }}
-          >
-            Brief Journal
-          </Typography>
-        </Box>
-        <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
+        <Typography className={classes.alignItems}>Overall</Typography>
+        <Slider
+          aria-label="rating"
+          defaultValue={5}
+          getAriaValueText={valuetext}
+          valueLabelDisplay="auto"
+          step={1}
+          marks
+          min={1}
+          max={10}
+          onChange={(event) => setOverall(event.target.value)}
+          value={overall}
+        />
+      </Box>
 
-        <Box sx={{ backgroundColor: "gray", boxShadow: 4, borderRadius: 1 }}>
-          <Typography className={classes.alignItems}>Overall</Typography>
-          <Slider
-            aria-label="rating"
-            defaultValue={5}
-            getAriaValueText={valuetext}
-            valueLabelDisplay="auto"
-            step={1}
-            marks
-            min={1}
-            max={10}
-            onChange={(event) => setOverall(event.target.value)}
-            value={overall}
-          />
-        </Box>
-
-        <Box
-          sx={{
-            backgroundColor: "black",
-            boxShadow: 4,
-            borderRadius: 1,
+      <Box
+        sx={{
+          boxShadow: 4,
+          borderRadius: 1,
+          maxWidth: "100%",
+        }}
+        className={classes.alignItems}
+      >
+        <Button
+          onClick={() => {
+            postJournal();
           }}
-          className={classes.alignItems}
         >
-          <Button
-            onClick={() => {
-              postJournal();
-            }}
-          >
-            Submit Journal
-          </Button>
-        </Box>
-        {success && <Alert severity="success">Submitted Journal!</Alert>}
-      </Grid>
+          Submit Journal
+        </Button>
+      </Box>
+      {success && <Alert severity="success">Submitted Journal!</Alert>}
     </Grid>
   );
 };

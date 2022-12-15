@@ -5,9 +5,8 @@ import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import HistoryIcon from "@mui/icons-material/History";
 import useStyles from "../../styles";
 
-import { IconButton } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { CardContent, IconButton } from "@mui/material";
+import { useNavigate, useLocation } from "react-router-dom";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import { useMediaQuery } from "react-responsive";
 import { AboutCards } from "./About";
@@ -18,6 +17,7 @@ export const LandingPage = () => {
   const classes = useStyles();
   const email = localStorage.getItem("email");
   const token = JSON.parse(localStorage.getItem("userToken"));
+  const [journals, setJournals] = useState(null);
   const check = () => {
     if (localStorage.getItem("firstTime")) {
       return true;
@@ -25,6 +25,24 @@ export const LandingPage = () => {
       return false;
     }
   };
+
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    console.log("hello");
+    if (location.state) {
+      setUserData(location.state.userData);
+      localStorage.setItem("id", location.state.userData.id);
+    } else {
+      if (!localStorage.getItem("id")) {
+        GetUserProfile();
+      }
+    }
+    if (!journals) {
+      GetUserJournals();
+    }
+  }, [location]);
+
+  console.log("userdata on landing page", location);
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -66,9 +84,28 @@ export const LandingPage = () => {
     }
   };
 
-  useEffect(() => {
-    GetUserProfile();
-  }, []);
+  const GetUserJournals = async () => {
+    const token = JSON.parse(localStorage.getItem("userToken"));
+    const userID = localStorage.getItem("id");
+    try {
+      const res = await axios.get(
+        "https://localhost:7177/api/journal/user/" + userID,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        },
+        {
+          UserId: userID,
+        }
+      );
+      console.log("Journals fetched from api", res);
+      setJournals(res.data.reverse());
+      console.log(res.data);
+    } catch (err) {
+      console.log("ERROR: failed fetching journals from api", err);
+    }
+  };
 
   return (
     <Grid>
@@ -76,7 +113,32 @@ export const LandingPage = () => {
         {check() ? <AboutCards isLandingPage="true" /> : <></>}
       </Box>
       <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={10} sm={10} md={10} lg={12}>
+        {userData ? (
+          <Grid item xs={10} sm={10} md={8} lg={8}>
+            <Card
+              style={{
+                maxHeight: "100px",
+                backgroundColor: "rgba(240, 240, 240,0.8)",
+                p: 3,
+                borderRadius: 10,
+              }}
+            >
+              <Box className={classes.alignItems} style={{ margin: "10px" }}>
+                {userData.firstName ? (
+                  <Typography style={{ fontSize: 30 }}>
+                    Welcome back, {userData.firstName}!
+                  </Typography>
+                ) : (
+                  <Typography style={{ fontSize: 30 }}>Welcome!</Typography>
+                )}
+              </Box>
+            </Card>
+          </Grid>
+        ) : (
+          <></>
+        )}
+
+        <Grid item xs={10} sm={10} md={8} lg={8}>
           <Card
             style={{
               minHeight: "300px",
@@ -92,7 +154,9 @@ export const LandingPage = () => {
             <Box className={classes.alignItems} style={{ mt: "30px" }}>
               <IconButton
                 onClick={() => {
-                  navigate("/newjournals");
+                  navigate("/newjournals", {
+                    state: { userData: userData, journals: journals },
+                  });
                 }}
               >
                 <HistoryEduIcon
@@ -102,7 +166,7 @@ export const LandingPage = () => {
             </Box>
           </Card>
         </Grid>
-        <Grid item xs={10} sm={10} md={10} lg={12}>
+        <Grid item xs={10} sm={10} md={10} lg={10}>
           <Card
             style={{
               minHeight: "300px",
@@ -117,7 +181,9 @@ export const LandingPage = () => {
             <Box className={classes.alignItems}>
               <IconButton
                 onClick={() => {
-                  navigate("/wraps");
+                  navigate("/wraps", {
+                    state: { userData: userData, journals: journals },
+                  });
                 }}
               >
                 <HistoryIcon
@@ -127,7 +193,7 @@ export const LandingPage = () => {
             </Box>
           </Card>
         </Grid>
-        <Grid item xs={10} sm={10} md={10} lg={12}>
+        <Grid item xs={10} sm={10} md={8} lg={8}>
           <Card
             style={{
               minHeight: "300px",
@@ -142,13 +208,24 @@ export const LandingPage = () => {
             <Box className={classes.alignItems}>
               <IconButton
                 onClick={() => {
-                  navigate("/journals");
+                  navigate("/journals", {
+                    state: { userData: userData, journals: journals },
+                  });
                 }}
               >
                 <ManageSearchIcon
                   style={{ fontSize: iconSize().icon, color: "black" }}
                 />
               </IconButton>
+            </Box>
+            <Box className={classes.alignItems}>
+              <Typography style={{ fontSize: 15, marginBottom: 8 }}>
+                {journals && journals.length > 1 ? (
+                  <div>{journals.length} total</div>
+                ) : (
+                  <></>
+                )}
+              </Typography>
             </Box>
           </Card>
         </Grid>

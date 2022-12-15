@@ -4,47 +4,22 @@ import SignIn from "./Components/Forms/SignIn.js";
 import SignUp from "./Components/Forms/SignUp.js";
 import CssBaseline from "@mui/material/CssBaseline";
 import * as React from "react";
-import { useState, useEffect } from "react";
-import GetToken from "./Components/Forms/CachedToken";
-import SignOut from "./Components/Forms/SignOut.js";
 import ResponsiveAppBar from "./Components/Forms/AppBar.js";
-import { ProfileCards, HelpCards } from "./Components/Forms/Cards.js";
-import JournalCards from "./Components/Forms/JournalCards.js";
 import { NewJournal } from "./Components/Forms/NewJournal";
-import { Grid, Box } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Full } from "./Components/Forms/NewJournals/Full.js";
 import { Standard } from "./Components/Forms/NewJournals/Standard.js";
-import { Container } from "@material-ui/core";
-import useStyles from "./styles";
 import { Brief } from "./Components/Forms/NewJournals/Brief.js";
 import { GetWraps } from "./Components/Forms/GetWraps.js";
 import { GetJournals } from "./Components/Forms/GetJournals";
 import { LandingPage } from "./Components/Forms/LandingPage.js";
 import { AboutCards } from "./Components/Forms/About.js";
 import { EditJournal } from "./Components/Forms/EditJournal.js";
+import { Profile } from "./Components/Forms/Profile.js";
+import useStyles from "./styles";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const classes = useStyles();
-
-  setInterval(() => {
-    // console.log("set 1 min interval for inactivity");
-    if (GetToken()) {
-      const now = new Date().getTime();
-      const setUpTime = Number(localStorage.getItem("setUpTime"));
-      // console.log("now", now, "setuptime", setUpTime);
-      if (now - setUpTime > 0.5 * 60 * 60 * 1000) {
-        SignOut();
-        setIsLoggedIn(false);
-      } else {
-        setIsLoggedIn(true);
-        // console.log("user is logged in");
-      }
-    } else {
-      setIsLoggedIn(false);
-      // console.log("user is logged out");
-    }
-  }, 60 * 1000);
 
   return (
     <Grid>
@@ -84,7 +59,7 @@ function App() {
             <Route
               path="/wraps"
               element={
-                <Grid alignItems="center">
+                <Grid>
                   {" "}
                   <ResponsiveAppBar />
                   <GetWraps />
@@ -97,7 +72,7 @@ function App() {
                 <Grid>
                   {" "}
                   <ResponsiveAppBar />
-                  <ProfileCards />
+                  <Profile />
                 </Grid>
               }
             ></Route>
@@ -107,16 +82,6 @@ function App() {
                 <Grid>
                   <ResponsiveAppBar />
                   <AboutCards />
-                </Grid>
-              }
-            ></Route>
-            <Route
-              path="/help"
-              element={
-                <Grid>
-                  {" "}
-                  <ResponsiveAppBar />
-                  <HelpCards />
                 </Grid>
               }
             ></Route>

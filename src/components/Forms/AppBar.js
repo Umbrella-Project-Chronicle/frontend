@@ -229,13 +229,7 @@ function ResponsiveAppBar(props) {
                     >
                       <Typography textAlign="center">About</Typography>
                     </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        handleCloseUserMenu("/help");
-                      }}
-                    >
-                      <Typography textAlign="center">Help</Typography>
-                    </MenuItem>
+
                     <MenuItem
                       onClick={() => {
                         SignOut();

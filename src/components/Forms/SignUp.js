@@ -1,10 +1,8 @@
 import { React, useState } from "react";
 import {
-  Avatar,
   Button,
   TextField,
   Link,
-  Paper,
   Box,
   Grid,
   Typography,
@@ -227,10 +225,7 @@ function SignUp() {
               {passMatchError}
             </Alert>
           )}
-          {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
+
           <Button
             type="submit"
             fullWidth
@@ -241,18 +236,12 @@ function SignUp() {
           </Button>
 
           <Grid container>
-            {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
             <Grid item>
               <Link href="/login" variant="body2">
                 {"Have an Account?"}
               </Link>
             </Grid>
           </Grid>
-          {/* <Copyright sx={{ mt: 5 }} /> */}
         </Box>
       </Box>
     </Grid>
