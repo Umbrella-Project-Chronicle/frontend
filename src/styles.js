@@ -93,6 +93,9 @@ const useStyles = makeStyles((theme) => ({
   toolTip: {
     pointerEvents: "auto",
   },
+  background: {
+    background: "url(./logo.ico) no-repeat center center fixed",
+  },
 }));
 
 export default useStyles;

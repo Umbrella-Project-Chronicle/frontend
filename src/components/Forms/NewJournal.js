@@ -5,11 +5,12 @@ import useStyles from "../../styles";
 
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import TimesOneMobiledataIcon from "@mui/icons-material/TimesOneMobiledata";
 import { useMediaQuery } from "react-responsive";
+import StarHalfIcon from "@mui/icons-material/StarHalf";
 
 export const NewJournal = () => {
   const isDesktop = useMediaQuery({
@@ -114,10 +115,7 @@ export const NewJournal = () => {
                 navigate("/newjournals/brief");
               }}
             >
-              <TimesOneMobiledataIcon
-                style={{ fontSize: iconSize().icon, color: "black" }}
-              />
-              <StarBorderIcon
+              <StarHalfIcon
                 style={{ fontSize: iconSize().icon, color: "black" }}
               />
             </IconButton>

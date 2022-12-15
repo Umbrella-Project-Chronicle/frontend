@@ -15,6 +15,7 @@ import { GetJournals } from "./Components/Forms/GetJournals";
 import { LandingPage } from "./Components/Forms/LandingPage.js";
 import { AboutCards } from "./Components/Forms/About.js";
 import { EditJournal } from "./Components/Forms/EditJournal.js";
+import { Profile } from "./Components/Forms/Profile.js";
 import useStyles from "./styles";
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
                 <Grid>
                   {" "}
                   <ResponsiveAppBar />
+                  <Profile />
                 </Grid>
               }
             ></Route>

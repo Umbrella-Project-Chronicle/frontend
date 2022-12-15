@@ -39,10 +39,11 @@
 
 html,
 main {
-  background: url(./logo.ico) no-repeat center center fixed;
-  background-color: #282c34;
-  background-position: "center";
-  background-size: "400px 450px";
+  /* background: url(./logo.ico) no-repeat center center fixed; */
+  background-color: #c3c3c3;
+
+  /* background-position: "center";
+  background-size: "cover"; */
 }
 
 .App-link {

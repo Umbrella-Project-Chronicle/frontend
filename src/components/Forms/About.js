@@ -52,7 +52,7 @@ export const AboutCards = ({ isLandingPage }) => {
     },
     {
       title: "Wrap",
-      subtitle: "The Power of Our App",
+      subtitle: "The Power of our App",
       body: "After 1 month of tracking your emotions, Chronicle will provide you a simple but effective 'Wrap' on your emotional history. As long as you stay consistent with your daily inputs, this will provide you a clear picture of where you've been and where you're going.",
       icon: "",
     },

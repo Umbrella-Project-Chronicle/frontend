@@ -90,206 +90,185 @@ export const Full = () => {
   }
 
   return (
-    <Grid>
-      <Grid
-        sx={{
-          mt: 4,
-          boxShadow: 4,
-          bgcolor: "rgba(240, 240, 240,0.5)",
-          m: 5,
-          p: 2,
-          borderRadius: 1,
-        }}
-      >
-        <Box sx={{ justifyContent: "center" }}>
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              fontSize: 40,
-              letterSpacing: 12,
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            Full Journal
-          </Typography>
-        </Box>
-        <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
-        <Box
+    <Grid sx={{ padding: 2 }}>
+      <Box sx={{ justifyContent: "center" }}>
+        <Typography
           sx={{
-            backgroundColor: "gray",
-            boxShadow: 4,
-            display: "flex",
-            flex: 1,
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "flex-start",
+            fontWeight: "bold",
+            fontSize: 40,
+            letterSpacing: 12,
             justifyContent: "center",
+            textAlign: "center",
           }}
         >
-          <Box
-            sx={{
-              width: ratingSize().width,
-              backgroundColor: "gray",
-              boxShadow: 4,
-              m: 3,
-              borderRadius: 1,
-            }}
-          >
-            <Typography className={classes.alignItems}>Overall</Typography>
-            <Slider
-              aria-label="rating"
-              defaultValue={5}
-              getAriaValueText={valuetext}
-              valueLabelDisplay="auto"
-              step={1}
-              marks
-              min={1}
-              max={10}
-              onChange={(event) => setOverall(event.target.value)}
-              value={overall}
-            />
-          </Box>
+          Full Journal
+        </Typography>
+      </Box>
+      <Divider sx={{ borderBottomWidth: 5, mt: 1, mb: 3 }} />
+      <Box
+        sx={{
+          display: "flex",
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "flex-start",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            width: ratingSize().width,
+            padding: 3,
+            boxShadow: 4,
+            m: 3,
+            borderRadius: 1,
+          }}
+        >
+          <Typography className={classes.alignItems}>Overall</Typography>
+          <Slider
+            aria-label="rating"
+            defaultValue={5}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={1}
+            max={10}
+            onChange={(event) => setOverall(event.target.value)}
+            value={overall}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            width: ratingSize().width,
+            padding: 3,
+            boxShadow: 4,
+            m: 3,
+            borderRadius: 1,
+          }}
+        >
+          <Typography className={classes.alignItems}>Happiness</Typography>
+          <Slider
+            aria-label="rating"
+            defaultValue={5}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={1}
+            max={10}
+            onChange={(event) => setHappiness(event.target.value)}
+            value={happiness}
+          />
+        </Box>
+        <Box
+          sx={{
+            width: ratingSize().width,
+            padding: 3,
+            boxShadow: 4,
+            m: 3,
+            borderRadius: 1,
+          }}
+        >
+          <Typography className={classes.alignItems}>Depression</Typography>
+          <Slider
+            aria-label="rating"
+            defaultValue={5}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={1}
+            max={10}
+            onChange={(event) => setDepression(event.target.value)}
+            value={depression}
+          />
+        </Box>
+        <Box
+          sx={{
+            width: ratingSize().width,
+            padding: 3,
+            boxShadow: 4,
+            m: 3,
+            borderRadius: 1,
+          }}
+        >
+          <Typography className={classes.alignItems}>Anxiety</Typography>
+          <Slider
+            aria-label="rating"
+            defaultValue={5}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={1}
+            max={10}
+            onChange={(event) => setAnxiety(event.target.value)}
+            value={anxiety}
+          />
+        </Box>
+        <Box
+          sx={{
+            width: ratingSize().width,
+            padding: 3,
+            boxShadow: 4,
+            m: 3,
+            borderRadius: 1,
+          }}
+        >
+          <Typography className={classes.alignItems}>Sadness</Typography>
+          <Slider
+            aria-label="rating"
+            defaultValue={5}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={1}
+            max={10}
+            onChange={(event) => setSadness(event.target.value)}
+            value={sadness}
+          />
+        </Box>
+        <Box
+          sx={{
+            width: ratingSize().width,
+            padding: 3,
+            boxShadow: 4,
+            m: 3,
+            borderRadius: 1,
+          }}
+        >
+          <Typography className={classes.alignItems}>Loneliness</Typography>
+          <Slider
+            aria-label="rating"
+            defaultValue={5}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={1}
+            marks
+            min={1}
+            max={10}
+            onChange={(event) => setLoneliness(event.target.value)}
+            value={loneliness}
+          />
+        </Box>
+        <Grid sx={{ width: "100%" }}>
+          <TextField
+            // autoComplete
+            placeholder="Journal Here"
+            multiline
+            fullWidth
+            onChange={(event) => setText(event.target.value)}
+            value={text}
+          />
 
           <Box
             sx={{
-              width: ratingSize().width,
-              backgroundColor: "gray",
-              boxShadow: 4,
-              m: 3,
-              borderRadius: 1,
-            }}
-          >
-            <Typography className={classes.alignItems}>Happiness</Typography>
-            <Slider
-              aria-label="rating"
-              defaultValue={5}
-              getAriaValueText={valuetext}
-              valueLabelDisplay="auto"
-              step={1}
-              marks
-              min={1}
-              max={10}
-              onChange={(event) => setHappiness(event.target.value)}
-              value={happiness}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: ratingSize().width,
-              backgroundColor: "gray",
-              boxShadow: 4,
-              m: 3,
-              borderRadius: 1,
-            }}
-          >
-            <Typography className={classes.alignItems}>Depression</Typography>
-            <Slider
-              aria-label="rating"
-              defaultValue={5}
-              getAriaValueText={valuetext}
-              valueLabelDisplay="auto"
-              step={1}
-              marks
-              min={1}
-              max={10}
-              onChange={(event) => setDepression(event.target.value)}
-              value={depression}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: ratingSize().width,
-              backgroundColor: "gray",
-              boxShadow: 4,
-              m: 3,
-              borderRadius: 1,
-            }}
-          >
-            <Typography className={classes.alignItems}>Anxiety</Typography>
-            <Slider
-              aria-label="rating"
-              defaultValue={5}
-              getAriaValueText={valuetext}
-              valueLabelDisplay="auto"
-              step={1}
-              marks
-              min={1}
-              max={10}
-              onChange={(event) => setAnxiety(event.target.value)}
-              value={anxiety}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: ratingSize().width,
-              backgroundColor: "gray",
-              boxShadow: 4,
-              m: 3,
-              borderRadius: 1,
-            }}
-          >
-            <Typography className={classes.alignItems}>Sadness</Typography>
-            <Slider
-              aria-label="rating"
-              defaultValue={5}
-              getAriaValueText={valuetext}
-              valueLabelDisplay="auto"
-              step={1}
-              marks
-              min={1}
-              max={10}
-              onChange={(event) => setSadness(event.target.value)}
-              value={sadness}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: ratingSize().width,
-              backgroundColor: "gray",
-              boxShadow: 4,
-              m: 3,
-              borderRadius: 1,
-            }}
-          >
-            <Typography className={classes.alignItems}>Loneliness</Typography>
-            <Slider
-              aria-label="rating"
-              defaultValue={5}
-              getAriaValueText={valuetext}
-              valueLabelDisplay="auto"
-              step={1}
-              marks
-              min={1}
-              max={10}
-              onChange={(event) => setLoneliness(event.target.value)}
-              value={loneliness}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: ratingSize().width,
-              boxShadow: 4,
-              p: 3,
-              backgroundColor: "gray",
-              borderRadius: 1,
-            }}
-          >
-            <TextField
-              // autoComplete
-              placeholder="Journal Here"
-              multiline
-              fullWidth
-              onChange={(event) => setText(event.target.value)}
-              value={text}
-            />
-          </Box>
-          <Box
-            sx={{
-              backgroundColor: "black",
               boxShadow: 4,
               borderRadius: 1,
-              width: "100%",
+              maxWidth: "100%",
             }}
             className={classes.alignItems}
           >
@@ -301,9 +280,9 @@ export const Full = () => {
               Submit Journal
             </Button>
           </Box>
-          {success && <Alert severity="success">Submitted Journal!</Alert>}
-        </Box>
-      </Grid>
+        </Grid>
+        {success && <Alert severity="success">Submitted Journal!</Alert>}
+      </Box>
     </Grid>
   );
 };
