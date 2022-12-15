@@ -138,7 +138,7 @@ export const LandingPage = () => {
           <></>
         )}
 
-        <Grid item xs={10} sm={10} md={8} lg={8}>
+        <Grid item xs={10} sm={10} md={8} lg={10}>
           <Card
             style={{
               minHeight: "300px",
@@ -166,7 +166,7 @@ export const LandingPage = () => {
             </Box>
           </Card>
         </Grid>
-        <Grid item xs={10} sm={10} md={10} lg={10}>
+        <Grid item xs={10} sm={10} md={8} lg={10}>
           <Card
             style={{
               minHeight: "300px",
@@ -193,7 +193,7 @@ export const LandingPage = () => {
             </Box>
           </Card>
         </Grid>
-        <Grid item xs={10} sm={10} md={8} lg={8}>
+        <Grid item xs={10} sm={10} md={8} lg={10}>
           <Card
             style={{
               minHeight: "300px",
